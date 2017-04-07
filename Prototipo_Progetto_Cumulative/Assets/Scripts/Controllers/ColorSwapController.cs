@@ -19,6 +19,7 @@ public class ColorSwapController : MonoBehaviour {
 	private Color _green = new Color (0f, 255f, 0f, 255f);
 	private Color _red = new Color (255f, 0f, 0f, 255f);
 	private bool _swap = false;
+	private EnemyMovement _enemyMove;
 
 	// Use this for initialization
 	void Start () 
@@ -63,6 +64,8 @@ public class ColorSwapController : MonoBehaviour {
 			{
 				_enemyRenderer = enemies [i].GetComponent <SpriteRenderer> ();
 				_enemyRenderer.enabled = true;
+				_enemyMove = enemies[i].GetComponent<EnemyMovement>();
+				_enemyMove.canMove = false;
 			}
 		}
 		else
@@ -73,6 +76,8 @@ public class ColorSwapController : MonoBehaviour {
 			{
 				_enemyRenderer = enemies [i].GetComponent <SpriteRenderer> ();
 				_enemyRenderer.enabled = false;
+				_enemyMove = enemies[i].GetComponent<EnemyMovement>();
+				_enemyMove.canMove = true;
 			}
 		}
 	}
