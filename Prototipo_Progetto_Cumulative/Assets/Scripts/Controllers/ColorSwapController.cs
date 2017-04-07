@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityStandardAssets.CrossPlatformInput;
 
 public class ColorSwapController : MonoBehaviour {
@@ -20,6 +21,8 @@ public class ColorSwapController : MonoBehaviour {
 	private Color _red = new Color (255f, 0f, 0f, 255f);
 	private bool _swap = false;
 
+	public Text switchText;
+
 	// Use this for initialization
 	void Start () 
 	{
@@ -38,6 +41,7 @@ public class ColorSwapController : MonoBehaviour {
 			_enemyRenderer.color = _green;
 		}
 		currentSwapChances = maxSwapChances;
+		switchText.text = "Switches: " + currentSwapChances;
 	}
 	
 	// Update is called once per frame
@@ -48,6 +52,7 @@ public class ColorSwapController : MonoBehaviour {
 		{
 			ColorSwap ();
 			currentSwapChances--;
+			switchText.text = "Switches: " + currentSwapChances;
 		}
 	}
 		
