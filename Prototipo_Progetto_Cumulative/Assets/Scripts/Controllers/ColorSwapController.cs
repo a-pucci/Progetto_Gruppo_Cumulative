@@ -21,6 +21,7 @@ public class ColorSwapController : MonoBehaviour {
 	private Color _red = new Color (255f, 0f, 0f, 255f);
 	private bool _swap = false;
 	private EnemyMovement _enemyMove;
+	private HealthManager _playerHealth;
 
 	public Text switchText;
 
@@ -30,6 +31,8 @@ public class ColorSwapController : MonoBehaviour {
 		player = GameObject.FindGameObjectWithTag ("Player");
 		_playerRenderer = player.GetComponent <SpriteRenderer>();
 		_playerRenderer.color = _red;
+
+		_playerHealth = player.GetComponent <HealthManager> ();
 
 		background = GameObject.FindGameObjectWithTag ("Background");
 		_backgroundRenderer = background.GetComponent <SpriteRenderer>();
@@ -49,7 +52,7 @@ public class ColorSwapController : MonoBehaviour {
 	void Update () 
 	{
 		_swap = CrossPlatformInputManager.GetButtonDown ("Fire1"); 
-		if(_swap && currentSwapChances > 0)
+		if(_swap && currentSwapChances > 0 && !_playerHealth.playerDead)
 		{
 			ColorSwap ();
 			currentSwapChances--;
