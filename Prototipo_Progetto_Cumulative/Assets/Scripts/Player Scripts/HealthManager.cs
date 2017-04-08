@@ -33,6 +33,7 @@ public class HealthManager : MonoBehaviour
 	{
 		if (playerDead && CrossPlatformInputManager.GetButtonDown("Restart")) {
 			SceneManager.LoadScene (SceneManager.GetActiveScene().name);
+			Time.timeScale = 1;
 		}
 	}
 
