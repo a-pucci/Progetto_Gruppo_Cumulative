@@ -6,54 +6,55 @@ using UnityStandardAssets.CrossPlatformInput;
 
 public class ColorSwapController : MonoBehaviour {
 
-	[SerializeField] private int maxSwapChances = 3;
+	[SerializeField] private int maxSwapChances = 4;
 	[ReadOnly] public int currentSwapChances;
 
-	private GameObject player;
-	private GameObject background;
-	private GameObject[] enemies;
-	private SpriteRenderer _enemyRenderer;
-	private SpriteRenderer _playerRenderer;
-	private SpriteRenderer _backgroundRenderer;
-	private Color _greenBG = new Color (0f, 255f, 0f, 180f);
-	private Color _redBG = new Color (255f, 0f, 0f, 180f);
-	private Color _green = new Color (0f, 255f, 0f, 255f);
-	private Color _red = new Color (255f, 0f, 0f, 255f);
-	//private bool _swap = false;
-	private EnemyMovement _enemyMove;
+	private GameObject[] redPlatforms;
+	private GameObject[] greenPlatforms;
+
+	private GameObject _redBG;
+	private GameObject _greenBG;
+
+	private GameObject _player;
 	private HealthManager _playerHealth;
+
+	private bool _swap = false;
+	private bool _toggle = false;
 
 	public Text switchText;
 
 	// Use this for initialization
 	void Start () 
 	{
-		player = GameObject.FindGameObjectWithTag ("Player");
-		_playerRenderer = player.GetComponent <SpriteRenderer>();
-		_playerRenderer.color = _red;
+		_player = GameObject.FindGameObjectWithTag ("Player");
+		_playerHealth = _player.GetComponent <HealthManager> ();
 
-		_playerHealth = player.GetComponent <HealthManager> ();
+		_redBG = GameObject.FindGameObjectWithTag ("RedBackground");
+		_redBG.SetActive (false);
 
-		background = GameObject.FindGameObjectWithTag ("Background");
-		_backgroundRenderer = background.GetComponent <SpriteRenderer>();
-		_backgroundRenderer.color = _greenBG;
+		_greenBG = GameObject.FindGameObjectWithTag ("GreenBackground");
+		_greenBG.SetActive (true);
 
-		enemies = GameObject.FindGameObjectsWithTag ("Enemy");
-		for(int i = 0; i < enemies.Length; i++ )
+		greenPlatforms = GameObject.FindGameObjectsWithTag ("GreenPlatform");
+		for (int i = 0; i < greenPlatforms.Length; i++) 
 		{
-			_enemyRenderer = enemies [i].GetComponent <SpriteRenderer> ();
-			_enemyRenderer.color = _green;
+			greenPlatforms [i].SetActive (true);
 		}
+
+		redPlatforms = GameObject.FindGameObjectsWithTag ("RedPlatform");
+		for(int i = 0; i < redPlatforms.Length; i++ )
+		{
+			redPlatforms [i].SetActive (false);
+		}
+
 		currentSwapChances = maxSwapChances;
 		switchText.text = "Switches: " + currentSwapChances;
 
-		StartCoroutine (SwitchCoroutine ());
 	}
-	
-	// Update is called once per frame
+
 	void Update () 
 	{
-		/*
+
 		_swap = CrossPlatformInputManager.GetButtonDown ("Fire1"); 
 		if(_swap && currentSwapChances > 0 && !_playerHealth.playerDead)
 		{
@@ -61,46 +62,40 @@ public class ColorSwapController : MonoBehaviour {
 			currentSwapChances--;
 			switchText.text = "Switches: " + currentSwapChances;
 		}
-		*/
+
 	}
 		
 	void ColorSwap ()
 	{
-		background = GameObject.FindGameObjectWithTag ("Background");
-		_backgroundRenderer = background.GetComponent <SpriteRenderer>();
-		if(_backgroundRenderer.color.Equals (_greenBG))
-		{
-			_backgroundRenderer.color = _redBG;
-			_playerRenderer.enabled = false;
-			for(int i = 0; i < enemies.Length; i++ )
-			{
-				_enemyRenderer = enemies [i].GetComponent <SpriteRenderer> ();
-				_enemyRenderer.enabled = true;
-				_enemyMove = enemies[i].GetComponent<EnemyMovement>();
-				_enemyMove.canMove = false;
+
+		if (_toggle) {
+			_greenBG.SetActive (true);
+			_redBG.SetActive (false);
+
+			for (int i = 0; i < greenPlatforms.Length; i++) {
+				greenPlatforms [i].SetActive (true);
 			}
-		}
-		else
-		{
-			_backgroundRenderer.color = _greenBG;
-			_playerRenderer.enabled = true;
-			for(int i = 0; i < enemies.Length; i++ )
-			{
-				_enemyRenderer = enemies [i].GetComponent <SpriteRenderer> ();
-				_enemyRenderer.enabled = false;
-				_enemyMove = enemies[i].GetComponent<EnemyMovement>();
-				_enemyMove.canMove = true;
+
+			for (int i = 0; i < redPlatforms.Length; i++) {
+				redPlatforms [i].SetActive (false);
 			}
+
+		} 
+		else 
+		{
+			_greenBG.SetActive (false);
+			_redBG.SetActive (true);
+
+			for (int i = 0; i < greenPlatforms.Length; i++) {
+				greenPlatforms [i].SetActive (false);
+			}
+				
+			for (int i = 0; i < redPlatforms.Length; i++) {
+				redPlatforms [i].SetActive (true);
+			}
+
 		}
+		_toggle = !_toggle;
 	}
 
-	IEnumerator SwitchCoroutine() 
-	{
-		while (!_playerHealth.playerDead) {
-			yield return new WaitForSecondsRealtime (3.0f);
-			if (!_playerHealth.playerDead) {
-				ColorSwap ();
-			}
-		}
-	}
 }
