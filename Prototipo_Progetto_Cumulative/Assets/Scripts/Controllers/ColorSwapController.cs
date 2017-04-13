@@ -19,7 +19,7 @@ public class ColorSwapController : MonoBehaviour {
 	private Color _redBG = new Color (255f, 0f, 0f, 180f);
 	private Color _green = new Color (0f, 255f, 0f, 255f);
 	private Color _red = new Color (255f, 0f, 0f, 255f);
-	private bool _swap = false;
+	//private bool _swap = false;
 	private EnemyMovement _enemyMove;
 	private HealthManager _playerHealth;
 
@@ -46,11 +46,14 @@ public class ColorSwapController : MonoBehaviour {
 		}
 		currentSwapChances = maxSwapChances;
 		switchText.text = "Switches: " + currentSwapChances;
+
+		StartCoroutine (SwitchCoroutine ());
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
+		/*
 		_swap = CrossPlatformInputManager.GetButtonDown ("Fire1"); 
 		if(_swap && currentSwapChances > 0 && !_playerHealth.playerDead)
 		{
@@ -58,6 +61,7 @@ public class ColorSwapController : MonoBehaviour {
 			currentSwapChances--;
 			switchText.text = "Switches: " + currentSwapChances;
 		}
+		*/
 	}
 		
 	void ColorSwap ()
@@ -86,6 +90,16 @@ public class ColorSwapController : MonoBehaviour {
 				_enemyRenderer.enabled = false;
 				_enemyMove = enemies[i].GetComponent<EnemyMovement>();
 				_enemyMove.canMove = true;
+			}
+		}
+	}
+
+	IEnumerator SwitchCoroutine() 
+	{
+		while (!_playerHealth.playerDead) {
+			yield return new WaitForSecondsRealtime (3.0f);
+			if (!_playerHealth.playerDead) {
+				ColorSwap ();
 			}
 		}
 	}
