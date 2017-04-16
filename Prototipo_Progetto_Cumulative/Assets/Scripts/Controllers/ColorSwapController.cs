@@ -6,8 +6,8 @@ using UnityStandardAssets.CrossPlatformInput;
 
 public class ColorSwapController : MonoBehaviour {
 
-	[SerializeField] private int maxSwapChances = 4;
-	[ReadOnly] public int currentSwapChances;
+	//[SerializeField] private int maxSwapChances = 4;
+	//[ReadOnly] public int currentSwapChances;
 
 	private GameObject[] redPlatforms;
 	private GameObject[] greenPlatforms;
@@ -47,8 +47,8 @@ public class ColorSwapController : MonoBehaviour {
 			redPlatforms [i].SetActive (false);
 		}
 
-		currentSwapChances = maxSwapChances;
-		switchText.text = "Switches: " + currentSwapChances;
+		//currentSwapChances = maxSwapChances;
+		//switchText.text = "Switches: " + currentSwapChances;
 
 	}
 
@@ -56,11 +56,11 @@ public class ColorSwapController : MonoBehaviour {
 	{
 
 		_swap = CrossPlatformInputManager.GetButtonDown ("Fire1"); 
-		if(_swap && currentSwapChances > 0 && !_playerHealth.playerDead)
+		if(_swap /*&& currentSwapChances > 0 */&& !_playerHealth.playerDead)
 		{
 			ColorSwap ();
-			currentSwapChances--;
-			switchText.text = "Switches: " + currentSwapChances;
+			//currentSwapChances--;
+			//switchText.text = "Switches: " + currentSwapChances;
 		}
 
 	}
