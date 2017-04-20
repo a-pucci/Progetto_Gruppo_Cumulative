@@ -7,10 +7,11 @@ using UnityStandardAssets.CrossPlatformInput;
 public class PlayerPickup : MonoBehaviour 
 {
 	public Text PickupText;
-	public Image HappyMaskImage;
-	public GameObject HappyMask;
+	public Image InventoryIcon;
 
 	private GameObject _triggerObject;
+	private GameObject _storedItem;
+
 	private bool _pickedUp = false;
 
 
@@ -18,7 +19,7 @@ public class PlayerPickup : MonoBehaviour
 	void Start () 
 	{
 		PickupText.enabled = false;
-		HappyMaskImage.enabled = false;
+		InventoryIcon.enabled = false;
 	}
 
 	// Update is called once per frame
@@ -28,16 +29,11 @@ public class PlayerPickup : MonoBehaviour
 		{
 			if (_triggerObject.CompareTag ("Pickup"))
 			{
-				_pickedUp = true;
-				PickupText.enabled = false;
-				HappyMaskImage.enabled = true;
-				_triggerObject.gameObject.SetActive (false);
+				Pickup ();
 			}
 			else if (_triggerObject.CompareTag("Interactive")  && _pickedUp)
 			{
-				_pickedUp = false;
-				HappyMaskImage.enabled = false;
-				Instantiate (HappyMask, new Vector3(_triggerObject.transform.position.x + 0.4f, _triggerObject.transform.position.y + 2f, _triggerObject.transform.position.z), _triggerObject.transform.rotation);
+				Interact (_triggerObject);
 			}
 		}
 	}
@@ -52,5 +48,51 @@ public class PlayerPickup : MonoBehaviour
 	{
 		_triggerObject = null;
 		PickupText.enabled = false;
+	}
+
+	private void Pickup()
+	{
+		_pickedUp = true;
+		InventoryIcon.enabled = true;
+	
+		InventoryIcon.sprite =  _triggerObject.GetComponent<SpriteRenderer> ().sprite;
+
+		_storedItem = _triggerObject;
+		_storedItem.gameObject.SetActive (false);
+	}
+
+	private void Interact(GameObject trigger)
+	{
+		int IDstored = _storedItem.gameObject.GetComponent<Identifier> ().ID;
+		int IDcollide = trigger.GetComponent<Identifier> ().ID;
+
+		switch (IDcollide)
+		{
+		case (int)IDList.ID.Torso:
+			
+			Torso torso = trigger.GetComponent<Torso> ();
+			if(torso.canInteract(IDstored))
+			{
+				_storedItem.gameObject.SetActive (true);
+				torso.PutMask (_storedItem);
+				_storedItem.SetActive (false);
+				_pickedUp = false;
+				InventoryIcon.enabled = false;
+			}
+			break;
+
+		case (int)IDList.ID.Box:
+			
+			//TODO
+			break;
+
+
+		case (int)IDList.ID.Chest:
+
+			//TODO
+			break;
+
+
+		}
 	}
 }
