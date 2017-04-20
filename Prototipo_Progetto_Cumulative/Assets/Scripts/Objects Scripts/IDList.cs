@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class IDList
 {
-	public enum ID {Torso, HappyMask, SadMask, Hammer, Key, Chest, Box};
+	public enum ID {Dummy, HappyMask, SadMask, Hammer, Key, Chest, Box};
 }

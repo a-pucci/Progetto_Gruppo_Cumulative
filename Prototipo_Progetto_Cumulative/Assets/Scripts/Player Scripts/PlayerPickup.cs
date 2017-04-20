@@ -8,6 +8,7 @@ public class PlayerPickup : MonoBehaviour
 {
 	public Text PickupText;
 	public Image InventoryIcon;
+	public float YDropOffset = 0.3f;
 
 	private GameObject _triggerObject;
 	private GameObject _storedItem;
@@ -36,6 +37,11 @@ public class PlayerPickup : MonoBehaviour
 				Interact (_triggerObject);
 			}
 		}
+
+		if(_storedItem != null && CrossPlatformInputManager.GetButtonDown("Drop"))
+		{
+			DropItem ();
+		}
 	}
 
 	void OnTriggerEnter2D(Collider2D collision)
@@ -61,6 +67,17 @@ public class PlayerPickup : MonoBehaviour
 		_storedItem.gameObject.SetActive (false);
 	}
 
+	private void DropItem ()
+	{
+		_storedItem.gameObject.SetActive (true);
+
+		_storedItem.transform.position = new Vector3 (this.transform.position.x, this.transform.position.y + YDropOffset, this.transform.position.z);
+		_storedItem = null;
+		_pickedUp = false;
+		InventoryIcon.enabled = false;
+
+	}
+
 	private void Interact(GameObject trigger)
 	{
 		int IDstored = _storedItem.gameObject.GetComponent<Identifier> ().ID;
@@ -68,14 +85,14 @@ public class PlayerPickup : MonoBehaviour
 
 		switch (IDcollide)
 		{
-		case (int)IDList.ID.Torso:
+		case (int)IDList.ID.Dummy:
 			
-			Torso torso = trigger.GetComponent<Torso> ();
-			if(torso.canInteract(IDstored))
+			Dummy dummy = trigger.GetComponent<Dummy> ();
+			if(dummy.canInteract(IDstored))
 			{
 				_storedItem.gameObject.SetActive (true);
-				torso.PutMask (_storedItem);
-				_storedItem.SetActive (false);
+				dummy.PutMask (_storedItem);
+				_storedItem = null;
 				_pickedUp = false;
 				InventoryIcon.enabled = false;
 			}
@@ -83,13 +100,27 @@ public class PlayerPickup : MonoBehaviour
 
 		case (int)IDList.ID.Box:
 			
-			//TODO
+			Box box = trigger.GetComponent<Box> ();
+			if(box.canInteract(IDstored))
+			{
+				box.DropHappyMask ();
+				box.DropKey ();
+				box.DropSadMask ();
+				trigger.SetActive (false);
+			}
 			break;
 
 
 		case (int)IDList.ID.Chest:
 
-			//TODO
+			Chest chest = trigger.GetComponent<Chest> ();
+			if(chest.canInteract(IDstored))
+			{
+				chest.DropHappyMask ();
+				chest.DropHammer ();
+				chest.DropSadMask ();
+				trigger.SetActive (false);
+			}
 			break;
 
 
