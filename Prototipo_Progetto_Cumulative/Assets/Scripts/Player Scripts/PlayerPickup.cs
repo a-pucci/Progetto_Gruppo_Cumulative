@@ -30,6 +30,10 @@ public class PlayerPickup : MonoBehaviour
 		{
 			if (_triggerObject.CompareTag ("Pickup"))
 			{
+				if (_pickedUp) {
+					DropItem ();
+				}
+
 				Pickup ();
 			}
 			else if (_triggerObject.CompareTag("Interactive")  && _pickedUp)
@@ -60,16 +64,16 @@ public class PlayerPickup : MonoBehaviour
 	{
 		_pickedUp = true;
 		InventoryIcon.enabled = true;
-	
+
 		InventoryIcon.sprite =  _triggerObject.GetComponent<SpriteRenderer> ().sprite;
 
 		_storedItem = _triggerObject;
-		_storedItem.gameObject.SetActive (false);
+		_storedItem.SetActive (false);
 	}
 
 	private void DropItem ()
 	{
-		_storedItem.gameObject.SetActive (true);
+		_storedItem.SetActive (true);
 
 		_storedItem.transform.position = new Vector3 (this.transform.position.x, this.transform.position.y + YDropOffset, this.transform.position.z);
 		_storedItem = null;
@@ -80,7 +84,7 @@ public class PlayerPickup : MonoBehaviour
 
 	private void Interact(GameObject trigger)
 	{
-		int IDstored = _storedItem.gameObject.GetComponent<Identifier> ().ID;
+		int IDstored = _storedItem.GetComponent<Identifier> ().ID;
 		int IDcollide = trigger.GetComponent<Identifier> ().ID;
 
 		switch (IDcollide)
@@ -90,11 +94,29 @@ public class PlayerPickup : MonoBehaviour
 			Dummy dummy = trigger.GetComponent<Dummy> ();
 			if(dummy.canInteract(IDstored))
 			{
-				_storedItem.gameObject.SetActive (true);
-				dummy.PutMask (_storedItem);
-				_storedItem = null;
-				_pickedUp = false;
-				InventoryIcon.enabled = false;
+				if (dummy.HasMask ())
+				{
+					_storedItem.SetActive (true);
+					GameObject newMask = _storedItem;
+					_storedItem = dummy.LoseMask ();
+
+					_pickedUp = true;
+					InventoryIcon.enabled = true;
+
+					InventoryIcon.sprite =  _storedItem.GetComponent<SpriteRenderer> ().sprite;
+
+					_storedItem.SetActive (false);
+
+					dummy.PutMask (newMask);
+				}
+				else 
+				{
+					_storedItem.SetActive (true);
+					dummy.PutMask (_storedItem);
+					_storedItem = null;
+					_pickedUp = false;
+					InventoryIcon.enabled = false;
+				}
 			}
 			break;
 
