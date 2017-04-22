@@ -40,6 +40,14 @@ public class PlayerPickup : MonoBehaviour
 			{
 				Interact (_triggerObject);
 			}
+			else if (_triggerObject.CompareTag("Enemy"))
+			{
+				int IDstored = _storedItem.GetComponent<Identifier> ().ID;
+				if(IDstored == (int)IDList.ID.Hammer)
+				{
+					Attack (_triggerObject);
+				}
+			}
 		}
 
 		if(_storedItem != null && CrossPlatformInputManager.GetButtonDown("Drop"))
@@ -147,5 +155,10 @@ public class PlayerPickup : MonoBehaviour
 
 
 		}
+	}
+
+	private void Attack(GameObject enemy)
+	{
+		enemy.SetActive (false);
 	}
 }

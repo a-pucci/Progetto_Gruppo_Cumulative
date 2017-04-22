@@ -40,7 +40,7 @@ public class HealthManager : MonoBehaviour
 	void OnTriggerEnter2D(Collider2D collision)
 	{
 		if (collision.gameObject.CompareTag ("Enemy") && !invulnerable) {
-			TakeDamage ();
+			//TakeDamage ();
 		}
 	}
 
