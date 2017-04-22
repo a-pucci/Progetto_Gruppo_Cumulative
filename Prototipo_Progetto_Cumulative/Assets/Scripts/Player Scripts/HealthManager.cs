@@ -12,8 +12,8 @@ public class HealthManager : MonoBehaviour
 	[SerializeField] private int _currentHealth = 0;
 	[SerializeField] private int _numberOfFlashes = 5;
 
-	[ReadOnly] public bool invulnerable = false;
-	[ReadOnly] public bool playerDead = false;
+	private bool invulnerable = false;
+	public bool playerDead = false;
 
 	public Text healthText;
 	public Text gameOverText;

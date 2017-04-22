@@ -12,6 +12,7 @@ public class PlayerPickup : MonoBehaviour
 
 	private GameObject _triggerObject;
 	private GameObject _storedItem;
+	private Door _door;
 
 	private bool _pickedUp = false;
 
@@ -19,6 +20,7 @@ public class PlayerPickup : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
+		_door = GameObject.FindGameObjectWithTag ("Door").GetComponent<Door>();
 		PickupText.enabled = false;
 		InventoryIcon.enabled = false;
 	}
@@ -125,6 +127,7 @@ public class PlayerPickup : MonoBehaviour
 					_pickedUp = false;
 					InventoryIcon.enabled = false;
 				}
+				_door.checkOpen ();
 			}
 			break;
 
@@ -140,7 +143,6 @@ public class PlayerPickup : MonoBehaviour
 			}
 			break;
 
-
 		case (int)IDList.ID.Chest:
 
 			Chest chest = trigger.GetComponent<Chest> ();
@@ -152,8 +154,6 @@ public class PlayerPickup : MonoBehaviour
 				trigger.SetActive (false);
 			}
 			break;
-
-
 		}
 	}
 
