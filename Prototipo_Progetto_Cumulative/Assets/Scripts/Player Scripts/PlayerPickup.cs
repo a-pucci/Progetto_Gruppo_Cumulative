@@ -8,7 +8,11 @@ public class PlayerPickup : MonoBehaviour
 {
 	public Text PickupText;
 	public Image InventoryIcon;
+	public float xDropOffset = 0.0f;
 	public float YDropOffset = 0.3f;
+
+	public GameObject RedStage;
+	public GameObject GreenStage;
 
 	private GameObject _triggerObject;
 	private GameObject _storedItem;
@@ -32,7 +36,8 @@ public class PlayerPickup : MonoBehaviour
 		{
 			if (_triggerObject.CompareTag ("Pickup"))
 			{
-				if (_pickedUp) {
+				if (_pickedUp) 
+				{
 					DropItem ();
 				}
 
@@ -41,14 +46,6 @@ public class PlayerPickup : MonoBehaviour
 			else if (_triggerObject.CompareTag("Interactive")  && _pickedUp)
 			{
 				Interact (_triggerObject);
-			}
-			else if (_triggerObject.CompareTag("Enemy"))
-			{
-				int IDstored = _storedItem.GetComponent<Identifier> ().ID;
-				if(IDstored == (int)IDList.ID.Hammer)
-				{
-					Attack (_triggerObject);
-				}
 			}
 		}
 
@@ -74,18 +71,39 @@ public class PlayerPickup : MonoBehaviour
 	{
 		_pickedUp = true;
 		InventoryIcon.enabled = true;
-
 		InventoryIcon.sprite =  _triggerObject.GetComponent<SpriteRenderer> ().sprite;
-
 		_storedItem = _triggerObject;
+
+		if(_storedItem.transform.parent.tag == "Enemy")
+		{
+			GameObject enemyParent = new GameObject("enemyParent");
+
+			enemyParent = _storedItem.transform.parent.gameObject;
+			_storedItem.transform.parent = this.transform.parent;
+			Destroy (enemyParent);
+		}
+		else
+		{
+			_storedItem.transform.parent = this.transform.parent;
+		}
+
 		_storedItem.SetActive (false);
 	}
 
 	private void DropItem ()
 	{
 		_storedItem.SetActive (true);
-
 		_storedItem.transform.position = new Vector3 (this.transform.position.x, this.transform.position.y + YDropOffset, this.transform.position.z);
+
+		if(RedStage.activeInHierarchy)
+		{
+			_storedItem.transform.parent = RedStage.transform;
+		}
+		else if (GreenStage.activeInHierarchy)
+		{
+			_storedItem.transform.parent = GreenStage.transform;
+		}
+
 		_storedItem = null;
 		_pickedUp = false;
 		InventoryIcon.enabled = false;
@@ -94,6 +112,16 @@ public class PlayerPickup : MonoBehaviour
 
 	private void Interact(GameObject trigger)
 	{
+
+		if(RedStage.activeInHierarchy)
+		{
+			_storedItem.transform.parent = RedStage.transform;
+		}
+		else if (GreenStage.activeInHierarchy)
+		{
+			_storedItem.transform.parent = GreenStage.transform;
+		}
+
 		int IDstored = _storedItem.GetComponent<Identifier> ().ID;
 		int IDcollide = trigger.GetComponent<Identifier> ().ID;
 
@@ -155,10 +183,5 @@ public class PlayerPickup : MonoBehaviour
 			}
 			break;
 		}
-	}
-
-	private void Attack(GameObject enemy)
-	{
-		enemy.SetActive (false);
 	}
 }
