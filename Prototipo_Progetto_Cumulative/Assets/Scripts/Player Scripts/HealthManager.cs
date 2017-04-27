@@ -8,11 +8,11 @@ using UnityStandardAssets.CrossPlatformInput;
 public class HealthManager : MonoBehaviour
 {
 
-	[SerializeField] private int _startingHealth = 3;
+	[SerializeField] private int _health = 1;
 	[SerializeField] private int _currentHealth = 0;
-	[SerializeField] private int _numberOfFlashes = 5;
+//	[SerializeField] private int _numberOfFlashes = 5;
 
-	private bool invulnerable = false;
+	//private bool invulnerable = false;
 	public bool playerDead = false;
 
 	public Text healthText;
@@ -23,7 +23,7 @@ public class HealthManager : MonoBehaviour
 	void Start()
 	{
 		_spriteRenderer = GetComponent<SpriteRenderer>();
-		_currentHealth = _startingHealth;
+		_currentHealth = _health;
 		healthText.text = "Health: " + _currentHealth;
 		gameOverText.enabled = false;
 		playerDead = false;
@@ -39,15 +39,15 @@ public class HealthManager : MonoBehaviour
 
 	void OnTriggerEnter2D(Collider2D collision)
 	{
-		if (collision.gameObject.CompareTag ("Enemy") && !invulnerable) {
-			//TakeDamage ();
+		if (collision.gameObject.CompareTag ("Enemy") /*&& !invulnerable*/) {
+			TakeDamage ();
 		}
 	}
 
 	void TakeDamage()
 	{
 		_currentHealth -= 1;
-		StartCoroutine(GoInvulnerable ());
+		//StartCoroutine(GoInvulnerable ());
 		if (_currentHealth <= 0) {
 			Death ();
 		}
@@ -62,19 +62,19 @@ public class HealthManager : MonoBehaviour
 		playerDead = true;
 	}
 		
-	IEnumerator GoInvulnerable () 
-	{
-		if (!invulnerable) {
-			invulnerable = true;
-			Color transparent = new Color(255,255,255,0);
-			Color current = _spriteRenderer.color;
-			for (int i = 0; i < _numberOfFlashes; i++) {
-				_spriteRenderer.color = transparent;
-				yield return new WaitForSeconds(.1f);
-				_spriteRenderer.color = current;
-				yield return new WaitForSeconds(.1f);
-			}
-			invulnerable = false;
-		}
-	}
+//	IEnumerator GoInvulnerable () 
+//	{
+//		if (!invulnerable) {
+//			invulnerable = true;
+//			Color transparent = new Color(255,255,255,0);
+//			Color current = _spriteRenderer.color;
+//			for (int i = 0; i < _numberOfFlashes; i++) {
+//				_spriteRenderer.color = transparent;
+//				yield return new WaitForSeconds(.1f);
+//				_spriteRenderer.color = current;
+//				yield return new WaitForSeconds(.1f);
+//			}
+//			invulnerable = false;
+//		}
+//	}
 }
