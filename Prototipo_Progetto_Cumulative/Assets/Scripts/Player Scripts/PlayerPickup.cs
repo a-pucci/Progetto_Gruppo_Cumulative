@@ -164,9 +164,7 @@ public class PlayerPickup : MonoBehaviour
 			Box box = trigger.GetComponent<Box> ();
 			if(box.canInteract(IDstored))
 			{
-				box.DropHappyMask ();
-				box.DropKey ();
-				box.DropSadMask ();
+				box.DropItems ();
 				trigger.SetActive (false);
 			}
 			break;
@@ -176,9 +174,7 @@ public class PlayerPickup : MonoBehaviour
 			Chest chest = trigger.GetComponent<Chest> ();
 			if(chest.canInteract(IDstored))
 			{
-				chest.DropHappyMask ();
-				chest.DropHammer ();
-				chest.DropSadMask ();
+				chest.DropItems ();
 				trigger.SetActive (false);
 			}
 			break;
