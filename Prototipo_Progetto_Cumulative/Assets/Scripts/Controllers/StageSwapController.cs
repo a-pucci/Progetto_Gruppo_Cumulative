@@ -21,6 +21,9 @@ public class StageSwapController : MonoBehaviour {
 
 	public Text switchText;
 
+	public bool timeEnabled;
+	public float switchTime;
+
 	// Use this for initialization
 	void Start () 
 	{
@@ -33,19 +36,23 @@ public class StageSwapController : MonoBehaviour {
 		_greenStage = GameObject.FindGameObjectWithTag ("GreenStage");
 		_greenStage.SetActive (true);
 
+		if (timeEnabled) {
+			StartCoroutine (SwitchCoroutine ());
+		}
+
 		//currentSwapChances = maxSwapChances;
 		//switchText.text = "Switches: " + currentSwapChances;
 	}
 
 	void Update () 
 	{
-
-		_swap = CrossPlatformInputManager.GetButtonDown ("Fire1"); 
-		if(_swap /*&& currentSwapChances > 0 */&& !_playerHealth.playerDead)
-		{
-			StageSwap ();
-			//currentSwapChances--;
-			//switchText.text = "Switches: " + currentSwapChances;
+		if (!timeEnabled) {
+			_swap = CrossPlatformInputManager.GetButtonDown ("Fire1"); 
+			if (_swap /*&& currentSwapChances > 0 */ && !_playerHealth.playerDead) {
+				StageSwap ();
+				//currentSwapChances--;
+				//switchText.text = "Switches: " + currentSwapChances;
+			}
 		}
 	}
 
@@ -64,4 +71,13 @@ public class StageSwapController : MonoBehaviour {
 		_toggle = !_toggle;
 	}
 
+
+	IEnumerator SwitchCoroutine () {
+		while (!_playerHealth.playerDead) {
+			yield return new WaitForSecondsRealtime (switchTime);
+			if (!_playerHealth.playerDead) {
+				StageSwap ();
+			}
+		}
+	}
 }
