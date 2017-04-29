@@ -10,6 +10,7 @@ public class EnemyMovement : MonoBehaviour {
 	public GameObject endPosition;
 
 	public bool smoothMovement;
+	public bool canMove = true;
 
 	private Vector3 _initialPosition;
 	private Vector3 _destination;
@@ -31,28 +32,30 @@ public class EnemyMovement : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
 	{
-		float distanceCovered = (Time.time - _startTime) * speed;
-		float fractionJourney = distanceCovered / _journeyLenght;
-		if(smoothMovement)
+		if(canMove)
 		{
-			fractionJourney = Mathf.SmoothStep (0f, 1f, fractionJourney);
-		}
+			float distanceCovered = (Time.time - _startTime) * speed;
+			float fractionJourney = distanceCovered / _journeyLenght;
+			if(smoothMovement)
+			{
+				fractionJourney = Mathf.SmoothStep (0f, 1f, fractionJourney);
+			}
 
-		_enemyTransform.position = Vector3.Lerp (_initialPosition, _destination, fractionJourney);
+			_enemyTransform.position = Vector3.Lerp (_initialPosition, _destination, fractionJourney);
 
-		if(_enemyTransform.position == _destination)
-		{
-			Vector3 _temp = _initialPosition;
-			_initialPosition = _destination;
-			_destination = _temp;
-		
-			_startTime = Time.time;
+			if(_enemyTransform.position == _destination)
+			{
+				Vector3 _temp = _initialPosition;
+				_initialPosition = _destination;
+				_destination = _temp;
 
-			Vector3 newScale = transform.localScale;
-			newScale.x *= -1;
-			transform.localScale = newScale;
-		}
-			
+				_startTime = Time.time;
+
+				Vector3 newScale = transform.localScale;
+				newScale.x *= -1;
+				transform.localScale = newScale;
+			}
+		}			
 	}
 
 
