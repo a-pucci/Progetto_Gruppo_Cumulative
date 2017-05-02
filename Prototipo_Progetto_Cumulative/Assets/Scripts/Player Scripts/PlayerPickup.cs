@@ -58,7 +58,10 @@ public class PlayerPickup : MonoBehaviour
 	void OnTriggerEnter2D(Collider2D collision)
 	{
 		_triggerObject = collision.gameObject;
-		PickupText.enabled = true;
+		if(collision.CompareTag("Interactive") || collision.CompareTag("Pickup"))
+		{
+			PickupText.enabled = true;	
+		}
 	}
 
 	void OnTriggerExit2D(Collider2D collision)
