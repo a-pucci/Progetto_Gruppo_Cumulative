@@ -56,7 +56,7 @@ public class StageSwapController : MonoBehaviour {
 		}
 	}
 
-	void StageSwap ()
+	private void StageSwap ()
 	{
 
 		if (_toggle) {

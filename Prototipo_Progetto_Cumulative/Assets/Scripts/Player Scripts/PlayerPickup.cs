@@ -14,6 +14,9 @@ public class PlayerPickup : MonoBehaviour
 	public GameObject RedStage;
 	public GameObject GreenStage;
 
+	public GameObject RedObjects;
+	public GameObject GreenObjects;
+
 	private GameObject _triggerObject;
 	private GameObject _storedItem;
 	private Door _door;
@@ -135,30 +138,31 @@ public class PlayerPickup : MonoBehaviour
 			Dummy dummy = trigger.GetComponent<Dummy> ();
 			if(dummy.canInteract(IDstored))
 			{
-				if (dummy.HasMask ())
-				{
-					_storedItem.SetActive (true);
-					GameObject newMask = _storedItem;
-					_storedItem = dummy.LoseMask ();
-
-					_pickedUp = true;
-					InventoryIcon.enabled = true;
-
-					InventoryIcon.sprite =  _storedItem.GetComponent<SpriteRenderer> ().sprite;
-
-					_storedItem.SetActive (false);
-
-					dummy.PutMask (newMask);
-				}
-				else 
-				{
+//				if (dummy.HasMask ())
+//				{
+//					_storedItem.SetActive (true);
+//					GameObject newMask = _storedItem;
+//					_storedItem = dummy.LoseMask ();
+//
+//					_pickedUp = true;
+//					InventoryIcon.enabled = true;
+//
+//					InventoryIcon.sprite =  _storedItem.GetComponent<SpriteRenderer> ().sprite;
+//
+//					_storedItem.SetActive (false);
+//
+//					dummy.PutMask (newMask);
+//				}
+//				else 
+//				{
 					_storedItem.SetActive (true);
 					dummy.PutMask (_storedItem);
+					changeObjectsStage ();
 					_storedItem = null;
 					_pickedUp = false;
 					InventoryIcon.enabled = false;
-				}
-				_door.checkOpen ();
+//				}
+//				_door.checkOpen ();
 			}
 			break;
 
@@ -181,6 +185,21 @@ public class PlayerPickup : MonoBehaviour
 				trigger.SetActive (false);
 			}
 			break;
+		}
+	}
+
+	private void changeObjectsStage ()
+	{
+		if (RedStage.activeInHierarchy)
+		{
+			RedObjects.transform.parent = GreenStage.transform;
+			GreenObjects.transform.parent = GreenStage.transform;
+
+		}
+		else if (GreenStage.activeInHierarchy)
+		{
+			GreenObjects.transform.parent = RedStage.transform;
+			RedObjects.transform.parent = RedStage.transform;
 		}
 	}
 }

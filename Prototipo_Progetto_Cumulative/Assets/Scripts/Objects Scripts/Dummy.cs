@@ -41,5 +41,5 @@ public class Dummy : MonoBehaviour
 		{
 			return false;
 		}
-	}		
+	}
 }
