@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IDList
-{
-	public enum ID {Dummy, HappyMask, SadMask, Hammer, Key, Chest, Box};
+public static class IDList
+{   
+	//                0     1     2    3      4     5     6      7
+	public enum ID {Dummy, Mask, Key, Gear, Torch, Box, Button, Gate};
 }

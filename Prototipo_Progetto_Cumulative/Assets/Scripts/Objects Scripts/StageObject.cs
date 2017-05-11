@@ -4,9 +4,7 @@ using UnityEngine;
 
 public abstract class StageObject : MonoBehaviour 
 {
-	protected int ID;
-	protected bool canSwapStage;
+	public int ID;
+	public bool canSwapStage;
 
-	public virtual int getID() { return ID;}
-	public virtual bool canSwap() { return canSwapStage;}
 }

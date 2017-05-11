@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyMovement : MonoBehaviour {
+public class EnemyMovement : MonoBehaviour 
+{
 
 	public float speed = 5.0f;
 
@@ -57,7 +58,4 @@ public class EnemyMovement : MonoBehaviour {
 			}
 		}			
 	}
-
-
-
 }

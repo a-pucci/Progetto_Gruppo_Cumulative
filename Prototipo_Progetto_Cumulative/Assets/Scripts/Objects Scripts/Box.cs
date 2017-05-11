@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Box : MonoBehaviour 
+public class Box : StageObject 
 {
 	public GameObject[] droppables;
 
-	public GameObject HappyMask;
-	public GameObject SadMask;
-	public GameObject Key;
+	public GameObject Mask;
+	public GameObject Torch;
+	public GameObject Gear;
 
 	public GameObject RedStage;
 	public GameObject GreenStage;
@@ -16,40 +16,43 @@ public class Box : MonoBehaviour
 	public float xOffset = 0f;
 	public float yOffset = 0.8f;
 
-	public bool canInteract(int ID)
-	{
-		if( ID == (int)IDList.ID.Hammer)
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
+//	public bool canInteract(int ID)
+//	{
+//		if( ID == (int)IDList.ID.Hammer)
+//		{
+//			return true;
+//		}
+//		else
+//		{
+//			return false;
+//		}
+//	}
 
 	public void DropItems ()
 	{
 		int identifier = 0;
-		foreach (var item in droppables) {
-			identifier = item.GetComponent<Identifier> ().ID;
-			switch (identifier) {
+		for(int i = 0; i < droppables.Length; i++)
+		{
+			identifier = droppables[i].GetComponent<StageObject>().ID;
+			switch (identifier) 
+			{
 			case 1:
-				DropHappyMask ();
-				break;
-			case 2:
-				DropSadMask ();
+				DropMask ();
+				break;			
+			case 3: 
+				DropGear ();
 				break;
 			case 4:
-				DropKey ();
+				DropTorch ();
 				break;
+
 			}
 		}
 	}
 
-	public void DropHappyMask()
+	public void DropMask()
 	{
-		GameObject newMask = Instantiate (HappyMask, new Vector3 (this.transform.position.x + xOffset, this.transform.position.y + yOffset, this.transform.position.z), this.transform.rotation);
+		GameObject newMask = Instantiate (Mask, new Vector3 (this.transform.position.x + xOffset, this.transform.position.y + yOffset, this.transform.position.z), this.transform.rotation);
 		if(RedStage.activeInHierarchy)
 		{
 			newMask.transform.parent = RedStage.transform;
@@ -60,29 +63,29 @@ public class Box : MonoBehaviour
 		}
 	}
 
-	public void DropSadMask()
+	public void DropTorch()
 	{
-		GameObject newMask = Instantiate (SadMask, new Vector3 (this.transform.position.x + xOffset +1, this.transform.position.y + yOffset, this.transform.position.z), this.transform.rotation);
+		GameObject newTorch = Instantiate (Torch, new Vector3 (this.transform.position.x + xOffset -1, this.transform.position.y + yOffset, this.transform.position.z), this.transform.rotation);
 		if(RedStage.activeInHierarchy)
 		{
-			newMask.transform.parent = RedStage.transform;
+			newTorch.transform.parent = RedStage.transform;
 		}
 		else if (GreenStage.activeInHierarchy)
 		{
-			newMask.transform.parent = GreenStage.transform;
+			newTorch.transform.parent = GreenStage.transform;
 		}
 	}
 
-	public void DropKey()
+	public void DropGear()
 	{
-		GameObject newHammer = Instantiate (Key, new Vector3 (this.transform.position.x + xOffset -1, this.transform.position.y + yOffset, this.transform.position.z), this.transform.rotation);
+		GameObject newGear = Instantiate (Gear, new Vector3 (this.transform.position.x + xOffset -1, this.transform.position.y + yOffset, this.transform.position.z), this.transform.rotation);
 		if(RedStage.activeInHierarchy)
 		{
-			newHammer.transform.parent = RedStage.transform;
+			newGear.transform.parent = RedStage.transform;
 		}
 		else if (GreenStage.activeInHierarchy)
 		{
-			newHammer.transform.parent = GreenStage.transform;
+			newGear.transform.parent = GreenStage.transform;
 		}
 	}
 }

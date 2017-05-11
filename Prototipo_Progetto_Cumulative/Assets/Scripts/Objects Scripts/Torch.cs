@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Identifier : MonoBehaviour 
+public class Torch : StageObject 
 {
-	public int ID;
+
 }

@@ -14,12 +14,10 @@ public class PlayerPickup : MonoBehaviour
 	public GameObject RedStage;
 	public GameObject GreenStage;
 
-	public GameObject RedObjects;
-	public GameObject GreenObjects;
-
 	private GameObject _triggerObject;
 	private GameObject _storedItem;
-	private Door _door;
+	private GameObject[] _pickups;
+	private GameObject[] _interactive;
 
 	private bool _pickedUp = false;
 
@@ -27,7 +25,9 @@ public class PlayerPickup : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
-		_door = GameObject.FindGameObjectWithTag ("Door").GetComponent<Door>();
+		_pickups = GameObject.FindGameObjectsWithTag ("Pickup");
+		_interactive = GameObject.FindGameObjectsWithTag ("Interactive");
+		
 		PickupText.enabled = false;
 		InventoryIcon.enabled = false;
 	}
@@ -128,8 +128,8 @@ public class PlayerPickup : MonoBehaviour
 			_storedItem.transform.parent = GreenStage.transform;
 		}
 
-		int IDstored = _storedItem.GetComponent<Identifier> ().ID;
-		int IDcollide = trigger.GetComponent<Identifier> ().ID;
+		int IDstored = _storedItem.GetComponent<StageObject> ().ID;
+			int IDcollide = trigger.GetComponent<StageObject> ().ID;
 
 		switch (IDcollide)
 		{
@@ -167,24 +167,24 @@ public class PlayerPickup : MonoBehaviour
 			break;
 
 		case (int)IDList.ID.Box:
-			
-			Box box = trigger.GetComponent<Box> ();
-			if(box.canInteract(IDstored))
-			{
-				box.DropItems ();
-				trigger.SetActive (false);
-			}
+//			
+//			Box box = trigger.GetComponent<Box> ();
+//			if(box.canInteract(IDstored))
+//			{
+//				box.DropItems ();
+//				trigger.SetActive (false);
+//			}
 			break;
 
-		case (int)IDList.ID.Chest:
-
-			Chest chest = trigger.GetComponent<Chest> ();
-			if(chest.canInteract(IDstored))
-			{
-				chest.DropItems ();
-				trigger.SetActive (false);
-			}
-			break;
+//		case (int)IDList.ID.Chest:
+//
+//			Chest chest = trigger.GetComponent<Chest> ();
+//			if(chest.canInteract(IDstored))
+//			{
+//				chest.DropItems ();
+//				trigger.SetActive (false);
+//			}
+//			break;
 		}
 	}
 
@@ -192,14 +192,39 @@ public class PlayerPickup : MonoBehaviour
 	{
 		if (RedStage.activeInHierarchy)
 		{
-			RedObjects.transform.parent = GreenStage.transform;
-			GreenObjects.transform.parent = GreenStage.transform;
+			for(int i = 0; i < _pickups.Length; i++)
+			{
+				if(_pickups[i].GetComponent<StageObject> ().canSwapStage)
+				{
+					_pickups[i].transform.parent = GreenStage.transform;
+				}
+			}
 
+			for(int i = 0; i < _interactive.Length; i++)
+			{
+				if(_interactive[i].GetComponent<StageObject> ().canSwapStage)
+				{
+					_interactive[i].transform.parent = GreenStage.transform;
+				}
+			}
 		}
 		else if (GreenStage.activeInHierarchy)
 		{
-			GreenObjects.transform.parent = RedStage.transform;
-			RedObjects.transform.parent = RedStage.transform;
+			for(int i = 0; i < _pickups.Length; i++)
+			{
+				if(_pickups[i].GetComponent<StageObject> ().canSwapStage)
+				{
+					_pickups[i].transform.parent = RedStage.transform;
+				}
+			}
+
+			for(int i = 0; i < _interactive.Length; i++)
+			{
+				if(_interactive[i].GetComponent<StageObject> ().canSwapStage)
+				{
+					_interactive[i].transform.parent = RedStage.transform;
+				}
+			}
 		}
 	}
 }

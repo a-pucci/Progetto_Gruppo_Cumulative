@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Dummy : MonoBehaviour 
+public class Dummy : StageObject 
 {
 	public float XMaskOffset = 0f;
 	public float YMaskOffset = -0.4f;
@@ -33,7 +33,7 @@ public class Dummy : MonoBehaviour
 
 	public bool canInteract(int ID)
 	{
-		if( ID == (int)IDList.ID.HappyMask || ID == (int)IDList.ID.SadMask)
+		if( ID == (int)IDList.ID.Mask)
 		{
 			return true;
 		}
