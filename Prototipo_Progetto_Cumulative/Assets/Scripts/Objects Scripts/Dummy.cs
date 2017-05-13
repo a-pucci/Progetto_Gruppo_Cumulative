@@ -30,16 +30,4 @@ public class Dummy : StageObject
 	{
 		return _hasMask;
 	}
-
-	public bool canInteract(int ID)
-	{
-		if( ID == (int)IDList.ID.Mask)
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
 }

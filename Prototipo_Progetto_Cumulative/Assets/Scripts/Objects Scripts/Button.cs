@@ -11,7 +11,8 @@ public class Button : StageObject
 	{
 		if(other.gameObject.CompareTag("Player") || 
 			other.gameObject.CompareTag("Enemy") ||
-			other.gameObject.GetComponent<StageObject> ().ID == (int)IDList.ID.Box)
+			(other.gameObject.GetComponent<StageObject> () != null &&
+			other.gameObject.GetComponent<StageObject> ().ID == (int)IDList.ID.Box))
 		{
 			for(int i = 0; i < platformToMove.Length; i++)
 			{

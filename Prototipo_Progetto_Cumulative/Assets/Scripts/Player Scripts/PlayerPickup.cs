@@ -129,62 +129,56 @@ public class PlayerPickup : MonoBehaviour
 		}
 
 		int IDstored = _storedItem.GetComponent<StageObject> ().ID;
-			int IDcollide = trigger.GetComponent<StageObject> ().ID;
+		int IDcollide = trigger.GetComponent<StageObject> ().ID;
 
 		switch (IDcollide)
 		{
 		case (int)IDList.ID.Dummy:
 			
 			Dummy dummy = trigger.GetComponent<Dummy> ();
-			if(dummy.canInteract(IDstored))
+			if(IDstored == (int)IDList.ID.Mask)
 			{
-//				if (dummy.HasMask ())
-//				{
-//					_storedItem.SetActive (true);
-//					GameObject newMask = _storedItem;
-//					_storedItem = dummy.LoseMask ();
-//
-//					_pickedUp = true;
-//					InventoryIcon.enabled = true;
-//
-//					InventoryIcon.sprite =  _storedItem.GetComponent<SpriteRenderer> ().sprite;
-//
-//					_storedItem.SetActive (false);
-//
-//					dummy.PutMask (newMask);
-//				}
-//				else 
-//				{
-					_storedItem.SetActive (true);
-					dummy.PutMask (_storedItem);
-					changeObjectsStage ();
+				_storedItem.SetActive (true);
+				dummy.PutMask (_storedItem);
+				changeObjectsStage ();
+				_storedItem = null;
+				_pickedUp = false;
+				InventoryIcon.enabled = false;
+			}
+			break;
+
+		case (int)IDList.ID.Mechanism:
+			
+			Mechanism mechanism = trigger.GetComponent<Mechanism> ();
+			if (IDstored == (int)IDList.ID.Key)
+			{
+				bool keyUsed = mechanism.InsertKey ();
+				if(keyUsed)
+				{
 					_storedItem = null;
 					_pickedUp = false;
 					InventoryIcon.enabled = false;
-//				}
-//				_door.checkOpen ();
+				}
+			}
+			else if (IDstored == (int)IDList.ID.Gear)
+			{
+				int gears = mechanism.InsertGear ();
+				if(gears <= mechanism.MaxGears)
+				{
+					_storedItem = null;
+					_pickedUp = false;
+					InventoryIcon.enabled = false;
+				}
 			}
 			break;
 
 		case (int)IDList.ID.Box:
-//			
-//			Box box = trigger.GetComponent<Box> ();
-//			if(box.canInteract(IDstored))
-//			{
-//				box.DropItems ();
-//				trigger.SetActive (false);
-//			}
+			
+			if (IDstored == (int)IDList.ID.Torch)
+			{
+				GameObject.Destroy (trigger);
+			}
 			break;
-
-//		case (int)IDList.ID.Chest:
-//
-//			Chest chest = trigger.GetComponent<Chest> ();
-//			if(chest.canInteract(IDstored))
-//			{
-//				chest.DropItems ();
-//				trigger.SetActive (false);
-//			}
-//			break;
 		}
 	}
 
