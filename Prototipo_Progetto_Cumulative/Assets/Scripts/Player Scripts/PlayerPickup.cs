@@ -80,7 +80,7 @@ public class PlayerPickup : MonoBehaviour
 		InventoryIcon.sprite =  _triggerObject.GetComponent<SpriteRenderer> ().sprite;
 		_storedItem = _triggerObject;
 
-		if(_storedItem.transform.parent.tag == "Enemy")
+		if(_storedItem.transform.parent != null && _storedItem.transform.parent.tag == "Enemy")
 		{
 			GameObject enemyParent = new GameObject("enemyParent");
 
