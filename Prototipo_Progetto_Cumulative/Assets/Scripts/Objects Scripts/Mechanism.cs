@@ -7,10 +7,14 @@ public class Mechanism : StageObject
 {
 	public string NextLevel;
 	public int MaxGears;
+	public GameObject Gear;
+	public float XOffset;
+	public float YOffset;
+
 	private int _gears = 0;
 	private bool _hasKey = false;
-
 	private SpriteRenderer _color;
+	private GameObject newGear;
 
 	void Start()
 	{
@@ -25,6 +29,7 @@ public class Mechanism : StageObject
 			_hasKey = true;
 
 			_color.color = new Color (255, 255, 255);
+			CloseScene ();
 		}
 		return _hasKey;
 	}
@@ -39,15 +44,22 @@ public class Mechanism : StageObject
 		switch(_gears)
 		{
 		case 1:
-			_color.color = new Color (50, 50, 50);
+			newGear = Instantiate (Gear);
+			newGear.GetComponent<Collider2D> ().enabled = false;
+			newGear.transform.position = new Vector3 (this.transform.position.x + XOffset, this.transform.position.y + YOffset - 0.5f, this.transform.position.z);
+
 			break;
 
 		case 2:
-			_color.color = new Color (100, 100, 100);
+			newGear = Instantiate (Gear);
+			newGear.GetComponent<Collider2D> ().enabled = false;
+			newGear.transform.position = new Vector3 (this.transform.position.x + XOffset, this.transform.position.y + YOffset, this.transform.position.z);
 			break;
 
 		case 3:
-			_color.color = new Color (150, 150, 150);
+			newGear = Instantiate (Gear);
+			newGear.GetComponent<Collider2D> ().enabled = false;
+			newGear.transform.position = new Vector3 (this.transform.position.x + XOffset, this.transform.position.y + YOffset + 0.5f, this.transform.position.z);
 			break;
 		}
 
