@@ -6,20 +6,14 @@ using UnityStandardAssets.CrossPlatformInput;
 
 public class StageSwapController : MonoBehaviour {
 
-	//[SerializeField] private int maxSwapChances = 4;
-	//[ReadOnly] public int currentSwapChances;
-
-	private GameObject _redStage;
-	private GameObject _greenStage;
-
+	public GameObject HappyStage;
+	public GameObject SadStage;
 
 	private GameObject _player;
 	private HealthManager _playerHealth;
 
 	private bool _swap = false;
 	private bool _toggle = false;
-
-	public Text switchText;
 
 	public bool timeEnabled;
 	public float switchTime;
@@ -30,28 +24,18 @@ public class StageSwapController : MonoBehaviour {
 		_player = GameObject.FindGameObjectWithTag ("Player");
 		_playerHealth = _player.GetComponent <HealthManager> ();
 
-		_redStage = GameObject.FindGameObjectWithTag ("RedStage");
-		_redStage.SetActive (false);
-
-		_greenStage = GameObject.FindGameObjectWithTag ("GreenStage");
-		_greenStage.SetActive (true);
-
 		if (timeEnabled) {
 			StartCoroutine (SwitchCoroutine ());
 		}
-
-		//currentSwapChances = maxSwapChances;
-		//switchText.text = "Switches: " + currentSwapChances;
 	}
 
 	void Update () 
 	{
 		if (!timeEnabled) {
 			_swap = CrossPlatformInputManager.GetButtonDown ("Fire1"); 
-			if (_swap /*&& currentSwapChances > 0 */ && !_playerHealth.playerDead) {
+			if (_swap && !_playerHealth.playerDead) {
 				StageSwap ();
-				//currentSwapChances--;
-				//switchText.text = "Switches: " + currentSwapChances;
+
 			}
 		}
 	}
@@ -60,13 +44,13 @@ public class StageSwapController : MonoBehaviour {
 	{
 
 		if (_toggle) {
-			_greenStage.SetActive (true);
-			_redStage.SetActive (false);
+			HappyStage.SetActive (true);
+			SadStage.SetActive (false);
 		} 
 		else 
 		{
-			_greenStage.SetActive (false);
-			_redStage.SetActive (true);
+			HappyStage.SetActive (false);
+			SadStage.SetActive (true);
 		}
 		_toggle = !_toggle;
 	}
