@@ -10,23 +10,11 @@ public class Box : StageObject
 	public GameObject Torch;
 	public GameObject Gear;
 
-	public GameObject RedStage;
-	public GameObject GreenStage;
+	public GameObject HappyStage;
+	public GameObject SadStage;
 
 	public float xOffset = 0f;
 	public float yOffset = 0.8f;
-
-//	public bool canInteract(int ID)
-//	{
-//		if( ID == (int)IDList.ID.Hammer)
-//		{
-//			return true;
-//		}
-//		else
-//		{
-//			return false;
-//		}
-//	}
 
 	public void DropItems ()
 	{
@@ -53,39 +41,39 @@ public class Box : StageObject
 	public void DropMask()
 	{
 		GameObject newMask = Instantiate (Mask, new Vector3 (this.transform.position.x + xOffset, this.transform.position.y + yOffset, this.transform.position.z), this.transform.rotation);
-		if(RedStage.activeInHierarchy)
+		if(HappyStage.activeInHierarchy)
 		{
-			newMask.transform.parent = RedStage.transform;
+			newMask.transform.parent = HappyStage.transform;
 		}
-		else if (GreenStage.activeInHierarchy)
+		else if (SadStage.activeInHierarchy)
 		{
-			newMask.transform.parent = GreenStage.transform;
+			newMask.transform.parent = SadStage.transform;
 		}
 	}
 
 	public void DropTorch()
 	{
 		GameObject newTorch = Instantiate (Torch, new Vector3 (this.transform.position.x + xOffset -1, this.transform.position.y + yOffset, this.transform.position.z), this.transform.rotation);
-		if(RedStage.activeInHierarchy)
+		if(HappyStage.activeInHierarchy)
 		{
-			newTorch.transform.parent = RedStage.transform;
+			newTorch.transform.parent = HappyStage.transform;
 		}
-		else if (GreenStage.activeInHierarchy)
+		else if (SadStage.activeInHierarchy)
 		{
-			newTorch.transform.parent = GreenStage.transform;
+			newTorch.transform.parent = SadStage.transform;
 		}
 	}
 
 	public void DropGear()
 	{
 		GameObject newGear = Instantiate (Gear, new Vector3 (this.transform.position.x + xOffset -1, this.transform.position.y + yOffset, this.transform.position.z), this.transform.rotation);
-		if(RedStage.activeInHierarchy)
+		if(HappyStage.activeInHierarchy)
 		{
-			newGear.transform.parent = RedStage.transform;
+			newGear.transform.parent = HappyStage.transform;
 		}
-		else if (GreenStage.activeInHierarchy)
+		else if (SadStage.activeInHierarchy)
 		{
-			newGear.transform.parent = GreenStage.transform;
+			newGear.transform.parent = SadStage.transform;
 		}
 	}
 }

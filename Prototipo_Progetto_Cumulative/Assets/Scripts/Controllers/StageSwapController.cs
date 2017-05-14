@@ -6,8 +6,11 @@ using UnityStandardAssets.CrossPlatformInput;
 
 public class StageSwapController : MonoBehaviour {
 
-	public GameObject HappyStage;
-	public GameObject SadStage;
+	public bool timeEnabled;
+	public float switchTime;
+
+	private GameObject _happyStage;
+	private GameObject _sadStage;
 
 	private GameObject _player;
 	private HealthManager _playerHealth;
@@ -15,14 +18,17 @@ public class StageSwapController : MonoBehaviour {
 	private bool _swap = false;
 	private bool _toggle = false;
 
-	public bool timeEnabled;
-	public float switchTime;
-
 	// Use this for initialization
 	void Start () 
 	{
 		_player = GameObject.FindGameObjectWithTag ("Player");
 		_playerHealth = _player.GetComponent <HealthManager> ();
+
+		_happyStage = GameObject.FindGameObjectWithTag ("HappyStage");
+		_happyStage.SetActive (true);
+
+		_sadStage = GameObject.FindGameObjectWithTag ("SadStage");
+		_sadStage.SetActive (false);
 
 		if (timeEnabled) {
 			StartCoroutine (SwitchCoroutine ());
@@ -44,13 +50,13 @@ public class StageSwapController : MonoBehaviour {
 	{
 
 		if (_toggle) {
-			HappyStage.SetActive (true);
-			SadStage.SetActive (false);
+			_happyStage.SetActive (true);
+			_sadStage.SetActive (false);
 		} 
 		else 
 		{
-			HappyStage.SetActive (false);
-			SadStage.SetActive (true);
+			_happyStage.SetActive (false);
+			_sadStage.SetActive (true);
 		}
 		_toggle = !_toggle;
 	}

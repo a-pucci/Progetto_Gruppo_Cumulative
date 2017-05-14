@@ -11,8 +11,8 @@ public class PlayerPickup : MonoBehaviour
 	public float xDropOffset = 0.0f;
 	public float YDropOffset = 0.3f;
 
-	public GameObject RedStage;
-	public GameObject GreenStage;
+	private GameObject _happyStage;
+	private GameObject _sadStage;
 
 	private GameObject _triggerObject;
 	private GameObject _storedItem;
@@ -27,6 +27,9 @@ public class PlayerPickup : MonoBehaviour
 	{
 		_pickups = GameObject.FindGameObjectsWithTag ("Pickup");
 		_interactive = GameObject.FindGameObjectsWithTag ("Interactive");
+		_happyStage = GameObject.FindGameObjectWithTag ("HappyStage");
+		_sadStage = GameObject.FindGameObjectWithTag ("SadStage");
+
 		
 		PickupText.enabled = false;
 		InventoryIcon.enabled = false;
@@ -101,13 +104,13 @@ public class PlayerPickup : MonoBehaviour
 		_storedItem.SetActive (true);
 		_storedItem.transform.position = new Vector3 (this.transform.position.x, this.transform.position.y + YDropOffset, this.transform.position.z);
 
-		if(RedStage.activeInHierarchy)
+		if(_happyStage.activeInHierarchy)
 		{
-			_storedItem.transform.parent = RedStage.transform;
+			_storedItem.transform.parent = _happyStage.transform;
 		}
-		else if (GreenStage.activeInHierarchy)
+		else if (_sadStage.activeInHierarchy)
 		{
-			_storedItem.transform.parent = GreenStage.transform;
+			_storedItem.transform.parent = _sadStage.transform;
 		}
 
 		_storedItem = null;
@@ -119,13 +122,13 @@ public class PlayerPickup : MonoBehaviour
 	private void Interact(GameObject trigger)
 	{
 
-		if(RedStage.activeInHierarchy)
+		if(_happyStage.activeInHierarchy)
 		{
-			_storedItem.transform.parent = RedStage.transform;
+			_storedItem.transform.parent = _happyStage.transform;
 		}
-		else if (GreenStage.activeInHierarchy)
+		else if (_sadStage.activeInHierarchy)
 		{
-			_storedItem.transform.parent = GreenStage.transform;
+			_storedItem.transform.parent = _sadStage.transform;
 		}
 
 		int IDstored = _storedItem.GetComponent<StageObject> ().ID;
@@ -184,13 +187,13 @@ public class PlayerPickup : MonoBehaviour
 
 	private void changeObjectsStage ()
 	{
-		if (RedStage.activeInHierarchy)
+		if (_happyStage.activeInHierarchy)
 		{
 			for(int i = 0; i < _pickups.Length; i++)
 			{
 				if(_pickups[i].GetComponent<StageObject> ().canSwapStage)
 				{
-					_pickups[i].transform.parent = GreenStage.transform;
+					_pickups[i].transform.parent = _sadStage.transform;
 				}
 			}
 
@@ -198,17 +201,17 @@ public class PlayerPickup : MonoBehaviour
 			{
 				if(_interactive[i].GetComponent<StageObject> ().canSwapStage)
 				{
-					_interactive[i].transform.parent = GreenStage.transform;
+					_interactive[i].transform.parent = _sadStage.transform;
 				}
 			}
 		}
-		else if (GreenStage.activeInHierarchy)
+		else if (_sadStage.activeInHierarchy)
 		{
 			for(int i = 0; i < _pickups.Length; i++)
 			{
 				if(_pickups[i].GetComponent<StageObject> ().canSwapStage)
 				{
-					_pickups[i].transform.parent = RedStage.transform;
+					_pickups[i].transform.parent = _happyStage.transform;
 				}
 			}
 
@@ -216,7 +219,7 @@ public class PlayerPickup : MonoBehaviour
 			{
 				if(_interactive[i].GetComponent<StageObject> ().canSwapStage)
 				{
-					_interactive[i].transform.parent = RedStage.transform;
+					_interactive[i].transform.parent = _happyStage.transform;
 				}
 			}
 		}

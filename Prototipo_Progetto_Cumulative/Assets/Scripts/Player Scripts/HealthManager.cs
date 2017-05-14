@@ -10,9 +10,7 @@ public class HealthManager : MonoBehaviour
 
 	[SerializeField] private int _health = 1;
 	[SerializeField] private int _currentHealth = 0;
-//	[SerializeField] private int _numberOfFlashes = 5;
 
-	//private bool invulnerable = false;
 	public bool playerDead = false;
 
 	public Text healthText;
@@ -39,15 +37,14 @@ public class HealthManager : MonoBehaviour
 
 	void OnTriggerEnter2D(Collider2D collision)
 	{
-		if (collision.gameObject.CompareTag ("Enemy") /*&& !invulnerable*/) {
+		if (collision.gameObject.CompareTag ("Enemy")) {
 			TakeDamage ();
 		}
 	}
 
-	void TakeDamage()
+	public void TakeDamage()
 	{
 		_currentHealth -= 1;
-		//StartCoroutine(GoInvulnerable ());
 		if (_currentHealth <= 0) {
 			Death ();
 		}
@@ -61,20 +58,4 @@ public class HealthManager : MonoBehaviour
 		gameOverText.enabled = true;
 		playerDead = true;
 	}
-		
-//	IEnumerator GoInvulnerable () 
-//	{
-//		if (!invulnerable) {
-//			invulnerable = true;
-//			Color transparent = new Color(255,255,255,0);
-//			Color current = _spriteRenderer.color;
-//			for (int i = 0; i < _numberOfFlashes; i++) {
-//				_spriteRenderer.color = transparent;
-//				yield return new WaitForSeconds(.1f);
-//				_spriteRenderer.color = current;
-//				yield return new WaitForSeconds(.1f);
-//			}
-//			invulnerable = false;
-//		}
-//	}
 }
