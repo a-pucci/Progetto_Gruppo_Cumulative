@@ -7,6 +7,7 @@ using UnityStandardAssets.CrossPlatformInput;
 public class PlayerPickup : MonoBehaviour 
 {
 	public Text PickupText;
+	public Text InteractText;
 	public Image InventoryIcon;
 	public float xDropOffset = 0.0f;
 	public float YDropOffset = 0.3f;
@@ -32,6 +33,7 @@ public class PlayerPickup : MonoBehaviour
 
 		
 		PickupText.enabled = false;
+		InteractText.enabled = false;
 		InventoryIcon.enabled = false;
 	}
 
@@ -44,7 +46,7 @@ public class PlayerPickup : MonoBehaviour
 			{
 				if (_pickedUp) 
 				{
-					DropItem ();
+					Drop ();
 				}
 
 				Pickup ();
@@ -57,16 +59,21 @@ public class PlayerPickup : MonoBehaviour
 
 		if(_storedItem != null && CrossPlatformInputManager.GetButtonDown("Drop"))
 		{
-			DropItem ();
+			Drop ();
 		}
 	}
 
 	void OnTriggerEnter2D(Collider2D collision)
 	{
 		_triggerObject = collision.gameObject;
-		if(collision.CompareTag("Interactive") || collision.CompareTag("Pickup"))
+
+		if(collision.CompareTag("Pickup"))
 		{
 			PickupText.enabled = true;	
+		}
+		else if(collision.CompareTag("Interactive"))
+		{
+			InteractText.enabled = true;
 		}
 	}
 
@@ -74,32 +81,23 @@ public class PlayerPickup : MonoBehaviour
 	{
 		_triggerObject = null;
 		PickupText.enabled = false;
+		InteractText.enabled = false;
 	}
 
 	private void Pickup()
 	{
 		_pickedUp = true;
+
 		InventoryIcon.enabled = true;
 		InventoryIcon.sprite =  _triggerObject.GetComponent<SpriteRenderer> ().sprite;
+		_triggerObject.GetComponent<SpriteRenderer> ().enabled = true;
+
 		_storedItem = _triggerObject;
-
-		if(_storedItem.transform.parent != null && _storedItem.transform.parent.tag == "Enemy")
-		{
-			GameObject enemyParent = new GameObject("enemyParent");
-
-			enemyParent = _storedItem.transform.parent.gameObject;
-			_storedItem.transform.parent = this.transform.parent;
-			Destroy (enemyParent);
-		}
-		else
-		{
-			_storedItem.transform.parent = this.transform.parent;
-		}
-
+		_storedItem.transform.parent = this.transform.parent;
 		_storedItem.SetActive (false);
 	}
 
-	private void DropItem ()
+	private void Drop ()
 	{
 		_storedItem.SetActive (true);
 		_storedItem.transform.position = new Vector3 (this.transform.position.x, this.transform.position.y + YDropOffset, this.transform.position.z);
@@ -113,9 +111,7 @@ public class PlayerPickup : MonoBehaviour
 			_storedItem.transform.parent = _sadStage.transform;
 		}
 
-		_storedItem = null;
-		_pickedUp = false;
-		InventoryIcon.enabled = false;
+		RemoveItemFromInventory ();
 
 	}
 
@@ -144,9 +140,8 @@ public class PlayerPickup : MonoBehaviour
 				_storedItem.SetActive (true);
 				dummy.PutMask (_storedItem);
 				changeObjectsStage ();
-				_storedItem = null;
-				_pickedUp = false;
-				InventoryIcon.enabled = false;
+
+				RemoveItemFromInventory ();
 			}
 			break;
 
@@ -158,9 +153,7 @@ public class PlayerPickup : MonoBehaviour
 				bool keyUsed = mechanism.InsertKey ();
 				if(keyUsed)
 				{
-					_storedItem = null;
-					_pickedUp = false;
-					InventoryIcon.enabled = false;
+					RemoveItemFromInventory ();
 				}
 			}
 			else if (IDstored == (int)IDList.ID.Gear)
@@ -168,9 +161,7 @@ public class PlayerPickup : MonoBehaviour
 				int gears = mechanism.InsertGear ();
 				if(gears <= mechanism.MaxGears)
 				{
-					_storedItem = null;
-					_pickedUp = false;
-					InventoryIcon.enabled = false;
+					RemoveItemFromInventory ();
 				}
 			}
 			break;
@@ -223,5 +214,12 @@ public class PlayerPickup : MonoBehaviour
 				}
 			}
 		}
+	}
+
+	private void RemoveItemFromInventory ()
+	{
+		_storedItem = null;
+		_pickedUp = false;
+		InventoryIcon.enabled = false;
 	}
 }

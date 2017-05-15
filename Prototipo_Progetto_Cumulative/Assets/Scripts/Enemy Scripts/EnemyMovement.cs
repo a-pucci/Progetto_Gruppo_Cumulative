@@ -11,7 +11,6 @@ public class EnemyMovement : MonoBehaviour
 	public GameObject endPosition;
 
 	public bool smoothMovement;
-	public bool canMove = true;
 
 	private Vector3 _initialPosition;
 	private Vector3 _destination;
@@ -28,12 +27,14 @@ public class EnemyMovement : MonoBehaviour
 		_journeyLenght = Vector3.Distance (_initialPosition, _destination);
 
 		endPosition.SetActive (false);
+
+
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
-		if(canMove)
+		if(CanMove ())
 		{
 			float distanceCovered = (Time.time - _startTime) * speed;
 			float fractionJourney = distanceCovered / _journeyLenght;
@@ -57,5 +58,15 @@ public class EnemyMovement : MonoBehaviour
 				transform.localScale = newScale;
 			}
 		}			
+	}
+
+	public bool CanMove()
+	{
+		if(this.GetComponentInChildren<Key>() != null)
+		{
+			return true;
+		}
+
+		return false;
 	}
 }

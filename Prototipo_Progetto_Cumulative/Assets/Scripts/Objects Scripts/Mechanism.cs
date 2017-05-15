@@ -11,8 +11,8 @@ public class Mechanism : StageObject
 	public float XOffset;
 	public float YOffset;
 
-	private int _gears = 0;
-	private bool _hasKey = false;
+	[SerializeField]private int _gears = 0;
+	private bool _keyUsed = false;
 	private SpriteRenderer _color;
 	private GameObject newGear;
 
@@ -24,43 +24,48 @@ public class Mechanism : StageObject
 
 	public bool InsertKey()
 	{
-		if(_gears == MaxGears)
+		if(_gears >= MaxGears)
 		{
-			_hasKey = true;
-
+			_keyUsed = true;
 			_color.color = new Color (255, 255, 255);
 			CloseScene ();
 		}
-		return _hasKey;
+
+		return _keyUsed;
 	}
 
 	public int InsertGear()
 	{
-		if(_gears <= MaxGears)
-		{
-			_gears += 1;
-		}
-
 		switch(_gears)
 		{
-		case 1:
+		case 0:
 			newGear = Instantiate (Gear);
 			newGear.GetComponent<Collider2D> ().enabled = false;
 			newGear.transform.position = new Vector3 (this.transform.position.x + XOffset, this.transform.position.y + YOffset - 0.5f, this.transform.position.z);
+			newGear.transform.parent = this.transform;
+
+			break;
+
+		case 1:
+			newGear = Instantiate (Gear);
+			newGear.GetComponent<Collider2D> ().enabled = false;
+			newGear.transform.position = new Vector3 (this.transform.position.x + XOffset, this.transform.position.y + YOffset, this.transform.position.z);
+			newGear.transform.parent = this.transform;
 
 			break;
 
 		case 2:
 			newGear = Instantiate (Gear);
 			newGear.GetComponent<Collider2D> ().enabled = false;
-			newGear.transform.position = new Vector3 (this.transform.position.x + XOffset, this.transform.position.y + YOffset, this.transform.position.z);
-			break;
-
-		case 3:
-			newGear = Instantiate (Gear);
-			newGear.GetComponent<Collider2D> ().enabled = false;
 			newGear.transform.position = new Vector3 (this.transform.position.x + XOffset, this.transform.position.y + YOffset + 0.5f, this.transform.position.z);
+			newGear.transform.parent = this.transform;
+
 			break;
+		}
+
+		if(_gears <= MaxGears)
+		{
+			_gears += 1;
 		}
 
 		return _gears;
@@ -68,9 +73,6 @@ public class Mechanism : StageObject
 
 	private void CloseScene()
 	{
-		if(_gears == 3 && _hasKey)
-		{
 			SceneManager.LoadScene (NextLevel);
-		}
 	}
 }

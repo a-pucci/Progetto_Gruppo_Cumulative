@@ -7,29 +7,23 @@ using UnityStandardAssets.CrossPlatformInput;
 
 public class HealthManager : MonoBehaviour
 {
-
-	[SerializeField] private int _health = 1;
-	[SerializeField] private int _currentHealth = 0;
-
 	public bool playerDead = false;
-
-	public Text healthText;
 	public Text gameOverText;
 
 	private SpriteRenderer _spriteRenderer;
+	private int _health = 1;
 
 	void Start()
 	{
 		_spriteRenderer = GetComponent<SpriteRenderer>();
-		_currentHealth = _health;
-		healthText.text = "Health: " + _currentHealth;
 		gameOverText.enabled = false;
 		playerDead = false;
 	}
 
 	void Update()
 	{
-		if (playerDead && CrossPlatformInputManager.GetButtonDown("Restart")) {
+		if (playerDead && CrossPlatformInputManager.GetButtonDown("Restart")) 
+		{
 			SceneManager.LoadScene (SceneManager.GetActiveScene().name);
 			Time.timeScale = 1;
 		}
@@ -37,18 +31,19 @@ public class HealthManager : MonoBehaviour
 
 	void OnTriggerEnter2D(Collider2D collision)
 	{
-		if (collision.gameObject.CompareTag ("Enemy")) {
+		if (collision.gameObject.CompareTag ("Enemy") && collision.gameObject.GetComponent<EnemyMovement>().CanMove()) 
+		{
 			TakeDamage ();
 		}
 	}
 
 	public void TakeDamage()
 	{
-		_currentHealth -= 1;
-		if (_currentHealth <= 0) {
+		_health -= 1;
+		if (_health <= 0) 
+		{
 			Death ();
 		}
-		healthText.text = "Health: " + _currentHealth;
 	}
 
 	void Death ()
