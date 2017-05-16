@@ -14,6 +14,10 @@ namespace UnityStandardAssets._2D
         public float lookAheadReturnSpeed = 0.5f;
         public float lookAheadMoveThreshold = 0.1f;
 
+		[Header("Camera Bounds")]
+		public float XBound;
+		public float YBound;	
+
         private float m_OffsetZ;
         private Vector3 m_LastTargetPosition;
         private Vector3 m_CurrentVelocity;
@@ -53,8 +57,13 @@ namespace UnityStandardAssets._2D
 				Vector3 aheadTargetPos = target.position + m_LookAheadPos + Vector3.forward * m_OffsetZ;
 				Vector3 newPos = Vector3.SmoothDamp (transform.position, aheadTargetPos, ref m_CurrentVelocity, damping);
 
-
 				transform.position = newPos + offset;
+
+				Vector3 temp = transform.position;
+				temp.x = Mathf.Clamp(temp.x, -XBound, XBound);
+				temp.y = Mathf.Clamp(temp.y, -YBound, YBound);
+				temp.z = -10f;
+				transform.position = temp;
 				m_LastTargetPosition = target.position;
 			}
         }
