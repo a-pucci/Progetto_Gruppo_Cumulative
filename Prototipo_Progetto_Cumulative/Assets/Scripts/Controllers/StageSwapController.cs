@@ -4,10 +4,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityStandardAssets.CrossPlatformInput;
 
-public class StageSwapController : MonoBehaviour {
+public class StageSwapController : MonoBehaviour 
+{
 
-	public bool timeEnabled;
-	public float switchTime;
+	[Header("Timed Switch")]
+	public bool TimeEnabled;
+	public float SwitchTime;
 
 	private GameObject _happyStage;
 	private GameObject _sadStage;
@@ -30,16 +32,16 @@ public class StageSwapController : MonoBehaviour {
 		_sadStage = GameObject.FindGameObjectWithTag ("SadStage");
 		_sadStage.SetActive (false);
 
-		if (timeEnabled) {
+		if (TimeEnabled) {
 			StartCoroutine (SwitchCoroutine ());
 		}
 	}
 
 	void Update () 
 	{
-		if (!timeEnabled) {
+		if (!TimeEnabled) {
 			_swap = CrossPlatformInputManager.GetButtonDown ("Fire1"); 
-			if (_swap && !_playerHealth.playerDead) {
+			if (_swap && !_playerHealth.PlayerDead) {
 				StageSwap ();
 
 			}
@@ -63,9 +65,9 @@ public class StageSwapController : MonoBehaviour {
 
 
 	IEnumerator SwitchCoroutine () {
-		while (!_playerHealth.playerDead) {
-			yield return new WaitForSecondsRealtime (switchTime);
-			if (!_playerHealth.playerDead) {
+		while (!_playerHealth.PlayerDead) {
+			yield return new WaitForSecondsRealtime (SwitchTime);
+			if (!_playerHealth.PlayerDead) {
 				StageSwap ();
 			}
 		}

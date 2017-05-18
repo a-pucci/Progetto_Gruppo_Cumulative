@@ -1,71 +1,68 @@
 using System;
 using UnityEngine;
 
-namespace UnityStandardAssets._2D
+public class Camera2DFollow : MonoBehaviour
 {
-    public class Camera2DFollow : MonoBehaviour
+	[Header("Target")]
+    public Transform target;
+    public float damping = 0;
+    public float lookAheadFactor = 0;
+    public float lookAheadReturnSpeed = 0f;
+    public float lookAheadMoveThreshold = 0f;
+	public Vector3 offset;
+
+	[Header("Camera Bounds")]
+	public float XBound;
+	public float YBound;	
+
+    private float _offsetZ;
+    private Vector3 _lastTargetPosition;
+    private Vector3 _currentVelocity;
+    private Vector3 _lookAheadPos;
+
+	private HealthManager _playerHealth;
+
+    // Use this for initialization
+    private void Start()
     {
-		public Vector3 offset;
-
-		public GameObject player;
-        public Transform target;
-        public float damping = 1;
-        public float lookAheadFactor = 3;
-        public float lookAheadReturnSpeed = 0.5f;
-        public float lookAheadMoveThreshold = 0.1f;
-
-		[Header("Camera Bounds")]
-		public float XBound;
-		public float YBound;	
-
-        private float m_OffsetZ;
-        private Vector3 m_LastTargetPosition;
-        private Vector3 m_CurrentVelocity;
-        private Vector3 m_LookAheadPos;
-
-		private HealthManager _playerHealth;
-
-        // Use this for initialization
-        private void Start()
-        {
-            m_LastTargetPosition = target.position;
-            m_OffsetZ = (transform.position - target.position).z;
-            transform.parent = null;
-			_playerHealth = player.GetComponent<HealthManager> ();
-        }
+		_lastTargetPosition = target.position;
+		_offsetZ = (transform.position - target.position).z;
+        transform.parent = null;
+		_playerHealth = target.gameObject.GetComponent<HealthManager> ();
+    }
 
 
-        // Update is called once per frame
-        private void Update()
-    {
-			if (!_playerHealth.playerDead)
+    // Update is called once per frame
+    private void Update()
+{
+		if (!_playerHealth.PlayerDead)
+		{
+			// only update lookahead pos if accelerating or changed direction
+			float xMoveDelta = (target.position - _lastTargetPosition).x;
+
+			bool updateLookAheadTarget = Mathf.Abs (xMoveDelta) > lookAheadMoveThreshold;
+
+			if (updateLookAheadTarget)
 			{
-				// only update lookahead pos if accelerating or changed direction
-				float xMoveDelta = (target.position - m_LastTargetPosition).x;
-
-				bool updateLookAheadTarget = Mathf.Abs (xMoveDelta) > lookAheadMoveThreshold;
-
-				if (updateLookAheadTarget)
-				{
-					m_LookAheadPos = lookAheadFactor * Vector3.right * Mathf.Sign (xMoveDelta);
-				}
-				else
-				{
-					m_LookAheadPos = Vector3.MoveTowards (m_LookAheadPos, Vector3.zero, Time.deltaTime * lookAheadReturnSpeed);
-				}
-
-				Vector3 aheadTargetPos = target.position + m_LookAheadPos + Vector3.forward * m_OffsetZ;
-				Vector3 newPos = Vector3.SmoothDamp (transform.position, aheadTargetPos, ref m_CurrentVelocity, damping);
-
-				transform.position = newPos + offset;
-
-				Vector3 temp = transform.position;
-				temp.x = Mathf.Clamp(temp.x, -XBound, XBound);
-				temp.y = Mathf.Clamp(temp.y, -YBound, YBound);
-				temp.z = -10f;
-				transform.position = temp;
-				m_LastTargetPosition = target.position;
+				_lookAheadPos = lookAheadFactor * Vector3.right * Mathf.Sign (xMoveDelta);
 			}
-        }
+			else
+			{
+				_lookAheadPos = Vector3.MoveTowards (_lookAheadPos, Vector3.zero, Time.deltaTime * lookAheadReturnSpeed);
+			}
+
+			Vector3 aheadTargetPos = target.position + _lookAheadPos + Vector3.forward * _offsetZ;
+			Vector3 newPos = Vector3.SmoothDamp (transform.position, aheadTargetPos, ref _currentVelocity, damping);
+
+			transform.position = newPos + offset;
+
+			Vector3 temp = transform.position;
+			temp.x = Mathf.Clamp(temp.x, -XBound, XBound);
+			temp.y = Mathf.Clamp(temp.y, -YBound, YBound);
+			temp.z = -10f;
+			transform.position = temp;
+			_lastTargetPosition = target.position;
+		}
     }
 }
+

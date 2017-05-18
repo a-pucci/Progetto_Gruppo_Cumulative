@@ -4,6 +4,7 @@ using UnityEngine;
 
 public abstract class StageObject : MonoBehaviour 
 {
+	[Header("-- GENERIC --")]
 	public int ID;
 	public bool canSwapStage;
 

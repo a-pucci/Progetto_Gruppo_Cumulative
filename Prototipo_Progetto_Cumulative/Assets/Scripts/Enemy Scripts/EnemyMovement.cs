@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class EnemyMovement : MonoBehaviour 
 {
+	[Header("Movement")]
+	public float Speed = 5.0f;
+	public bool SmoothMovement;
 
-	public float speed = 5.0f;
-
-	public Transform _enemyTransform;
-	public GameObject endPosition;
-
-	public bool smoothMovement;
+	[Header("Position")]
+	public Transform EnemyTransform;
+	public GameObject EndPosition;
 
 	private Vector3 _initialPosition;
 	private Vector3 _destination;
@@ -21,12 +21,12 @@ public class EnemyMovement : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
-		_initialPosition = _enemyTransform.position;
-		_destination = endPosition.transform.position;
+		_initialPosition = EnemyTransform.position;
+		_destination = EndPosition.transform.position;
 		_startTime = Time.time;
 		_journeyLenght = Vector3.Distance (_initialPosition, _destination);
 
-		endPosition.SetActive (false);
+		EndPosition.SetActive (false);
 
 
 	}
@@ -36,16 +36,16 @@ public class EnemyMovement : MonoBehaviour
 	{
 		if(CanMove ())
 		{
-			float distanceCovered = (Time.time - _startTime) * speed;
+			float distanceCovered = (Time.time - _startTime) * Speed;
 			float fractionJourney = distanceCovered / _journeyLenght;
-			if(smoothMovement)
+			if(SmoothMovement)
 			{
 				fractionJourney = Mathf.SmoothStep (0f, 1f, fractionJourney);
 			}
 
-			_enemyTransform.position = Vector3.Lerp (_initialPosition, _destination, fractionJourney);
+			EnemyTransform.position = Vector3.Lerp (_initialPosition, _destination, fractionJourney);
 
-			if(_enemyTransform.position == _destination)
+			if(EnemyTransform.position == _destination)
 			{
 				Vector3 _temp = _initialPosition;
 				_initialPosition = _destination;

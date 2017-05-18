@@ -6,9 +6,12 @@ using UnityStandardAssets.CrossPlatformInput;
 
 public class PlayerPickup : MonoBehaviour 
 {
+	[Header("Inventory")]
 	public Text PickupText;
 	public Text InteractText;
 	public Image InventoryIcon;
+
+	[Header("Drop Offset")]
 	public float xDropOffset = 0.0f;
 	public float YDropOffset = 0.3f;
 
@@ -167,8 +170,9 @@ public class PlayerPickup : MonoBehaviour
 			break;
 
 		case (int)IDList.ID.Box:
-			
-			if (IDstored == (int)IDList.ID.Torch)
+
+			Box box = trigger.GetComponent<Box> ();
+			if (IDstored == (int)IDList.ID.Torch && box.isMetallic == false)
 			{
 				GameObject.Destroy (trigger);
 			}

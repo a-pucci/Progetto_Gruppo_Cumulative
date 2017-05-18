@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Chest : StageObject 
 {
+//  [Header("-- CHEST --")]
 //	public GameObject[] droppables;
 //
 //	public GameObject RedStage;

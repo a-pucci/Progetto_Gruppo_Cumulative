@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class Button : StageObject
 {
-	public GameObject[] platformToMove;
-	public GameObject[] gateToOpen;
+	[Header("-- BUTTON --")]
+	[Header("Objects Connected")]
+	public GameObject[] PlatformToMove;
+	public GameObject[] GateToOpen;
 
 	void OnTriggerEnter2D(Collider2D other)
 	{
@@ -14,28 +16,28 @@ public class Button : StageObject
 			(other.gameObject.GetComponent<StageObject> () != null &&
 			other.gameObject.GetComponent<StageObject> ().ID == (int)IDList.ID.Box))
 		{
-			for(int i = 0; i < platformToMove.Length; i++)
+			for(int i = 0; i < PlatformToMove.Length; i++)
 			{
-				platformToMove [i].GetComponent<PlatformMovement> ().StartMove ();
+				PlatformToMove [i].GetComponent<PlatformMovement> ().StartMove ();
 			}
 
-			for(int i = 0; i < gateToOpen.Length; i++)
+			for(int i = 0; i < GateToOpen.Length; i++)
 			{
-				gateToOpen [i].GetComponent<Gate> ().openGate();
+				GateToOpen [i].GetComponent<Gate> ().openGate();
 			}
 		}
 	}
 
 	void OnTriggerExit2D(Collider2D other)
 	{
-		for(int i = 0; i < platformToMove.Length; i++)
+		for(int i = 0; i < PlatformToMove.Length; i++)
 		{
-			platformToMove [i].GetComponent<PlatformMovement> ().StopMove ();
+			PlatformToMove [i].GetComponent<PlatformMovement> ().StopMove ();
 		}
 
-		for(int i = 0; i < gateToOpen.Length; i++)
+		for(int i = 0; i < GateToOpen.Length; i++)
 		{
-			gateToOpen [i].GetComponent<Gate> ().closeGate();
+			GateToOpen [i].GetComponent<Gate> ().closeGate();
 		}
 	}
 

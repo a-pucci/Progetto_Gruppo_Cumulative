@@ -7,8 +7,8 @@ using UnityStandardAssets.CrossPlatformInput;
 
 public class HealthManager : MonoBehaviour
 {
-	public bool playerDead = false;
-	public Text gameOverText;
+	public bool PlayerDead = false;
+	public Text GameOverText;
 
 	private SpriteRenderer _spriteRenderer;
 	private int _health = 1;
@@ -16,13 +16,13 @@ public class HealthManager : MonoBehaviour
 	void Start()
 	{
 		_spriteRenderer = GetComponent<SpriteRenderer>();
-		gameOverText.enabled = false;
-		playerDead = false;
+		GameOverText.enabled = false;
+		PlayerDead = false;
 	}
 
 	void Update()
 	{
-		if (playerDead && CrossPlatformInputManager.GetButtonDown("Restart")) 
+		if (PlayerDead && CrossPlatformInputManager.GetButtonDown("Restart")) 
 		{
 			SceneManager.LoadScene (SceneManager.GetActiveScene().name);
 			Time.timeScale = 1;
@@ -50,7 +50,7 @@ public class HealthManager : MonoBehaviour
 	{
 		Time.timeScale = 0;
 		_spriteRenderer.enabled = false;
-		gameOverText.enabled = true;
-		playerDead = true;
+		GameOverText.enabled = true;
+		PlayerDead = true;
 	}
 }

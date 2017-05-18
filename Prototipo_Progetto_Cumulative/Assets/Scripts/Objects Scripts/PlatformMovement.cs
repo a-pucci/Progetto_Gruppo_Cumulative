@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class PlatformMovement : MonoBehaviour 
 {
-
+	[Header("Movement")]
 	public float speed = 1.0f;
 
-	public Transform _platformTransform;
-	public GameObject endPosition;
+	[Header("Position")]
+	public Transform PlatformTransform;
+	public GameObject EndPosition;
 
 	private Vector3 _initialPosition;
 	private Vector3 _destination;
@@ -19,10 +20,10 @@ public class PlatformMovement : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
-		_initialPosition = _platformTransform.position;
-		_destination = endPosition.transform.position;
+		_initialPosition = PlatformTransform.position;
+		_destination = EndPosition.transform.position;
 
-		endPosition.SetActive (false);
+		EndPosition.SetActive (false);
 	}
 
 	// Update is called once per frame
@@ -31,9 +32,9 @@ public class PlatformMovement : MonoBehaviour
 		if(_canMove)
 		{
 
-			_platformTransform.position = Vector3.MoveTowards (_platformTransform.position, _destination, speed * Time.deltaTime);
+			PlatformTransform.position = Vector3.MoveTowards (PlatformTransform.position, _destination, speed * Time.deltaTime);
 
-			if(_platformTransform.position == _destination)
+			if(PlatformTransform.position == _destination)
 			{
 				Vector3 _temp = _initialPosition;
 				_initialPosition = _destination;

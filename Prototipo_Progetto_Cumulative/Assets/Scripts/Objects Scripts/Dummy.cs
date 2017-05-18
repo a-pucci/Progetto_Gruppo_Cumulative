@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Dummy : StageObject 
 {
+	[Header("-- DUMMY --")]
+	[Header("Wear Offset")]
 	public float XMaskOffset = 0f;
 	public float YMaskOffset = -0.4f;
 

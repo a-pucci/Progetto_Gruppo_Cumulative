@@ -5,16 +5,18 @@ using UnityEngine.SceneManagement;
 
 public class Mechanism : StageObject
 {
+	[Header("-- CHEST --")]
 	public string NextLevel;
+	[Header("Gear Settings")]
 	public int MaxGears;
 	public GameObject Gear;
 	public float XOffset;
 	public float YOffset;
 
-	[SerializeField]private int _gears = 0;
+	private int _gears = 0;
 	private bool _keyUsed = false;
 	private SpriteRenderer _color;
-	private GameObject newGear;
+	private GameObject _newGear;
 
 	void Start()
 	{
@@ -39,26 +41,26 @@ public class Mechanism : StageObject
 		switch(_gears)
 		{
 		case 0:
-			newGear = Instantiate (Gear);
-			newGear.GetComponent<Collider2D> ().enabled = false;
-			newGear.transform.position = new Vector3 (this.transform.position.x + XOffset, this.transform.position.y + YOffset - 0.5f, this.transform.position.z);
-			newGear.transform.parent = this.transform;
+			_newGear = Instantiate (Gear);
+			_newGear.GetComponent<Collider2D> ().enabled = false;
+			_newGear.transform.position = new Vector3 (this.transform.position.x + XOffset, this.transform.position.y + YOffset - 0.5f, this.transform.position.z);
+			_newGear.transform.parent = this.transform;
 
 			break;
 
 		case 1:
-			newGear = Instantiate (Gear);
-			newGear.GetComponent<Collider2D> ().enabled = false;
-			newGear.transform.position = new Vector3 (this.transform.position.x + XOffset, this.transform.position.y + YOffset, this.transform.position.z);
-			newGear.transform.parent = this.transform;
+			_newGear = Instantiate (Gear);
+			_newGear.GetComponent<Collider2D> ().enabled = false;
+			_newGear.transform.position = new Vector3 (this.transform.position.x + XOffset, this.transform.position.y + YOffset, this.transform.position.z);
+			_newGear.transform.parent = this.transform;
 
 			break;
 
 		case 2:
-			newGear = Instantiate (Gear);
-			newGear.GetComponent<Collider2D> ().enabled = false;
-			newGear.transform.position = new Vector3 (this.transform.position.x + XOffset, this.transform.position.y + YOffset + 0.5f, this.transform.position.z);
-			newGear.transform.parent = this.transform;
+			_newGear = Instantiate (Gear);
+			_newGear.GetComponent<Collider2D> ().enabled = false;
+			_newGear.transform.position = new Vector3 (this.transform.position.x + XOffset, this.transform.position.y + YOffset + 0.5f, this.transform.position.z);
+			_newGear.transform.parent = this.transform;
 
 			break;
 		}
