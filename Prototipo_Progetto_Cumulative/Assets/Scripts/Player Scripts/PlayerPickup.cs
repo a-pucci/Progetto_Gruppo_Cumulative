@@ -177,6 +177,24 @@ public class PlayerPickup : MonoBehaviour
 				GameObject.Destroy (trigger);
 			}
 			break;
+
+		case (int)IDList.ID.Cannon:
+			
+			Cannon cannon = trigger.GetComponent<Cannon> ();
+			if(IDstored == (int)IDList.ID.Torch && cannon.hasBall())
+			{
+				cannon.controlled = true;
+				this.gameObject.GetComponent<PlayerMovement> ().controllingCannon = true;
+			}
+			else if (IDstored == (int)IDList.ID.CannonBall)
+			{
+				bool loaded = cannon.InsertBall ();
+				if (loaded)
+				{
+					RemoveItemFromInventory ();
+				}
+			}
+			break;
 		}
 	}
 

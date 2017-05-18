@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class Mechanism : StageObject
 {
-	[Header("-- CHEST --")]
+	[Header("-- MECHANISM --")]
 	public string NextLevel;
 	[Header("Gear Settings")]
 	public int MaxGears;

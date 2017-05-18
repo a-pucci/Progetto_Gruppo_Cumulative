@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+	public bool controllingCannon = false;
+
 	[SerializeField] private float _maxSpeed = 10f;                    // The fastest the player can travel in the x axis.
 	[SerializeField] private float _jumpForce = 400f;                  // Amount of force added when the player jumps.
 	[SerializeField] private bool _airControl = false;                 // Whether or not a player can steer while jumping;
@@ -40,33 +42,35 @@ public class PlayerMovement : MonoBehaviour
 
 	public void Move(float move, bool jump)
 	{
-		//only control the player if grounded or airControl is turned on
-		if (m_Grounded || _airControl)
+		if(!controllingCannon)
 		{
-
-			// Move the character
-			m_Rigidbody2D.velocity = new Vector2(move*_maxSpeed, m_Rigidbody2D.velocity.y);
-
-			if (move > 0 && !_facingRight)
+			//only control the player if grounded or airControl is turned on
+			if (m_Grounded || _airControl)
 			{
-				// ... flip the player.
-				Flip();
+
+				// Move the character
+				m_Rigidbody2D.velocity = new Vector2(move*_maxSpeed, m_Rigidbody2D.velocity.y);
+
+				if (move > 0 && !_facingRight)
+				{
+					// ... flip the player.
+					Flip();
+				}
+				// Otherwise if the input is moving the player left and the player is facing right...
+				else if (move < 0 && _facingRight)
+				{
+					// ... flip the player.
+					Flip();
+				}
 			}
-			// Otherwise if the input is moving the player left and the player is facing right...
-			else if (move < 0 && _facingRight)
+			// If the player should jump...
+			if (m_Grounded && jump)
 			{
-				// ... flip the player.
-				Flip();
+				// Add a vertical force to the player.
+				m_Grounded = false;
+				m_Rigidbody2D.AddForce(new Vector2(0f, _jumpForce));
 			}
 		}
-		// If the player should jump...
-		if (m_Grounded && jump)
-		{
-			// Add a vertical force to the player.
-			m_Grounded = false;
-			m_Rigidbody2D.AddForce(new Vector2(0f, _jumpForce));
-		}
-
 	}
 
 	private void Flip()
