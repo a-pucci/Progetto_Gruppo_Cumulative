@@ -183,8 +183,8 @@ public class PlayerPickup : MonoBehaviour
 			Cannon cannon = trigger.GetComponent<Cannon> ();
 			if(IDstored == (int)IDList.ID.Torch && cannon.hasBall())
 			{
-				cannon.controlled = true;
-				this.gameObject.GetComponent<PlayerMovement> ().controllingCannon = true;
+				cannon.Controlled = true;
+				this.gameObject.GetComponent<PlayerUserController> ().controllingCannon = true;
 			}
 			else if (IDstored == (int)IDList.ID.CannonBall)
 			{
