@@ -4,7 +4,6 @@ using UnityEngine;
 public class Camera2DFollow : MonoBehaviour
 {
 	[Header("Target")]
-    public Transform target;
     public float damping = 0;
     public float lookAheadFactor = 0;
     public float lookAheadReturnSpeed = 0f;
@@ -20,15 +19,18 @@ public class Camera2DFollow : MonoBehaviour
     private Vector3 _currentVelocity;
     private Vector3 _lookAheadPos;
 
+	private Transform _target;
+
 	private HealthManager _playerHealth;
 
     // Use this for initialization
     private void Start()
     {
-		_lastTargetPosition = target.position;
-		_offsetZ = (transform.position - target.position).z;
+		_target = GameObject.FindGameObjectWithTag ("Player").transform;
+		_lastTargetPosition = _target.position;
+		_offsetZ = (transform.position - _target.position).z;
         transform.parent = null;
-		_playerHealth = target.gameObject.GetComponent<HealthManager> ();
+		_playerHealth = _target.gameObject.GetComponent<HealthManager> ();
     }
 
 
@@ -38,7 +40,7 @@ public class Camera2DFollow : MonoBehaviour
 		if (!_playerHealth.PlayerDead)
 		{
 			// only update lookahead pos if accelerating or changed direction
-			float xMoveDelta = (target.position - _lastTargetPosition).x;
+			float xMoveDelta = (_target.position - _lastTargetPosition).x;
 
 			bool updateLookAheadTarget = Mathf.Abs (xMoveDelta) > lookAheadMoveThreshold;
 
@@ -51,7 +53,7 @@ public class Camera2DFollow : MonoBehaviour
 				_lookAheadPos = Vector3.MoveTowards (_lookAheadPos, Vector3.zero, Time.deltaTime * lookAheadReturnSpeed);
 			}
 
-			Vector3 aheadTargetPos = target.position + _lookAheadPos + Vector3.forward * _offsetZ;
+			Vector3 aheadTargetPos = _target.position + _lookAheadPos + Vector3.forward * _offsetZ;
 			Vector3 newPos = Vector3.SmoothDamp (transform.position, aheadTargetPos, ref _currentVelocity, damping);
 
 			transform.position = newPos + offset;
@@ -61,7 +63,7 @@ public class Camera2DFollow : MonoBehaviour
 			temp.y = Mathf.Clamp(temp.y, -YBound, YBound);
 			temp.z = -10f;
 			transform.position = temp;
-			_lastTargetPosition = target.position;
+			_lastTargetPosition = _target.position;
 		}
     }
 }

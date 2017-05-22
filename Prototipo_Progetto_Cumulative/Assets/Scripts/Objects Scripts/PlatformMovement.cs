@@ -7,9 +7,8 @@ public class PlatformMovement : MonoBehaviour
 	[Header("Movement")]
 	public float speed = 1.0f;
 
-	[Header("Position")]
-	public Transform PlatformTransform;
-	public GameObject EndPosition;
+	private Transform _platformTransform;
+	private GameObject _endPosition;
 
 	private Vector3 _initialPosition;
 	private Vector3 _destination;
@@ -20,10 +19,13 @@ public class PlatformMovement : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
-		_initialPosition = PlatformTransform.position;
-		_destination = EndPosition.transform.position;
+		_platformTransform = this.gameObject.transform;
+		_endPosition = this.gameObject.transform.parent.FindChild ("EndPosition").gameObject;
 
-		EndPosition.SetActive (false);
+		_initialPosition = _platformTransform.position;
+		_destination = _endPosition.transform.position;
+
+		_endPosition.SetActive (false);
 	}
 
 	// Update is called once per frame
@@ -32,9 +34,9 @@ public class PlatformMovement : MonoBehaviour
 		if(_canMove)
 		{
 
-			PlatformTransform.position = Vector3.MoveTowards (PlatformTransform.position, _destination, speed * Time.deltaTime);
+			_platformTransform.position = Vector3.MoveTowards (_platformTransform.position, _destination, speed * Time.deltaTime);
 
-			if(PlatformTransform.position == _destination)
+			if(_platformTransform.position == _destination)
 			{
 				Vector3 _temp = _initialPosition;
 				_initialPosition = _destination;

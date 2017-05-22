@@ -7,9 +7,10 @@ public class Mechanism : StageObject
 {
 	[Header("-- MECHANISM --")]
 	public string NextLevel;
+
 	[Header("Gear Settings")]
-	public int MaxGears;
 	public GameObject Gear;
+	public int MaxGears;
 	public float XOffset;
 	public float YOffset;
 

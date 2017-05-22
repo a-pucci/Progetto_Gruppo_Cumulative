@@ -8,9 +8,8 @@ public class EnemyMovement : MonoBehaviour
 	public float Speed = 5.0f;
 	public bool SmoothMovement;
 
-	[Header("Position")]
-	public Transform EnemyTransform;
-	public GameObject EndPosition;
+	private Transform _enemyTransform;
+	private GameObject _endPosition;
 
 	private Vector3 _initialPosition;
 	private Vector3 _destination;
@@ -21,14 +20,15 @@ public class EnemyMovement : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
-		_initialPosition = EnemyTransform.position;
-		_destination = EndPosition.transform.position;
+		_enemyTransform = this.gameObject.transform;
+		_endPosition = this.gameObject.transform.parent.FindChild ("EndPosition").gameObject;
+		
+		_initialPosition = _enemyTransform.position;
+		_destination = _endPosition.transform.position;
 		_startTime = Time.time;
 		_journeyLenght = Vector3.Distance (_initialPosition, _destination);
 
-		EndPosition.SetActive (false);
-
-
+		_endPosition.SetActive (false);
 	}
 	
 	// Update is called once per frame
@@ -43,9 +43,9 @@ public class EnemyMovement : MonoBehaviour
 				fractionJourney = Mathf.SmoothStep (0f, 1f, fractionJourney);
 			}
 
-			EnemyTransform.position = Vector3.Lerp (_initialPosition, _destination, fractionJourney);
+			_enemyTransform.position = Vector3.Lerp (_initialPosition, _destination, fractionJourney);
 
-			if(EnemyTransform.position == _destination)
+			if(_enemyTransform.position == _destination)
 			{
 				Vector3 _temp = _initialPosition;
 				_initialPosition = _destination;
