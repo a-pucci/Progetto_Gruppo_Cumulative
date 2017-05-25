@@ -39,7 +39,7 @@ public class StageSwapController : MonoBehaviour
 
 	void Update () 
 	{
-		if (!TimeEnabled) {
+		if (!TimeEnabled && Time.timeScale > 0) {
 			_swap = CrossPlatformInputManager.GetButtonDown ("Fire1"); 
 			if (_swap && !_playerHealth.PlayerDead) {
 				StageSwap ();
