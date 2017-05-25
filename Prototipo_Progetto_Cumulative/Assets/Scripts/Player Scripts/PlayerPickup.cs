@@ -70,11 +70,11 @@ public class PlayerPickup : MonoBehaviour
 	{
 		_triggerObject = collision.gameObject;
 
-		if(collision.CompareTag("Pickup"))
+		if (collision.CompareTag("Pickup") && InteractText.enabled == false)
 		{
 			PickupText.enabled = true;	
 		}
-		else if(collision.CompareTag("Interactive"))
+		else if (collision.CompareTag("Interactive") && PickupText.enabled == false)
 		{
 			InteractText.enabled = true;
 		}
