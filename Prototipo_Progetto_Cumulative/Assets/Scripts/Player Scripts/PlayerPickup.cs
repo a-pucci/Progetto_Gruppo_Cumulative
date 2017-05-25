@@ -12,8 +12,10 @@ public class PlayerPickup : MonoBehaviour
 	public Image InventoryIcon;
 
 	[Header("Drop Offset")]
-	public float xDropOffset = 0.0f;
-	public float YDropOffset = 0.3f;
+	public Vector3 TorchDropOffset;
+	public Vector3 GearDropOffset;
+	public Vector3 BallDropOffset;
+	public Vector3 KeyDropOffset;
 
 	private GameObject _happyStage;
 	private GameObject _sadStage;
@@ -70,11 +72,11 @@ public class PlayerPickup : MonoBehaviour
 	{
 		_triggerObject = collision.gameObject;
 
-		if (collision.CompareTag("Pickup") && InteractText.enabled == false)
+		if (collision.CompareTag("Pickup") && InteractText.enabled == false && _storedItem == null)
 		{
 			PickupText.enabled = true;	
 		}
-		else if (collision.CompareTag("Interactive") && PickupText.enabled == false)
+		else if (collision.CompareTag("Interactive") && PickupText.enabled == false && _storedItem != null)
 		{
 			InteractText.enabled = true;
 		}
@@ -103,7 +105,26 @@ public class PlayerPickup : MonoBehaviour
 	private void Drop ()
 	{
 		_storedItem.SetActive (true);
-		_storedItem.transform.position = new Vector3 (this.transform.position.x, this.transform.position.y + YDropOffset, this.transform.position.z);
+
+		switch(_storedItem.GetComponent<StageObject> ().ID)
+		{
+		case (int)IDList.ID.CannonBall:
+			_storedItem.transform.position = this.transform.position + BallDropOffset;
+			break;
+
+		case (int)IDList.ID.Gear:
+			_storedItem.transform.position = this.transform.position + GearDropOffset;
+			break;
+
+		case (int)IDList.ID.Key:
+			_storedItem.transform.position = this.transform.position + KeyDropOffset;
+			break;
+
+		case (int)IDList.ID.Torch:
+			_storedItem.transform.position = this.transform.position + TorchDropOffset;
+			break;
+
+		}
 
 		if(_happyStage.activeInHierarchy)
 		{
