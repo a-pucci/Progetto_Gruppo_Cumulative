@@ -29,7 +29,7 @@ public class PlayerPickup : MonoBehaviour
 
 
 	// Use this for initialization
-	void Start () 
+	void Awake () 
 	{
 		_pickups = GameObject.FindGameObjectsWithTag ("Pickup");
 		_interactive = GameObject.FindGameObjectsWithTag ("Interactive");
