@@ -40,5 +40,4 @@ public class Button : StageObject
 			GateToOpen [i].GetComponent<Gate> ().closeGate();
 		}
 	}
-
 }
