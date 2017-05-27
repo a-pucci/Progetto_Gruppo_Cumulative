@@ -17,6 +17,14 @@ public class PauseMenu : MonoBehaviour {
 		Time.timeScale = 1;
 	}
 
+	public void RestartGame()
+	{
+		thisCanvas.enabled = false;
+		paused = false;
+		Time.timeScale = 1;
+		SceneManager.LoadScene (SceneManager.GetActiveScene().name);
+	}
+
 	public void StopGame()
 	{
 		thisCanvas.enabled = true;
