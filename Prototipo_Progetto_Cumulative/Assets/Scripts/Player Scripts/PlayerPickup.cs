@@ -195,6 +195,7 @@ public class PlayerPickup : MonoBehaviour
 			Box box = trigger.GetComponent<Box> ();
 			if (IDstored == (int)IDList.ID.Torch && box.isMetallic == false)
 			{
+				box.DropItems ();
 				GameObject.Destroy (trigger);
 			}
 			break;
