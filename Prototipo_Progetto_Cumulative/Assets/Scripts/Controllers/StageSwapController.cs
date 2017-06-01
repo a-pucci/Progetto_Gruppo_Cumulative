@@ -18,7 +18,7 @@ public class StageSwapController : MonoBehaviour
 	private HealthManager _playerHealth;
 
 	private bool _swap = false;
-	private bool _toggle = false;
+	public bool toggle = false;
 
 	// Use this for initialization
 	void Start () 
@@ -51,7 +51,7 @@ public class StageSwapController : MonoBehaviour
 	private void StageSwap ()
 	{
 
-		if (_toggle) {
+		if (toggle) {
 			_happyStage.SetActive (true);
 			_sadStage.SetActive (false);
 		} 
@@ -60,7 +60,7 @@ public class StageSwapController : MonoBehaviour
 			_happyStage.SetActive (false);
 			_sadStage.SetActive (true);
 		}
-		_toggle = !_toggle;
+		toggle = !toggle;
 	}
 
 
