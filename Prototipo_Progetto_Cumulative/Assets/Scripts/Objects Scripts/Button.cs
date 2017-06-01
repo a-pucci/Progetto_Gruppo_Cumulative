@@ -9,35 +9,61 @@ public class Button : StageObject
 	public GameObject[] PlatformToMove;
 	public GameObject[] GateToOpen;
 
+	private List<Collider2D> _triggers;
+
+	void Start()
+	{
+		_triggers = new List<Collider2D> ();
+	}
+
 	void OnTriggerEnter2D(Collider2D other)
 	{
-		if(other.gameObject.CompareTag("Player") || 
-			other.gameObject.CompareTag("Enemy") ||
-			(other.gameObject.GetComponent<StageObject> () != null &&
-			other.gameObject.GetComponent<StageObject> ().ID == (int)IDList.ID.Box))
+		if (CanActivate (other))
 		{
-			for(int i = 0; i < PlatformToMove.Length; i++)
+			_triggers.Add (other);
+
+			for (int i = 0; i < PlatformToMove.Length; i++)
 			{
 				PlatformToMove [i].GetComponent<PlatformMovement> ().StartMove ();
 			}
 
-			for(int i = 0; i < GateToOpen.Length; i++)
+			for (int i = 0; i < GateToOpen.Length; i++)
 			{
-				GateToOpen [i].GetComponent<Gate> ().openGate();
+				GateToOpen [i].GetComponent<Gate> ().openGate ();
 			}
 		}
 	}
 
 	void OnTriggerExit2D(Collider2D other)
-	{
-		for(int i = 0; i < PlatformToMove.Length; i++)
-		{
-			PlatformToMove [i].GetComponent<PlatformMovement> ().StopMove ();
-		}
+	{	
+		_triggers.Remove (other);
 
-		for(int i = 0; i < GateToOpen.Length; i++)
+		if(_triggers.Count == 0)
 		{
-			GateToOpen [i].GetComponent<Gate> ().closeGate();
+			for (int i = 0; i < PlatformToMove.Length; i++)
+			{
+				PlatformToMove [i].GetComponent<PlatformMovement> ().StopMove ();
+			}
+
+			for (int i = 0; i < GateToOpen.Length; i++)
+			{
+				GateToOpen [i].GetComponent<Gate> ().closeGate ();
+			}
+		}
+	}
+
+	private bool CanActivate(Collider2D trigger)
+	{
+		if(trigger.gameObject.CompareTag ("Player") ||
+			trigger.gameObject.CompareTag ("Enemy") ||
+			(trigger.gameObject.GetComponent<StageObject> () != null &&
+				trigger.gameObject.GetComponent<StageObject> ().ID == (int)IDList.ID.Box))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
 		}
 	}
 }
