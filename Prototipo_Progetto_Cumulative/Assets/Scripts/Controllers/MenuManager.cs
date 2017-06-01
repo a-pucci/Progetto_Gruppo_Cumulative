@@ -7,6 +7,8 @@ public class MenuManager : MonoBehaviour
 {
 
 	public string firstScene;
+	public GameObject mainMenu;
+	public GameObject levelMenu;
 
 	public void StartGame()
 	{
@@ -19,7 +21,19 @@ public class MenuManager : MonoBehaviour
 
 	public void LevelSelect()
 	{
-		Debug.LogError ("TODO");
+		mainMenu.SetActive (false);
+		levelMenu.SetActive (true);
+	}
+
+	public void MainMenu()
+	{
+		mainMenu.SetActive (true);
+		levelMenu.SetActive (false);
+	}
+
+	public void LoadLevel(string level)
+	{
+		SceneManager.LoadScene (level);
 	}
 
 	public void QuitGame()

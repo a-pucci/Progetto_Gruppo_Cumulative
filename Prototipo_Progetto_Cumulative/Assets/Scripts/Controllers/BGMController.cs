@@ -12,16 +12,21 @@ public class BGMController : MonoBehaviour
 
 	void Start()
 	{
-		stageSwap = GameObject.FindGameObjectWithTag ("StageSwap").GetComponent<StageSwapController> ();
+		GameObject stageObject = GameObject.FindGameObjectWithTag ("StageSwap");
+		if (stageObject != null) {
+			stageSwap = GetComponent<StageSwapController> ();
+		}
 		source = this.GetComponent<AudioSource> ();
 	}
 
 	void Update ()
 	{
-		if (stageSwap.toggle) {
-			source.outputAudioMixerGroup = bgmMixerB;
-		} else {
-			source.outputAudioMixerGroup = bgmMixerA;
+		if (stageSwap != null) {
+			if (stageSwap.toggle) {
+				source.outputAudioMixerGroup = bgmMixerB;
+			} else {
+				source.outputAudioMixerGroup = bgmMixerA;
+			}
 		}
 	}
 }
