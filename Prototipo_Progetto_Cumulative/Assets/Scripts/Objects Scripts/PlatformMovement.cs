@@ -13,6 +13,9 @@ public class PlatformMovement : MonoBehaviour
 	private Vector3 _initialPosition;
 	private Vector3 _destination;
 
+	private GameObject _player;
+	private Transform _playerParent;
+
 	[SerializeField]private bool _canMove = false;
 
 
@@ -21,6 +24,9 @@ public class PlatformMovement : MonoBehaviour
 	{
 		_platformTransform = this.gameObject.transform;
 		_endPosition = this.gameObject.transform.parent.FindChild ("EndPosition").gameObject;
+
+		_player = GameObject.FindGameObjectWithTag ("Player");
+		_playerParent = _player.transform.parent;
 
 		_initialPosition = _platformTransform.position;
 		_destination = _endPosition.transform.position;
@@ -43,6 +49,22 @@ public class PlatformMovement : MonoBehaviour
 				_destination = _temp;
 			}
 		}			
+	}
+
+	void OnTriggerEnter2D(Collider2D other)
+	{
+		if(other.gameObject.tag == "Player")
+		{
+			other.transform.parent = this.gameObject.transform;
+		}
+	}
+
+	void OnTriggerExit2D(Collider2D other)
+	{
+		if(other.gameObject.tag == "Player")
+		{
+			other.transform.parent = null;
+		}
 	}
 
 	public void StartMove()
