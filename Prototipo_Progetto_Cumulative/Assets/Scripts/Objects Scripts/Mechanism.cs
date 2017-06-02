@@ -18,14 +18,19 @@ public class Mechanism : StageObject
 	public GameObject Key;
 	public Vector3 KeyOffset;
 
+	[Header("Closure Settings")]
+	public float WaitingTime;
+
 	private int _gears = 0;
 	private bool _keyUsed = false;
 	private SpriteRenderer _color;
 	private GameObject _newGear;
 	private GameObject _newKey;
+	private CameraEnd _camera;
 
 	void Start()
 	{
+		_camera = GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<CameraEnd> ();
 		_color = this.gameObject.GetComponent<SpriteRenderer> ();
 		_color.color = new Color (0, 0, 0);
 	}
@@ -90,6 +95,17 @@ public class Mechanism : StageObject
 
 	private void CloseScene()
 	{
-			SceneManager.LoadScene (NextLevel);
+
+		_camera.StartClose ();
+		StartCoroutine (ChangeScene ());
+	}
+
+	private IEnumerator ChangeScene()
+	{
+		while (_camera.IsShowing() == true)
+		{
+			yield return new WaitForSeconds (WaitingTime);
+		}
+		SceneManager.LoadScene (NextLevel);
 	}
 }

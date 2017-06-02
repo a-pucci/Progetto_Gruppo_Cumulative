@@ -18,16 +18,16 @@ public class CameraStart : MonoBehaviour
 
 	private PlayerUserController _player;
 
-	private GameObject _happyStage;
-	private GameObject _sadStage;
+	public GameObject _happyStage;
+	public GameObject _sadStage;
 
 	// Use this for initialization
 	void Start () 
 	{
 		_player = GameObject.FindGameObjectWithTag ("Player").GetComponent<PlayerUserController> ();
 
-		_happyStage = GameObject.FindGameObjectWithTag ("HappyStage");
-		_sadStage = GameObject.FindGameObjectWithTag ("SadStage");
+//		_happyStage = GameObject.FindGameObjectWithTag ("HappyStage");
+//		_sadStage = GameObject.FindGameObjectWithTag ("SadStage");
 
 		_showingObjects = true;		
 		_cameraTrans = this.transform;
