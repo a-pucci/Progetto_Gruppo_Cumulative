@@ -7,7 +7,7 @@ public class PlayerUserController : MonoBehaviour
 {
 	private PlayerMovement _character;
 	private bool _jump;
-	public bool controllingCannon = false;
+	public bool CanMove = false;
 
 
 	private void Awake()
@@ -18,7 +18,7 @@ public class PlayerUserController : MonoBehaviour
 
 	private void Update()
 	{
-		if (!_jump && !controllingCannon) 
+		if (!_jump && CanMove) 
 		{
 			// Read the jump input in Update so button presses aren't missed.
 			_jump = CrossPlatformInputManager.GetButtonDown("Jump");
@@ -30,7 +30,7 @@ public class PlayerUserController : MonoBehaviour
 		// Read the inputs.
 		float h = CrossPlatformInputManager.GetAxis("Horizontal");
 		// Pass all parameters to the character control script.
-		if(!controllingCannon)
+		if(CanMove)
 		{
 			_character.Move(h, _jump);
 			_jump = false;

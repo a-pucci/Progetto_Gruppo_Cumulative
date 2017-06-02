@@ -22,6 +22,7 @@ public class Camera2DFollow : MonoBehaviour
 	private Transform _target;
 
 	private HealthManager _playerHealth;
+	public CameraStart CameraStart;
 
     // Use this for initialization
     private void Start()
@@ -37,7 +38,7 @@ public class Camera2DFollow : MonoBehaviour
     // Update is called once per frame
     private void Update()
 {
-		if (!_playerHealth.PlayerDead)
+		if (!_playerHealth.PlayerDead && !CameraStart.IsShowing())
 		{
 			// only update lookahead pos if accelerating or changed direction
 			float xMoveDelta = (_target.position - _lastTargetPosition).x;

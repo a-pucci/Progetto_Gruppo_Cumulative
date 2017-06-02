@@ -62,11 +62,6 @@ public class EnemyMovement : MonoBehaviour
 
 	public bool CanMove()
 	{
-		if(this.GetComponentInChildren<Key>() != null)
-		{
-			return true;
-		}
-
-		return false;
+		return (GetComponentInChildren<Key> () != null);
 	}
 }

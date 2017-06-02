@@ -51,7 +51,8 @@ public class StageSwapController : MonoBehaviour
 	private void StageSwap ()
 	{
 
-		if (toggle) {
+		if (toggle) 
+		{
 			_happyStage.SetActive (true);
 			_sadStage.SetActive (false);
 		} 
