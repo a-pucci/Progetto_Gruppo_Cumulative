@@ -1,17 +1,30 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CameraEnd : MonoBehaviour 
 {
+	[Header("Next Level")]
+	public string NextLevel;
+
+	[Header("Camera Setting")]
 	public float MovingSpeed;
 	public float GrowingSpeed;
 	public float MaxSize;
-	public Canvas Interface;
+	public Animator CameraAC;
+
+	[Header("UI Settings")]
+	public GameObject[] Interface;
+	public Animator LeftCurtainAC;
+	public Animator RightCurtainAC;
+
+	private float _closureTime = 2f;
 
 	private Camera _camera;
 	private Transform _cameraTransform;
 	private Vector3 _center;
+
 
 	private float _initialSize;
 	private float _startTime;
@@ -47,34 +60,48 @@ public class CameraEnd : MonoBehaviour
 		}
 		if(_growing)
 		{
-			float sizeCovered = (Time.time - _startTime) * GrowingSpeed;
+			CameraAC.SetTrigger ("Grow");
+			/*float sizeCovered = (Time.time - _startTime) * GrowingSpeed;
 			float fraction = sizeCovered / _sizeDifference;
 
-			_camera.orthographicSize = Mathf.Lerp (_initialSize, MaxSize, fraction);
+			_camera.orthographicSize = Mathf.Lerp (_initialSize, MaxSize, fraction);*/
 
 			if(_camera.orthographicSize == MaxSize)
 			{
 				_growing = false;
 				_isShowing = false;
+				LeftCurtainAC.SetTrigger ("Close");
+				RightCurtainAC.SetTrigger ("Close");
 			}
 		}
 	}
 
 	public void StartClose ()
 	{
-		Interface.enabled = false;
+		for(int i = 0; i < Interface.Length; i++)
+		{
+			Interface[i].SetActive (false);
+		}
+
 		_moving = true;
 		_isShowing = true;
 		_closing = true;
-	}
-
-	public bool IsShowing()
-	{
-		return _isShowing;
+		StartCoroutine (ChangeScene ());
 	}
 
 	public bool closingAnimation()
 	{
 		return _closing;
+	}
+
+	private IEnumerator ChangeScene()
+	{
+
+		while (_isShowing == true)
+		{
+			yield return new WaitForSeconds (0);
+		}
+		yield return new WaitForSeconds (_closureTime);
+		SceneManager.LoadScene (NextLevel);
 	}
 }

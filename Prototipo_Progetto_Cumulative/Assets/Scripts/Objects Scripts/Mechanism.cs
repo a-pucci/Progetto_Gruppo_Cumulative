@@ -6,8 +6,6 @@ using UnityEngine.SceneManagement;
 public class Mechanism : StageObject
 {
 	[Header("-- MECHANISM --")]
-	public string NextLevel;
-
 	[Header("Gear Settings")]
 	public GameObject GearSmall;
 	public GameObject GearMedium;
@@ -24,9 +22,6 @@ public class Mechanism : StageObject
 	[Header("Key Settings")]
 	public GameObject Key;
 	public Vector3 KeyPosition;
-
-	[Header("Closure Settings")]
-	public float WaitingTime;
 
 	private int _gears = 0;
 	private int _maxGears = 3;
@@ -96,7 +91,7 @@ public class Mechanism : StageObject
 			_newKey.transform.localScale = scale;
 
 			_keyUsed = true;
-			CloseScene ();
+			_camera.StartClose ();
 		}
 
 		return _keyUsed;
@@ -133,23 +128,8 @@ public class Mechanism : StageObject
 		return _gears;
 	}
 
-	private void CloseScene()
-	{
-		_camera.StartClose ();
-		StartCoroutine (ChangeScene ());
-	}
-
 	public int GetMaxGears()
 	{
 		return _maxGears;
-	}
-
-	private IEnumerator ChangeScene()
-	{
-		while (_camera.IsShowing() == true)
-		{
-			yield return new WaitForSeconds (WaitingTime);
-		}
-		SceneManager.LoadScene (NextLevel);
 	}
 }
