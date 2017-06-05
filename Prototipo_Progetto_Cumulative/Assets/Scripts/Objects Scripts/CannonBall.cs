@@ -6,6 +6,12 @@ public class CannonBall : StageObject
 {
 	public float time;
 	public bool shooted;
+
+	void Start()
+	{
+		base.ID = (int)IDList.ID.CannonBall;
+	}
+
 	void OnTriggerEnter2D(Collider2D other)
 	{	
 		if(other.gameObject.GetComponent<StageObject> () != null && 

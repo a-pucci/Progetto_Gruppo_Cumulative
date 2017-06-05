@@ -12,6 +12,10 @@ public class Dummy : StageObject
 	private GameObject _currentMask;
 	private bool _hasMask = false;
 
+	void Start()
+	{
+		base.ID = (int)IDList.ID.Dummy;
+	}
 
 	public void PutMask (GameObject mask)
 	{

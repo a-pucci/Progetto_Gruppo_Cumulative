@@ -184,7 +184,7 @@ public class PlayerPickup : MonoBehaviour
 			else if (IDstored == (int)IDList.ID.Gear)
 			{
 				int gears = mechanism.InsertGear ();
-				if(gears <= mechanism.MaxGears)
+				if(gears <= mechanism.GetMaxGears())
 				{
 					RemoveItemFromInventory ();
 				}

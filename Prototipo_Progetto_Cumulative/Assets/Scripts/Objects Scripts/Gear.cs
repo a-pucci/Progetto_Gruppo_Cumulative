@@ -10,6 +10,11 @@ public class Gear : StageObject
 	private bool _rotateRight = false;
 	private bool _rotateLeft = false;
 
+	void Start()
+	{
+		base.ID = (int)IDList.ID.Gear;
+	}
+
 	void Update()
 	{
 		if(_rotateRight)

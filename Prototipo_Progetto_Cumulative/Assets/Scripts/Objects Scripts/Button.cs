@@ -13,6 +13,7 @@ public class Button : StageObject
 
 	void Start()
 	{
+		base.ID = (int)IDList.ID.Button;
 		_triggers = new List<Collider2D> ();
 	}
 

@@ -9,44 +9,93 @@ public class Mechanism : StageObject
 	public string NextLevel;
 
 	[Header("Gear Settings")]
-	public GameObject Gear;
-	public int MaxGears;
-	public float XOffset;
-	public float YOffset;
+	public GameObject GearSmall;
+	public GameObject GearMedium;
+	public GameObject GearLarge;
+	public GameObject GearFixed;
+
+	public Vector3 SmallPosition;
+	public Vector3 MediumPosition;
+	public Vector3 LargePosition;
+	public Vector3 FixedPosition;
+
+	public int GearsNeeded;
 
 	[Header("Key Settings")]
 	public GameObject Key;
-	public Vector3 KeyOffset;
+	public Vector3 KeyPosition;
 
 	[Header("Closure Settings")]
 	public float WaitingTime;
 
 	private int _gears = 0;
+	private int _maxGears = 3;
+	private int _counter = 0;
 	private bool _keyUsed = false;
-	private SpriteRenderer _color;
+
 	private GameObject _newGear;
 	private GameObject _newKey;
 	private CameraEnd _camera;
 
+	private List<GameObject> _gearsPrefab;
+	private List<Vector3> _gearsPos;
+
 	void Start()
 	{
+		base.ID = (int)IDList.ID.Mechanism;
 		_camera = GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<CameraEnd> ();
-		_color = this.gameObject.GetComponent<SpriteRenderer> ();
-		_color.color = new Color (0, 0, 0);
+
+		_gears = _maxGears - GearsNeeded;
+
+		_gearsPrefab = new List<GameObject> ();
+		_gearsPrefab.Add (GearLarge);
+		_gearsPrefab.Add (GearMedium);
+		_gearsPrefab.Add (GearSmall);
+
+		_gearsPos = new List<Vector3> ();
+		_gearsPos.Add (LargePosition);
+		_gearsPos.Add (MediumPosition);
+		_gearsPos.Add (SmallPosition);
+
+		_newGear = Instantiate (GearFixed);
+		_newGear.GetComponent<Collider2D> ().enabled = false;
+		_newGear.transform.position = this.transform.position + FixedPosition;
+		_newGear.transform.parent = this.transform.parent;
+		_newGear.GetComponent <Gear> ().RotateRight ();
+
+		for(int i = GearsNeeded; i < 3; i++)
+		{
+			_newGear = Instantiate (_gearsPrefab[i]);
+			_newGear.GetComponent<Collider2D> ().enabled = false;
+			_newGear.transform.position = this.transform.position + _gearsPos[i];
+			_newGear.transform.parent = this.transform.parent;
+			Vector3 scale = new Vector3 (0.3f, 0.3f, 1);
+			_newGear.transform.localScale = scale;
+
+			if(i == 0)
+			{
+				_newGear.GetComponent <Gear> ().RotateRight ();
+			}
+			else
+			{
+				_newGear.GetComponent <Gear> ().RotateLeft ();
+			}
+		}
 	}
 
 	public bool InsertKey()
 	{
-		if(_gears >= MaxGears)
+		if(_gears >= _maxGears)
 		{
 			_newKey = Instantiate (Key);
 			_newKey.GetComponent<Collider2D> ().enabled = false;
-			_newKey.transform.position = this.transform.position + KeyOffset;
+			_newKey.transform.position = this.transform.position + KeyPosition;
 			_newKey.transform.rotation = new Quaternion (0, 0, 0, 0);
 			_newKey.transform.parent = this.transform.parent;
+			Vector3 scale = new Vector3 (-0.3f, 0.3f, 1);
+			_newKey.transform.localScale = scale;
 
 			_keyUsed = true;
-			_color.color = new Color (255, 255, 255);
 			CloseScene ();
 		}
 
@@ -55,37 +104,28 @@ public class Mechanism : StageObject
 
 	public int InsertGear()
 	{
-		switch(_gears)
+		if(_gears <= GearsNeeded)
 		{
-		case 0:
-			_newGear = Instantiate (Gear);
+			_newGear = Instantiate (_gearsPrefab[_counter]);
 			_newGear.GetComponent<Collider2D> ().enabled = false;
-			_newGear.transform.position = new Vector3 (this.transform.position.x + XOffset, this.transform.position.y + YOffset - 0.5f, this.transform.position.z);
+			_newGear.transform.position = this.transform.position + _gearsPos[_counter];
 			_newGear.transform.parent = this.transform.parent;
-			_newGear.GetComponent <Gear> ().RotateRight ();
+			Vector3 scale = new Vector3 (0.3f, 0.3f, 1);
+			_newGear.transform.localScale = scale;
 
-			break;
+			if(_counter == 0)
+			{
+				_newGear.GetComponent <Gear> ().RotateRight ();
+			}
+			else
+			{
+				_newGear.GetComponent <Gear> ().RotateLeft ();
+			}
 
-		case 1:
-			_newGear = Instantiate (Gear);
-			_newGear.GetComponent<Collider2D> ().enabled = false;
-			_newGear.transform.position = new Vector3 (this.transform.position.x + XOffset, this.transform.position.y + YOffset, this.transform.position.z);
-			_newGear.transform.parent = this.transform.parent;
-			_newGear.GetComponent <Gear> ().RotateLeft ();
-
-			break;
-
-		case 2:
-			_newGear = Instantiate (Gear);
-			_newGear.GetComponent<Collider2D> ().enabled = false;
-			_newGear.transform.position = new Vector3 (this.transform.position.x + XOffset, this.transform.position.y + YOffset + 0.5f, this.transform.position.z);
-			_newGear.transform.parent = this.transform.parent;
-			_newGear.GetComponent <Gear> ().RotateRight ();
-
-			break;
+			_counter++;
 		}
 
-		if(_gears <= MaxGears)
+		if(_gears <= _maxGears)
 		{
 			_gears += 1;
 		}
@@ -95,9 +135,13 @@ public class Mechanism : StageObject
 
 	private void CloseScene()
 	{
-
 		_camera.StartClose ();
 		StartCoroutine (ChangeScene ());
+	}
+
+	public int GetMaxGears()
+	{
+		return _maxGears;
 	}
 
 	private IEnumerator ChangeScene()

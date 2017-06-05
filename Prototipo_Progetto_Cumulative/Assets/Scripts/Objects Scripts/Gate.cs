@@ -10,6 +10,7 @@ public class Gate : StageObject
 
 	void Start()
 	{
+		base.ID = (int)IDList.ID.Gate;
 		_collider = this.gameObject.transform.FindChild ("Collider").gameObject;
 	}
 
