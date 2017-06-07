@@ -14,6 +14,10 @@ public class StageSwapController : MonoBehaviour
 	[Header("Switch Audio")]
 	public AudioClip SwitchClip;
 
+	[Header("UI Masks")]
+	public Sprite HappyMask;
+	public Sprite SadMask;
+
 	private GameObject _happyStage;
 	private GameObject _sadStage;
 
@@ -24,6 +28,8 @@ public class StageSwapController : MonoBehaviour
 	public bool toggle = false;
 
 	private SFXController _sfxManager;
+
+	private Image _uiMask;
 
 	// Use this for initialization
 	void Start () 
@@ -38,6 +44,8 @@ public class StageSwapController : MonoBehaviour
 		_sadStage.SetActive (false);
 
 		_sfxManager = GameObject.FindGameObjectWithTag ("SFXManager").GetComponent<SFXController> ();
+
+		_uiMask = GameObject.FindGameObjectWithTag ("SceneIndicator").GetComponent<Image> ();
 
 		if (TimeEnabled) {
 			StartCoroutine (SwitchCoroutine ());
@@ -60,11 +68,13 @@ public class StageSwapController : MonoBehaviour
 		_sfxManager.PlaySFX (SwitchClip);
 		if (toggle) 
 		{
+			_uiMask.sprite = HappyMask;
 			_happyStage.SetActive (true);
 			_sadStage.SetActive (false);
 		} 
 		else 
 		{
+			_uiMask.sprite = SadMask;
 			_happyStage.SetActive (false);
 			_sadStage.SetActive (true);
 		}
