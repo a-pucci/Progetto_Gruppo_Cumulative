@@ -5,17 +5,23 @@ using UnityEngine.Audio;
 
 public class SFXController : MonoBehaviour
 {
-	private AudioSource source;
-
-	void Start() 
-	{
-		source = this.GetComponent<AudioSource> ();
-	}
-
 	public void PlaySFX(AudioClip sfx) 
 	{
+		Debug.Log (sfx.name);
+		AudioSource source = gameObject.AddComponent<AudioSource> ();
+		source.gameObject.SetActive (true);
 		source.clip = sfx;
 		source.Play ();
-		source.clip = null;
+		StartCoroutine (StopSound (source));
+
+	}
+
+	public IEnumerator StopSound(AudioSource source)
+	{
+		if (source.isPlaying) {
+			yield return new WaitForSeconds (0.1f);
+		} else {
+			Destroy (source);
+		}
 	}
 }

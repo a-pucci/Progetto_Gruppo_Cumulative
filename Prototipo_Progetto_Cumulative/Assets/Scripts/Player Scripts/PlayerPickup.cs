@@ -18,6 +18,12 @@ public class PlayerPickup : MonoBehaviour
 	public Vector3 BallDropOffset;
 	public Vector3 KeyDropOffset;
 
+	[Header("Various Audio")]
+	public AudioClip InsertMechanismClip;
+	public AudioClip KeyPickupClip;
+	public AudioClip PickupClip;
+	public AudioClip DropClip;
+
 	private GameObject _happyStage;
 	private GameObject _sadStage;
 
@@ -25,6 +31,8 @@ public class PlayerPickup : MonoBehaviour
 	private GameObject _storedItem;
 	private GameObject[] _pickups;
 	private GameObject[] _interactive;
+
+	private SFXController _sfxManager;
 
 	private bool _pickedUp = false;
 
@@ -37,6 +45,7 @@ public class PlayerPickup : MonoBehaviour
 		_happyStage = GameObject.FindGameObjectWithTag ("HappyStage");
 		_sadStage = GameObject.FindGameObjectWithTag ("SadStage");
 
+		_sfxManager = GameObject.FindGameObjectWithTag ("SFXManager").GetComponent<SFXController> ();
 		
 		PickupText.enabled = false;
 		InteractText.enabled = false;
@@ -94,6 +103,12 @@ public class PlayerPickup : MonoBehaviour
 	{
 		_pickedUp = true;
 
+		if ((int)_triggerObject.GetComponent<StageObject> ().ID == (int)IDList.ID.Key) {
+			_sfxManager.PlaySFX (KeyPickupClip);
+		} else {
+			_sfxManager.PlaySFX (PickupClip);
+		}
+
 		InventoryIcon.enabled = true;
 		InventoryIcon.sprite =  _triggerObject.GetComponent<SpriteRenderer> ().sprite;
 		_triggerObject.GetComponent<SpriteRenderer> ().enabled = true;
@@ -106,6 +121,8 @@ public class PlayerPickup : MonoBehaviour
 	private void Drop ()
 	{
 		_storedItem.SetActive (true);
+
+		_sfxManager.PlaySFX (DropClip);
 
 		switch(_storedItem.GetComponent<StageObject> ().ID)
 		{
@@ -183,6 +200,7 @@ public class PlayerPickup : MonoBehaviour
 			}
 			else if (IDstored == (int)IDList.ID.Gear)
 			{
+				_sfxManager.PlaySFX (InsertMechanismClip);
 				int gears = mechanism.InsertGear ();
 				if(gears <= mechanism.GetMaxGears())
 				{

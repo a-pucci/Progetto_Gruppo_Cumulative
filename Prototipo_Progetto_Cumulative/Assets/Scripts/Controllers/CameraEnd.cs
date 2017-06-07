@@ -19,6 +19,10 @@ public class CameraEnd : MonoBehaviour
 	public Animator LeftCurtainAC;
 	public Animator RightCurtainAC;
 
+	[Header("Level Audio")]
+	public AudioClip EndLevelClip;
+	public AudioClip StartLevelClip;
+
 	private float _closureTime = 2f;
 
 	private Camera _camera;
@@ -35,6 +39,8 @@ public class CameraEnd : MonoBehaviour
 	private bool _isShowing = false;
 	private bool _closing = false;
 
+	private SFXController _sfxManager;
+
 	// Use this for initialization
 	void Start () 
 	{
@@ -45,6 +51,10 @@ public class CameraEnd : MonoBehaviour
 		_initialSize = _camera.orthographicSize;
 		_startTime = Time.time;
 		_sizeDifference = MaxSize - _initialSize;
+
+		_sfxManager = GameObject.FindGameObjectWithTag ("SFXManager").GetComponent<SFXController> ();
+
+		_sfxManager.PlaySFX (StartLevelClip);
 	}
 
 	void Update()
@@ -78,6 +88,8 @@ public class CameraEnd : MonoBehaviour
 
 	public void StartClose ()
 	{
+
+		_sfxManager.PlaySFX (EndLevelClip);
 		for(int i = 0; i < Interface.Length; i++)
 		{
 			Interface[i].SetActive (false);

@@ -11,6 +11,9 @@ public class StageSwapController : MonoBehaviour
 	public bool TimeEnabled;
 	public float SwitchTime;
 
+	[Header("Switch Audio")]
+	public AudioClip SwitchClip;
+
 	private GameObject _happyStage;
 	private GameObject _sadStage;
 
@@ -19,6 +22,8 @@ public class StageSwapController : MonoBehaviour
 
 	private bool _swap = false;
 	public bool toggle = false;
+
+	private SFXController _sfxManager;
 
 	// Use this for initialization
 	void Start () 
@@ -31,6 +36,8 @@ public class StageSwapController : MonoBehaviour
 
 		_sadStage = GameObject.FindGameObjectWithTag ("SadStage");
 		_sadStage.SetActive (false);
+
+		_sfxManager = GameObject.FindGameObjectWithTag ("SFXManager").GetComponent<SFXController> ();
 
 		if (TimeEnabled) {
 			StartCoroutine (SwitchCoroutine ());
@@ -50,7 +57,7 @@ public class StageSwapController : MonoBehaviour
 
 	private void StageSwap ()
 	{
-
+		_sfxManager.PlaySFX (SwitchClip);
 		if (toggle) 
 		{
 			_happyStage.SetActive (true);

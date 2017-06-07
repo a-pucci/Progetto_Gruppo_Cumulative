@@ -7,14 +7,20 @@ using UnityStandardAssets.CrossPlatformInput;
 
 public class HealthManager : MonoBehaviour
 {
+	[Header("Death Audio")]
+	public AudioClip DeathClip;
+
 	public bool PlayerDead = false;
 	public Text GameOverText;
 
 	private SpriteRenderer _spriteRenderer;
 	private int _health = 1;
 
+	private SFXController _sfxManager;
+
 	void Start()
 	{
+		_sfxManager = GameObject.FindGameObjectWithTag ("SFXManager").GetComponent<SFXController> ();
 		_spriteRenderer = GetComponent<SpriteRenderer>();
 		GameOverText.enabled = false;
 		PlayerDead = false;
@@ -48,6 +54,7 @@ public class HealthManager : MonoBehaviour
 
 	void Death ()
 	{
+		_sfxManager.PlaySFX (DeathClip);
 		Time.timeScale = 0;
 		_spriteRenderer.enabled = false;
 		GameOverText.enabled = true;
