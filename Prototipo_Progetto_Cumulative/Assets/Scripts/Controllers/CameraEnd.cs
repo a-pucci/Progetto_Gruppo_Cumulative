@@ -29,11 +29,6 @@ public class CameraEnd : MonoBehaviour
 	private Transform _cameraTransform;
 	private Vector3 _center;
 
-
-	private float _initialSize;
-	private float _startTime;
-	private float _sizeDifference;
-
 	private bool _moving = false;
 	private bool _growing = false;
 	private bool _isShowing = false;
@@ -48,12 +43,7 @@ public class CameraEnd : MonoBehaviour
 		_cameraTransform = this.gameObject.transform;
 		_center = new Vector3 (0, 0, -10);
 
-		_initialSize = _camera.orthographicSize;
-		_startTime = Time.time;
-		_sizeDifference = MaxSize - _initialSize;
-
 		_sfxManager = GameObject.FindGameObjectWithTag ("SFXManager").GetComponent<SFXController> ();
-
 		_sfxManager.PlaySFX (StartLevelClip);
 	}
 
@@ -71,10 +61,6 @@ public class CameraEnd : MonoBehaviour
 		if(_growing)
 		{
 			CameraAC.SetTrigger ("Grow");
-			/*float sizeCovered = (Time.time - _startTime) * GrowingSpeed;
-			float fraction = sizeCovered / _sizeDifference;
-
-			_camera.orthographicSize = Mathf.Lerp (_initialSize, MaxSize, fraction);*/
 
 			if(_camera.orthographicSize == MaxSize)
 			{

@@ -23,6 +23,9 @@ public class Mechanism : StageObject
 	public GameObject Key;
 	public Vector3 KeyPosition;
 
+	[Header("Audio")]
+	public AudioClip InsertMechanismClip;
+
 	private int _gears = 0;
 	private int _maxGears = 3;
 	private int _counter = 0;
@@ -39,6 +42,7 @@ public class Mechanism : StageObject
 	{
 		base.ID = (int)IDList.ID.Mechanism;
 		_camera = GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<CameraEnd> ();
+		base._sfxManager = GameObject.FindGameObjectWithTag ("SFXManager").GetComponent<SFXController> ();
 
 		_gears = _maxGears - GearsNeeded;
 
@@ -128,8 +132,37 @@ public class Mechanism : StageObject
 		return _gears;
 	}
 
-	public int GetMaxGears()
+	public override void Interact (GameObject other)
 	{
-		return _maxGears;
+		if(CanInteract (other))
+		{
+			if(other.GetComponent<StageObject>().ID == (int)IDList.ID.Key)
+			{
+				InsertKey ();
+			}
+			else if(other.GetComponent<StageObject>().ID == (int)IDList.ID.Gear)
+			{
+				_sfxManager.PlaySFX (InsertMechanismClip);
+				int gears = InsertGear ();
+				if(gears <= _maxGears)
+				{
+					GameObject.Destroy (other);
+				}
+			}
+		}
+	}
+
+	public override bool CanInteract (GameObject other)
+	{
+		bool canInteract = false;
+		if(other.GetComponent<StageObject> () != null)
+		{
+			int otherID = other.GetComponent<StageObject> ().ID;
+			if(otherID == (int)IDList.ID.Gear || otherID == (int)IDList.ID.Key)
+			{
+				canInteract = true;
+			}		
+		}
+		return canInteract;
 	}
 }

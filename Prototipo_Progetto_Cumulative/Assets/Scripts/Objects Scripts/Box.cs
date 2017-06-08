@@ -41,4 +41,27 @@ public class Box : StageObject
 			multiDropOffset += 1f;
 		}
 	}
+
+	public override bool CanInteract (GameObject other)
+	{
+		bool canInteract = false;
+		if(other.GetComponent<StageObject> () != null)
+		{
+			int otherID = other.GetComponent<StageObject> ().ID;
+			if(otherID == (int)IDList.ID.Torch && isMetallic == false)
+			{
+				canInteract = true;
+			}		
+		}
+		return canInteract;
+	}
+
+	public override void Interact (GameObject other)
+	{
+		if(CanInteract (other))
+		{
+			DropItems ();
+			GameObject.Destroy (other);
+		}
+	}
 }

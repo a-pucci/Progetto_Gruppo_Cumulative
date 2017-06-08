@@ -10,9 +10,12 @@ public class Gear : StageObject
 	private bool _rotateRight = false;
 	private bool _rotateLeft = false;
 
+	private bool _isDestroyedOnUse = false;
+
 	void Start()
 	{
 		base.ID = (int)IDList.ID.Gear;
+		base._sfxManager = GameObject.FindGameObjectWithTag ("SFXManager").GetComponent<SFXController> ();
 	}
 
 	void Update()
@@ -38,5 +41,30 @@ public class Gear : StageObject
 	{
 		_rotateLeft = true;
 		_rotateRight = false;
+	}
+
+	public override GameObject Pickup ()
+	{
+		base._sfxManager.PlaySFX (base.PickupClip);
+		return this.gameObject;
+	}
+
+	public override bool CanInteract (GameObject other)
+	{
+		bool canInteract = false;
+		if(other.GetComponent<StageObject> () != null)
+		{
+			int otherID = other.GetComponent<StageObject> ().ID;
+			if(otherID == (int)IDList.ID.Mechanism)
+			{
+				canInteract = true;
+			}		
+		}
+		return canInteract;
+	}
+
+	public override bool IsDestroyedOnUse ()
+	{
+		return _isDestroyedOnUse;
 	}
 }
