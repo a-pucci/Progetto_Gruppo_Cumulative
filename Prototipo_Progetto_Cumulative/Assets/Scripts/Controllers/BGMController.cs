@@ -14,7 +14,7 @@ public class BGMController : MonoBehaviour
 	{
 		GameObject stageObject = GameObject.FindGameObjectWithTag ("StageSwap");
 		if (stageObject != null) {
-			stageSwap = GetComponent<StageSwapController> ();
+			stageSwap = stageObject.GetComponent<StageSwapController> ();
 		}
 		source = this.GetComponent<AudioSource> ();
 	}
