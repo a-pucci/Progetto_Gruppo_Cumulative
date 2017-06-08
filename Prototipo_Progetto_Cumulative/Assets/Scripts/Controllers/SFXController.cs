@@ -5,11 +5,14 @@ using UnityEngine.Audio;
 
 public class SFXController : MonoBehaviour
 {
+
+	public AudioMixerGroup SFXMixer;
+
 	public void PlaySFX(AudioClip sfx) 
 	{
 		Debug.Log (sfx.name);
 		AudioSource source = gameObject.AddComponent<AudioSource> ();
-		source.gameObject.SetActive (true);
+		source.outputAudioMixerGroup = SFXMixer;
 		source.clip = sfx;
 		source.Play ();
 		StartCoroutine (StopSound (source));

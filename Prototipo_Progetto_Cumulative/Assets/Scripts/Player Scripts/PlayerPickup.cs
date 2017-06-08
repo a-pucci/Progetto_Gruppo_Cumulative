@@ -23,6 +23,7 @@ public class PlayerPickup : MonoBehaviour
 	public AudioClip KeyPickupClip;
 	public AudioClip PickupClip;
 	public AudioClip DropClip;
+	public AudioClip InteractClip;
 
 	private GameObject _happyStage;
 	private GameObject _sadStage;
@@ -179,6 +180,7 @@ public class PlayerPickup : MonoBehaviour
 			Dummy dummy = trigger.GetComponent<Dummy> ();
 			if(IDstored == (int)IDList.ID.Mask)
 			{
+				_sfxManager.PlaySFX (InteractClip);
 				_storedItem.SetActive (true);
 				dummy.PutMask (_storedItem);
 				changeObjectsStage ();
@@ -188,22 +190,22 @@ public class PlayerPickup : MonoBehaviour
 			break;
 
 		case (int)IDList.ID.Mechanism:
-			
 			Mechanism mechanism = trigger.GetComponent<Mechanism> ();
 			if (IDstored == (int)IDList.ID.Key)
 			{
 				bool keyUsed = mechanism.InsertKey ();
 				if(keyUsed)
 				{
+					_sfxManager.PlaySFX (InteractClip);		
 					RemoveItemFromInventory ();
 				}
 			}
 			else if (IDstored == (int)IDList.ID.Gear)
 			{
-				_sfxManager.PlaySFX (InsertMechanismClip);
 				int gears = mechanism.InsertGear ();
 				if(gears <= mechanism.GetMaxGears())
 				{
+					_sfxManager.PlaySFX (InsertMechanismClip);
 					RemoveItemFromInventory ();
 				}
 			}
@@ -214,6 +216,7 @@ public class PlayerPickup : MonoBehaviour
 			Box box = trigger.GetComponent<Box> ();
 			if (IDstored == (int)IDList.ID.Torch && box.isMetallic == false)
 			{
+				_sfxManager.PlaySFX (InteractClip);
 				box.DropItems ();
 				GameObject.Destroy (trigger);
 			}
