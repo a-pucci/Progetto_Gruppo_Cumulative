@@ -15,7 +15,6 @@ public class Gear : StageObject
 	void Start()
 	{
 		base.ID = (int)IDList.ID.Gear;
-		base._sfxManager = GameObject.FindGameObjectWithTag ("SFXManager").GetComponent<SFXController> ();
 	}
 
 	void Update()
@@ -45,7 +44,6 @@ public class Gear : StageObject
 
 	public override GameObject Pickup ()
 	{
-		base._sfxManager.PlaySFX (base.PickupClip);
 		return this.gameObject;
 	}
 
@@ -66,5 +64,10 @@ public class Gear : StageObject
 	public override bool IsDestroyedOnUse ()
 	{
 		return _isDestroyedOnUse;
+	}
+
+	public void SetDestroy(bool value)
+	{
+		_isDestroyedOnUse = value;
 	}
 }

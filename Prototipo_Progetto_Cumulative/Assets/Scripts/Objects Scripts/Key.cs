@@ -5,19 +5,16 @@ using UnityEngine;
 public class Key : StageObject
 {
 	public GameObject KeyPrefab;
-	public AudioClip KeyPickupClip;
 
-	private bool _isDestroyedOnUse = true;
+	private bool _isDestroyedOnUse = false;
 
 	void Start()
 	{
 		base.ID = (int)IDList.ID.Key;
-		base._sfxManager = GameObject.FindGameObjectWithTag ("SFXManager").GetComponent<SFXController> ();
 	}
 
 	public override GameObject Pickup ()
 	{
-		base._sfxManager.PlaySFX (KeyPickupClip);
 		return KeyPrefab;
 	}
 

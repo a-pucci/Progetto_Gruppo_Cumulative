@@ -9,12 +9,10 @@ public class Torch : StageObject
 	void Start()
 	{
 		base.ID = (int)IDList.ID.Torch;
-		base._sfxManager = GameObject.FindGameObjectWithTag ("SFXManager").GetComponent<SFXController> ();
 	}
 
 	public override GameObject Pickup ()
 	{
-		base._sfxManager.PlaySFX (base.PickupClip);
 		return this.gameObject;
 	}
 

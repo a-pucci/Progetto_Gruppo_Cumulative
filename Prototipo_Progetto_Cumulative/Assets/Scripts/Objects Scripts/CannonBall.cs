@@ -11,7 +11,6 @@ public class CannonBall : StageObject
 	void Start()
 	{
 		base.ID = (int)IDList.ID.CannonBall;
-		base._sfxManager = GameObject.FindGameObjectWithTag ("SFXManager").GetComponent<SFXController> ();
 	}
 
 	void OnTriggerEnter2D(Collider2D other)
@@ -30,7 +29,6 @@ public class CannonBall : StageObject
 
 	public override GameObject Pickup ()
 	{
-		base._sfxManager.PlaySFX (base.PickupClip);
 		return this.gameObject;
 	}
 

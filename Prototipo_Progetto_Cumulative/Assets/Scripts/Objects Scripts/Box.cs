@@ -56,12 +56,12 @@ public class Box : StageObject
 		return canInteract;
 	}
 
-	public override void Interact (GameObject other)
+	public override void Interact (ref GameObject other)
 	{
 		if(CanInteract (other))
 		{
 			DropItems ();
-			GameObject.Destroy (other);
+			GameObject.Destroy (this.gameObject);
 		}
 	}
 }

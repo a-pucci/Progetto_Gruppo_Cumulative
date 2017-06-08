@@ -9,12 +9,10 @@ public class Mask : StageObject
 	void Start()
 	{
 		base.ID = (int)IDList.ID.Mask;
-		base._sfxManager = GameObject.FindGameObjectWithTag ("SFXManager").GetComponent<SFXController> ();
 	}
 
 	public override GameObject Pickup ()
 	{
-		base._sfxManager.PlaySFX (base.PickupClip);
 		return this.gameObject;
 	}
 

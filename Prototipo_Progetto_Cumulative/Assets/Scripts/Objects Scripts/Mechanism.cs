@@ -38,11 +38,13 @@ public class Mechanism : StageObject
 	private List<GameObject> _gearsPrefab;
 	private List<Vector3> _gearsPos;
 
+	private SFXController _sfxManager;
+
 	void Start()
 	{
 		base.ID = (int)IDList.ID.Mechanism;
 		_camera = GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<CameraEnd> ();
-		base._sfxManager = GameObject.FindGameObjectWithTag ("SFXManager").GetComponent<SFXController> ();
+		_sfxManager = GameObject.FindGameObjectWithTag ("SFXManager").GetComponent<SFXController> ();
 
 		_gears = _maxGears - GearsNeeded;
 
@@ -101,9 +103,9 @@ public class Mechanism : StageObject
 		return _keyUsed;
 	}
 
-	public int InsertGear()
+	public void InsertGear()
 	{
-		if(_gears <= GearsNeeded)
+		if(_gears < _maxGears)
 		{
 			_newGear = Instantiate (_gearsPrefab[_counter]);
 			_newGear.GetComponent<Collider2D> ().enabled = false;
@@ -126,13 +128,11 @@ public class Mechanism : StageObject
 
 		if(_gears <= _maxGears)
 		{
-			_gears += 1;
+			_gears ++;
 		}
-
-		return _gears;
 	}
 
-	public override void Interact (GameObject other)
+	public override void Interact (ref GameObject other)
 	{
 		if(CanInteract (other))
 		{
@@ -142,10 +142,11 @@ public class Mechanism : StageObject
 			}
 			else if(other.GetComponent<StageObject>().ID == (int)IDList.ID.Gear)
 			{
-				_sfxManager.PlaySFX (InsertMechanismClip);
-				int gears = InsertGear ();
-				if(gears <= _maxGears)
+				InsertGear ();
+				if(_gears <= _maxGears)
 				{
+					_sfxManager.PlaySFX (InsertMechanismClip);
+					other.GetComponent<Gear> ().SetDestroy (true);
 					GameObject.Destroy (other);
 				}
 			}
@@ -158,7 +159,7 @@ public class Mechanism : StageObject
 		if(other.GetComponent<StageObject> () != null)
 		{
 			int otherID = other.GetComponent<StageObject> ().ID;
-			if(otherID == (int)IDList.ID.Gear || otherID == (int)IDList.ID.Key)
+			if((_gears < _maxGears && otherID == (int)IDList.ID.Gear) || otherID == (int)IDList.ID.Key)
 			{
 				canInteract = true;
 			}		

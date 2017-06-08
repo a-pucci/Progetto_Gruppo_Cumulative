@@ -39,7 +39,7 @@ public class Dummy : StageObject
 		return _currentMask;
 	}
 
-	public override void Interact (GameObject other)
+	public override void Interact (ref GameObject other)
 	{
 		if(CanInteract (other))
 		{
