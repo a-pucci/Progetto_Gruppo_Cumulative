@@ -98,7 +98,7 @@ public class PlayerPickup : MonoBehaviour
 	{
 		_pickedUp = true;
 		_storedItem = _triggerObject.GetComponent <StageObject> ().Pickup ();
-		if(_triggerObject.GetComponent <StageObject> ().ID == (int)IDList.ID.Key)
+		if(_storedItem.GetComponent <StageObject> ().ID == (int)IDList.ID.Key)
 		{
 			_sfxManager.PlaySFX (KeyPickupClip);
 		}
@@ -109,7 +109,7 @@ public class PlayerPickup : MonoBehaviour
 
 		InventoryIcon.enabled = true;
 		InventoryIcon.sprite =  _storedItem.GetComponent<SpriteRenderer> ().sprite;
-		_triggerObject.GetComponent<SpriteRenderer> ().enabled = true;
+		_storedItem.GetComponent<SpriteRenderer> ().enabled = true;
 
 		_storedItem.transform.parent = this.transform.parent;
 		_storedItem.SetActive (false);

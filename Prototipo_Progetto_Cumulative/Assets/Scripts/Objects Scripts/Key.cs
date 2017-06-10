@@ -6,6 +6,8 @@ public class Key : StageObject
 {
 	public GameObject KeyPrefab;
 
+	public bool EnemyChild;
+
 	private bool _isDestroyedOnUse = false;
 
 	void Start()

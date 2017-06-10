@@ -10,7 +10,6 @@ public class CameraEnd : MonoBehaviour
 
 	[Header("Camera Setting")]
 	public float MovingSpeed;
-	public float GrowingSpeed;
 	public float MaxSize;
 	public Animator CameraAC;
 
@@ -51,13 +50,15 @@ public class CameraEnd : MonoBehaviour
 	{
 		if(_moving)
 		{
-			//_cameraTransform.position = Vector3.MoveTowards (_cameraTransform.position, _center, MovingSpeed * Time.deltaTime);
+			_cameraTransform.position = Vector3.MoveTowards (_cameraTransform.position, _center, MovingSpeed * Time.deltaTime);
+
 			if(_cameraTransform.position == _center)
 			{
 				_moving = false;
 				_growing = true;
 			}
 		}
+
 		if(_growing)
 		{
 			CameraAC.SetBool ("Growing", true);
@@ -74,7 +75,6 @@ public class CameraEnd : MonoBehaviour
 
 	public void StartClose ()
 	{
-
 		_sfxManager.PlaySFX (EndLevelClip);
 		for(int i = 0; i < Interface.Length; i++)
 		{
