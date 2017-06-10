@@ -28,6 +28,7 @@ public class PlayerPickup : MonoBehaviour
 	private GameObject _sadStage;
 	private GameObject _triggerObject;
 	private GameObject _storedItem;
+	private PlayerMovement _player;
 
 	private SFXController _sfxManager;
 
@@ -37,7 +38,8 @@ public class PlayerPickup : MonoBehaviour
 	{
 		_happyStage = GameObject.FindGameObjectWithTag ("HappyStage");
 		_sadStage = GameObject.FindGameObjectWithTag ("SadStage");
-		_sfxManager = GameObject.FindGameObjectWithTag ("SFXManager").GetComponent<SFXController> ();	
+		_sfxManager = GameObject.FindGameObjectWithTag ("SFXManager").GetComponent<SFXController> ();
+		_player = GetComponent<PlayerMovement> ();
 
 		PickupText.enabled = false;
 		InteractText.enabled = false;
@@ -115,39 +117,41 @@ public class PlayerPickup : MonoBehaviour
 
 	private void Drop ()
 	{
-		_storedItem.SetActive (true);
-		_sfxManager.PlaySFX (DropClip);
-
-		switch(_storedItem.GetComponent<StageObject> ().ID)
+		if(_player.isGrounded ())
 		{
-		case (int)IDList.ID.CannonBall:
-			_storedItem.transform.position = this.transform.position + BallDropOffset;
-			break;
+			_storedItem.SetActive (true);
+			_sfxManager.PlaySFX (DropClip);
 
-		case (int)IDList.ID.Gear:
-			_storedItem.transform.position = this.transform.position + GearDropOffset;
-			break;
+			switch (_storedItem.GetComponent<StageObject> ().ID)
+			{
+			case (int)IDList.ID.CannonBall:
+				_storedItem.transform.position = this.transform.position + BallDropOffset;
+				break;
 
-		case (int)IDList.ID.Key:
-			_storedItem.transform.position = this.transform.position + KeyDropOffset;
-			break;
+			case (int)IDList.ID.Gear:
+				_storedItem.transform.position = this.transform.position + GearDropOffset;
+				break;
 
-		case (int)IDList.ID.Torch:
-			_storedItem.transform.position = this.transform.position + TorchDropOffset;
-			break;
+			case (int)IDList.ID.Key:
+				_storedItem.transform.position = this.transform.position + KeyDropOffset;
+				break;
+
+			case (int)IDList.ID.Torch:
+				_storedItem.transform.position = this.transform.position + TorchDropOffset;
+				break;
+			}
+
+			if (_happyStage.activeInHierarchy)
+			{
+				_storedItem.transform.parent = _happyStage.transform;
+			}
+			else if (_sadStage.activeInHierarchy)
+			{
+				_storedItem.transform.parent = _sadStage.transform;
+			}
+
+			RemoveItemFromInventory ();
 		}
-
-		if(_happyStage.activeInHierarchy)
-		{
-			_storedItem.transform.parent = _happyStage.transform;
-		}
-
-		else if (_sadStage.activeInHierarchy)
-		{
-			_storedItem.transform.parent = _sadStage.transform;
-		}
-
-		RemoveItemFromInventory ();
 	}
 
 	private void Interact(GameObject trigger)

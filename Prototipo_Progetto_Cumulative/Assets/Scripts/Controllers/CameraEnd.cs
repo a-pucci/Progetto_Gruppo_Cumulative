@@ -51,7 +51,7 @@ public class CameraEnd : MonoBehaviour
 	{
 		if(_moving)
 		{
-			_cameraTransform.position = Vector3.MoveTowards (_cameraTransform.position, _center, MovingSpeed * Time.deltaTime);
+			//_cameraTransform.position = Vector3.MoveTowards (_cameraTransform.position, _center, MovingSpeed * Time.deltaTime);
 			if(_cameraTransform.position == _center)
 			{
 				_moving = false;
@@ -60,7 +60,7 @@ public class CameraEnd : MonoBehaviour
 		}
 		if(_growing)
 		{
-			CameraAC.SetTrigger ("Grow");
+			CameraAC.SetBool ("Growing", true);
 
 			if(_camera.orthographicSize == MaxSize)
 			{

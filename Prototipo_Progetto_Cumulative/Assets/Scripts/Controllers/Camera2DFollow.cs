@@ -12,7 +12,10 @@ public class Camera2DFollow : MonoBehaviour
 
 	[Header("Camera Bounds")]
 	public float XBound;
-	public float YBound;	
+	public float YBound;
+
+	[Header("Camera Animator")]
+	public Animator CameraAC;
 
     private float _offsetZ;
     private Vector3 _lastTargetPosition;
@@ -22,24 +25,27 @@ public class Camera2DFollow : MonoBehaviour
 	private Transform _target;
 
 	private HealthManager _playerHealth;
-	public CameraStart CameraStart;
-	public CameraEnd CameraEnd;
+	private CameraStart _cameraStart;
+	private CameraEnd _cameraEnd;
+
+	private bool _locked;
 
     // Use this for initialization
-    private void Start()
+    void Start()
     {
 		_target = GameObject.FindGameObjectWithTag ("Player").transform;
 		_lastTargetPosition = _target.position;
 		_offsetZ = (transform.position - _target.position).z;
         transform.parent = null;
 		_playerHealth = _target.gameObject.GetComponent<HealthManager> ();
-    }
-
+		_cameraStart = GetComponent <CameraStart> ();
+		_cameraEnd = GetComponent <CameraEnd> ();
+	}
 
     // Update is called once per frame
-    private void Update()
-{
-		if (!_playerHealth.PlayerDead && !CameraStart.IsShowing() && !CameraEnd.closingAnimation())
+    void Update()
+	{
+		if (!_playerHealth.PlayerDead && !_cameraStart.IsShowing() && !_cameraEnd.closingAnimation() && !_locked)
 		{
 			// only update lookahead pos if accelerating or changed direction
 			float xMoveDelta = (_target.position - _lastTargetPosition).x;
@@ -71,5 +77,21 @@ public class Camera2DFollow : MonoBehaviour
 			_lastTargetPosition = _target.position;
 		}
     }
+
+	public void LockCamera(bool value)
+	{
+		_locked = value;
+
+		if(_locked)
+		{
+			this.gameObject.transform.position = new Vector3 (0, 0, -10);
+			CameraAC.SetBool ("Growing", true);
+		}
+		else
+		{
+			CameraAC.SetBool ("Growing", false);
+			Camera.main.orthographicSize = 6;
+		}
+	}
 }
 

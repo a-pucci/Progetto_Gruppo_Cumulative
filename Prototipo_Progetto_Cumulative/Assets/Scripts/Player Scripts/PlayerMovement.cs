@@ -80,4 +80,9 @@ public class PlayerMovement : MonoBehaviour
 		theScale.x *= -1;
 		transform.localScale = theScale;
 	}
+
+	public bool isGrounded()
+	{
+		return m_Grounded;
+	}
 }
