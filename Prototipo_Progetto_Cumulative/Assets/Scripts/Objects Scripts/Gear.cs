@@ -10,8 +10,6 @@ public class Gear : StageObject
 	private bool _rotateRight = false;
 	private bool _rotateLeft = false;
 
-	private bool _isDestroyedOnUse = false;
-
 	void Start()
 	{
 		base.ID = (int)IDList.ID.Gear;
@@ -59,15 +57,5 @@ public class Gear : StageObject
 			}		
 		}
 		return canInteract;
-	}
-
-	public override bool IsDestroyedOnUse ()
-	{
-		return _isDestroyedOnUse;
-	}
-
-	public void SetDestroy(bool value)
-	{
-		_isDestroyedOnUse = value;
 	}
 }

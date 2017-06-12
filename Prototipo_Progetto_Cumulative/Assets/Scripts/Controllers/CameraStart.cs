@@ -5,8 +5,9 @@ using UnityEngine;
 public class CameraStart : MonoBehaviour 
 {
 	public Transform[] Targets;
-	public float Speed = 5;
-	public int WaitTime = 2;
+	public float Speed;
+	public float WaitTime;
+	public float CurtainsWait;
 
 	private Transform _cameraTrans;
 	private bool _showingObjects;
@@ -15,6 +16,7 @@ public class CameraStart : MonoBehaviour
 	private int _i = 0;
 	private bool _waiting = false;
 	private bool _firstCheck = true;
+	private bool _curtainsOpen = false;
 
 	private PlayerUserController _player;
 
@@ -25,9 +27,8 @@ public class CameraStart : MonoBehaviour
 	void Start () 
 	{
 		_player = GameObject.FindGameObjectWithTag ("Player").GetComponent<PlayerUserController> ();
-
-		_showingObjects = true;		
 		_cameraTrans = this.transform;
+		_showingObjects = true;	
 
 		if(Targets.Length > 0)
 		{
@@ -35,12 +36,13 @@ public class CameraStart : MonoBehaviour
 		}
 
 		_player.CanMove = false;
+		StartCoroutine (InitialWait ());
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
-		if(_showingObjects)
+		if(_showingObjects && _curtainsOpen)
 		{	
 			Move ();
 		}
@@ -89,6 +91,12 @@ public class CameraStart : MonoBehaviour
 			}
 		}
 		_waiting = false;
+	}
+
+	private IEnumerator InitialWait()
+	{
+		yield return new WaitForSeconds (CurtainsWait);
+		_curtainsOpen = true;
 	}
 
 	public bool IsShowing()

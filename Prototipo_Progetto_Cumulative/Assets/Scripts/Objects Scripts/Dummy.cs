@@ -15,6 +15,7 @@ public class Dummy : StageObject
 	private GameObject[] _interactive;
 
 	private GameObject _currentMask;
+	private PlayerPickup _player;
 
 	void Start()
 	{
@@ -24,6 +25,7 @@ public class Dummy : StageObject
 		_interactive = GameObject.FindGameObjectsWithTag ("Interactive");
 		_happyStage = GameObject.FindGameObjectWithTag ("HappyStage");
 		_sadStage = GameObject.FindGameObjectWithTag ("SadStage");
+		_player = GameObject.FindGameObjectWithTag ("Player").GetComponent <PlayerPickup> ();
 	}
 
 	public void PutMask (GameObject mask)
@@ -46,6 +48,7 @@ public class Dummy : StageObject
 			other.SetActive (true);
 			PutMask (other);
 			changeObjectsStage ();
+			_player.RemoveItemFromInventory ();
 		}
 	}
 
@@ -69,7 +72,7 @@ public class Dummy : StageObject
 		{
 			for(int i = 0; i < _pickups.Length; i++)
 			{
-				if(_pickups[i].GetComponent<StageObject> ().canSwapStage)
+				if(_pickups[i].GetComponent<StageObject> ().canSwapStage && _pickups[i].transform.parent == _happyStage.transform)
 				{
 					_pickups[i].transform.parent = _sadStage.transform;
 				}
@@ -77,7 +80,7 @@ public class Dummy : StageObject
 
 			for(int i = 0; i < _interactive.Length; i++)
 			{
-				if(_interactive[i].GetComponent<StageObject> ().canSwapStage)
+				if(_interactive[i].GetComponent<StageObject> ().canSwapStage && _interactive[i].transform.parent == _happyStage.transform)
 				{
 					_interactive[i].transform.parent = _sadStage.transform;
 				}
@@ -87,7 +90,7 @@ public class Dummy : StageObject
 		{
 			for(int i = 0; i < _pickups.Length; i++)
 			{
-				if(_pickups[i].GetComponent<StageObject> ().canSwapStage)
+				if(_pickups[i].GetComponent<StageObject> ().canSwapStage && _pickups[i].transform.parent == _sadStage.transform)
 				{
 					_pickups[i].transform.parent = _happyStage.transform;
 				}
@@ -95,7 +98,7 @@ public class Dummy : StageObject
 
 			for(int i = 0; i < _interactive.Length; i++)
 			{
-				if(_interactive[i].GetComponent<StageObject> ().canSwapStage)
+				if(_interactive[i].GetComponent<StageObject> ().canSwapStage && _interactive[i].transform.parent == _sadStage.transform)
 				{
 					_interactive[i].transform.parent = _happyStage.transform;
 				}

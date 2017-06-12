@@ -6,7 +6,6 @@ public class CannonBall : StageObject
 {
 	public float time;
 	public bool shooted;
-	private bool _isDestroyedOnUse = true;
 
 	void Start()
 	{
@@ -44,10 +43,5 @@ public class CannonBall : StageObject
 			}		
 		}
 		return canInteract;
-	}
-
-	public override bool IsDestroyedOnUse ()
-	{
-		return _isDestroyedOnUse;
 	}
 }

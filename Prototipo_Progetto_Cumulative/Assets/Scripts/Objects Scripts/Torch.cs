@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class Torch : StageObject 
 {
-	private bool _isDestroyedOnUse = false;
-
 	void Start()
 	{
 		base.ID = (int)IDList.ID.Torch;
@@ -28,10 +26,5 @@ public class Torch : StageObject
 			}		
 		}
 		return canInteract;
-	}
-
-	public override bool IsDestroyedOnUse ()
-	{
-		return _isDestroyedOnUse;
 	}
 }

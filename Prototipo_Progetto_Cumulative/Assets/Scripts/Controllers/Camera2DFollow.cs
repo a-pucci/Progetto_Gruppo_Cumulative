@@ -1,5 +1,7 @@
 using System;
 using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 
 public class Camera2DFollow : MonoBehaviour
 {
@@ -23,6 +25,7 @@ public class Camera2DFollow : MonoBehaviour
     private Vector3 _lookAheadPos;
 
 	private Transform _target;
+	private Transform _cameraTrans;
 
 	private HealthManager _playerHealth;
 	private CameraStart _cameraStart;
@@ -40,6 +43,13 @@ public class Camera2DFollow : MonoBehaviour
 		_playerHealth = _target.gameObject.GetComponent<HealthManager> ();
 		_cameraStart = GetComponent <CameraStart> ();
 		_cameraEnd = GetComponent <CameraEnd> ();
+
+		Vector3 PlayerPos = GameObject.FindGameObjectWithTag ("Player").transform.position;	
+		Vector3 Pos = new Vector3 (PlayerPos.x, PlayerPos.y, -10);
+		Pos.x = Mathf.Clamp(Pos.x, -XBound, XBound);
+		Pos.y = Mathf.Clamp(Pos.y, -YBound, YBound);
+		_cameraTrans = this.transform;
+		_cameraTrans.position = Pos;
 	}
 
     // Update is called once per frame
@@ -78,20 +88,26 @@ public class Camera2DFollow : MonoBehaviour
 		}
     }
 
-	public void LockCamera(bool value)
+	public void LockCamera(bool value, float waitTime = 0)
 	{
-		_locked = value;
-
-		if(_locked)
+		if(value)
 		{
 			this.gameObject.transform.position = new Vector3 (0, 0, -10);
 			CameraAC.SetBool ("Growing", true);
+			_locked = value;
 		}
 		else
 		{
-			CameraAC.SetBool ("Growing", false);
-			Camera.main.orthographicSize = 6;
+			StartCoroutine (Wait (value, waitTime));
 		}
+	}
+
+	private IEnumerator Wait(bool value, float time)
+	{
+		yield return new WaitForSeconds (time);
+		CameraAC.SetBool ("Growing", false);
+		Camera.main.orthographicSize = 6;
+		_locked = value;
 	}
 }
 

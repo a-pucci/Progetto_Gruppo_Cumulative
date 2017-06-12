@@ -8,8 +8,9 @@ using UnityEditor;
 public class PlayerPickup : MonoBehaviour 
 {
 	[Header("Inventory")]
-	public Text PickupText;
-	public Text InteractText;
+	public GameObject ExclamationPoint;
+	//public Text PickupText;
+	//public Text InteractText;
 	public Image InventoryIcon;
 
 	[Header("Drop Offset")]
@@ -41,8 +42,9 @@ public class PlayerPickup : MonoBehaviour
 		_sfxManager = GameObject.FindGameObjectWithTag ("SFXManager").GetComponent<SFXController> ();
 		_player = GetComponent<PlayerMovement> ();
 
-		PickupText.enabled = false;
-		InteractText.enabled = false;
+		ExclamationPoint.SetActive (false);
+		//PickupText.enabled = false;
+		//InteractText.enabled = false;
 		InventoryIcon.enabled = false;
 	}
 
@@ -76,22 +78,32 @@ public class PlayerPickup : MonoBehaviour
 	{
 		_triggerObject = collision.gameObject;
 
-		if (collision.CompareTag("Pickup") && InteractText.enabled == false && _storedItem == null)
-		{
-			PickupText.enabled = true;	
-		}
+//		if (collision.CompareTag("Pickup") && InteractText.enabled == false && _storedItem == null)
+//		{
+//			PickupText.enabled = true;	
+//		}
+//
+//		else if (collision.CompareTag("Interactive") && PickupText.enabled == false && _storedItem != null)
+//		{
+//			InteractText.enabled = true;
+//		}
 
-		else if (collision.CompareTag("Interactive") && PickupText.enabled == false && _storedItem != null)
+		if (collision.CompareTag("Pickup"))
 		{
-			InteractText.enabled = true;
+			ExclamationPoint.SetActive (true);
+		}
+		else if (collision.CompareTag("Interactive") && _storedItem != null && _triggerObject.GetComponent<StageObject> ().CanInteract(_storedItem))
+		{
+			ExclamationPoint.SetActive (true);
 		}
 	}
 
 	void OnTriggerExit2D(Collider2D collision)
 	{
 		_triggerObject = null;
-		PickupText.enabled = false;
-		InteractText.enabled = false;
+		ExclamationPoint.SetActive (false);
+		//PickupText.enabled = false;
+		//InteractText.enabled = false;
 	}
 
 	private void Pickup()
@@ -165,18 +177,13 @@ public class PlayerPickup : MonoBehaviour
 			_storedItem.transform.parent = _sadStage.transform;
 		}
 
-		if(_storedItem.GetComponent<StageObject> ().CanInteract (trigger))
+		if(trigger.GetComponent<StageObject> ().CanInteract (_storedItem))
 		{
 			trigger.GetComponent<StageObject> ().Interact (ref _storedItem);
-
-			if(_storedItem.GetComponent<StageObject> ().IsDestroyedOnUse ())
-			{
-				RemoveItemFromInventory ();
-			}
 		}
 	}
 
-	private void RemoveItemFromInventory ()
+	public void RemoveItemFromInventory ()
 	{
 		_storedItem = null;
 		_pickedUp = false;

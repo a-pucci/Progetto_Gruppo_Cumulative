@@ -34,6 +34,7 @@ public class Mechanism : StageObject
 	private GameObject _newGear;
 	private GameObject _newKey;
 	private CameraEnd _camera;
+	private PlayerPickup _player;
 
 	private List<GameObject> _gearsPrefab;
 	private List<Vector3> _gearsPos;
@@ -45,6 +46,7 @@ public class Mechanism : StageObject
 		base.ID = (int)IDList.ID.Mechanism;
 		_camera = GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<CameraEnd> ();
 		_sfxManager = GameObject.FindGameObjectWithTag ("SFXManager").GetComponent<SFXController> ();
+		_player = GameObject.FindGameObjectWithTag ("Player").GetComponent <PlayerPickup> ();
 
 		_gears = _maxGears - GearsNeeded;
 
@@ -139,6 +141,7 @@ public class Mechanism : StageObject
 			if(other.GetComponent<StageObject>().ID == (int)IDList.ID.Key)
 			{
 				InsertKey ();
+				_player.RemoveItemFromInventory ();
 			}
 			else if(other.GetComponent<StageObject>().ID == (int)IDList.ID.Gear)
 			{
@@ -146,8 +149,7 @@ public class Mechanism : StageObject
 				if(_gears <= _maxGears)
 				{
 					_sfxManager.PlaySFX (InsertMechanismClip);
-					other.GetComponent<Gear> ().SetDestroy (true);
-					GameObject.Destroy (other);
+					_player.RemoveItemFromInventory ();
 				}
 			}
 		}
@@ -159,7 +161,7 @@ public class Mechanism : StageObject
 		if(other.GetComponent<StageObject> () != null)
 		{
 			int otherID = other.GetComponent<StageObject> ().ID;
-			if((_gears < _maxGears && otherID == (int)IDList.ID.Gear) || otherID == (int)IDList.ID.Key)
+			if((_gears < _maxGears && otherID == (int)IDList.ID.Gear) || (otherID == (int)IDList.ID.Key && _gears >= _maxGears))
 			{
 				canInteract = true;
 			}		

@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class Mask : StageObject
 {
-	private bool _isDestroyedOnUse = true;
-
 	void Start()
 	{
 		base.ID = (int)IDList.ID.Mask;
@@ -28,10 +26,5 @@ public class Mask : StageObject
 			}		
 		}
 		return canInteract;
-	}
-
-	public override bool IsDestroyedOnUse ()
-	{
-		return _isDestroyedOnUse;
 	}
 }
