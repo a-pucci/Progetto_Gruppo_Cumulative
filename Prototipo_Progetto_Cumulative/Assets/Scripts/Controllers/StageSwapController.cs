@@ -29,6 +29,8 @@ public class StageSwapController : MonoBehaviour
 
 	private SFXController _sfxManager;
 
+	private bool _locked = false;
+
 	private Image _uiMask;
 
 	// Use this for initialization
@@ -54,9 +56,11 @@ public class StageSwapController : MonoBehaviour
 
 	void Update () 
 	{
-		if (!TimeEnabled && Time.timeScale > 0) {
+		if (!TimeEnabled && Time.timeScale > 0 && !_locked) 
+		{
 			_swap = CrossPlatformInputManager.GetButtonDown ("Fire1"); 
-			if (_swap && !_playerHealth.PlayerDead) {
+			if (_swap && !_playerHealth.PlayerDead) 
+			{
 				StageSwap ();
 
 			}
@@ -82,12 +86,25 @@ public class StageSwapController : MonoBehaviour
 	}
 
 
-	IEnumerator SwitchCoroutine () {
-		while (!_playerHealth.PlayerDead) {
+	IEnumerator SwitchCoroutine () 
+	{
+		while (!_playerHealth.PlayerDead) 
+		{
 			yield return new WaitForSecondsRealtime (SwitchTime);
-			if (!_playerHealth.PlayerDead) {
+			if (!_playerHealth.PlayerDead) 
+			{
 				StageSwap ();
 			}
 		}
 	}
+
+	public void LockSwap ()
+	{
+		_locked = true;
+	}
+	public void UnlockSwap()
+	{
+		_locked = false;
+	}
+
 }

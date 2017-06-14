@@ -23,10 +23,13 @@ public class CameraStart : MonoBehaviour
 	public GameObject _happyStage;
 	public GameObject _sadStage;
 
+	private StageSwapController _stageSwap;
+
 	// Use this for initialization
 	void Start () 
 	{
 		_player = GameObject.FindGameObjectWithTag ("Player").GetComponent<PlayerUserController> ();
+		_stageSwap = GameObject.FindGameObjectWithTag ("StageSwap").GetComponent<StageSwapController> ();
 		_cameraTrans = this.transform;
 		_showingObjects = true;	
 
@@ -35,6 +38,7 @@ public class CameraStart : MonoBehaviour
 			_target = GetTargetPosition (Targets [_i].position);
 		}
 
+		_stageSwap.LockSwap ();
 		_player.CanMove = false;
 		StartCoroutine (InitialWait ());
 	}
@@ -70,6 +74,7 @@ public class CameraStart : MonoBehaviour
 			StopCoroutine (Wait ());
 			_showingObjects = false;
 			_player.CanMove = true;
+			_stageSwap.UnlockSwap ();
 			_happyStage.SetActive (true);
 			_sadStage.SetActive (false);
 		}
