@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityStandardAssets.CrossPlatformInput;
 
 public class PauseMenu : MonoBehaviour {
 
-	public KeyCode pauseButton;
 	[SerializeField] private bool paused = false;
 	public string menuScene;
 	private Canvas thisCanvas;
@@ -51,7 +51,7 @@ public class PauseMenu : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetKeyDown (pauseButton)) {
+		if (CrossPlatformInputManager.GetButtonDown("Pause")) {
 			if (paused) {
 				ResumeGame ();
 			} else {
