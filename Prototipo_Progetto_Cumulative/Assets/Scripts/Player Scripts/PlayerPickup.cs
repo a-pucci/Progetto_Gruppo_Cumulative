@@ -50,7 +50,7 @@ public class PlayerPickup : MonoBehaviour
 
 	void Update () 
 	{
-		if(_triggerObject != null && CrossPlatformInputManager.GetButtonDown("Pickup"))
+		if(_triggerObject != null && CrossPlatformInputManager.GetButtonDown("Pickup") && Time.timeScale != 0)
 		{
 			if (_triggerObject.CompareTag ("Pickup"))
 			{
@@ -68,7 +68,7 @@ public class PlayerPickup : MonoBehaviour
 			}
 		}
 
-		if(_storedItem != null && CrossPlatformInputManager.GetButtonDown("Drop"))
+		if(_storedItem != null && CrossPlatformInputManager.GetButtonDown("Drop") && Time.timeScale != 0)
 		{
 			Drop ();
 		}
