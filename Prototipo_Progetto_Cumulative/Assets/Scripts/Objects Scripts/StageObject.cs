@@ -5,7 +5,7 @@ using UnityEngine;
 public class StageObject : MonoBehaviour 
 {
 	[Header("-- GENERIC --")]
-	public int ID;
+	[HideInInspector] public int ID;
 	public bool canSwapStage;
 
 	public virtual GameObject Pickup () {return null;}

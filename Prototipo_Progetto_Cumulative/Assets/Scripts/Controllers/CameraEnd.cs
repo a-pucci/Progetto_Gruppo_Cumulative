@@ -100,6 +100,7 @@ public class CameraEnd : MonoBehaviour
 			yield return new WaitForSeconds (0);
 		}
 		yield return new WaitForSeconds (_closureTime);
-		SceneManager.LoadScene (NextLevel);
+		//SceneManager.LoadScene (NextLevel);
+		LevelManager.GoNextLevel();
 	}
 }
