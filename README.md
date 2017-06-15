@@ -1,1 +1,0 @@
-# Progetto_Gruppo_Cumulative
