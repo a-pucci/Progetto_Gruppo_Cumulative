@@ -74,7 +74,7 @@ public class PlayerPickup : MonoBehaviour
 		}
 	}
 
-	void OnTriggerEnter2D(Collider2D collision)
+	void OnTriggerStay2D(Collider2D collision)
 	{
 		_triggerObject = collision.gameObject;
 
