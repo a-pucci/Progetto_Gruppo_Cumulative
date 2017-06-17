@@ -8,10 +8,10 @@ public class PlayerMovement : MonoBehaviour
 	[SerializeField] private float _jumpForce = 400f;                  // Amount of force added when the player jumps.
 	[SerializeField] private bool _airControl = false;                 // Whether or not a player can steer while jumping;
 	[SerializeField] private LayerMask _whatIsGround;                  // A mask determining what is ground to the character
-	[SerializeField] private Animator _walkAnim;
+	[SerializeField] private Animator _playerAnim;
 
 	private Transform m_GroundCheck;    // A position marking where to check if the player is grounded.
-	const float k_GroundedRadius = .25f; // Radius of the overlap circle to determine if grounded
+	const float k_GroundedRadius = .1f; // Radius of the overlap circle to determine if grounded
 	private bool m_Grounded;            // Whether or not the player is grounded.
 	private Rigidbody2D m_Rigidbody2D;
 
@@ -34,9 +34,14 @@ public class PlayerMovement : MonoBehaviour
 		Collider2D[] colliders = Physics2D.OverlapCircleAll(m_GroundCheck.position, k_GroundedRadius, _whatIsGround);
 		for (int i = 0; i < colliders.Length; i++)
 		{
-			if (colliders[i].gameObject != gameObject)
+			if (colliders [i].gameObject != gameObject)
+			{
+				_playerAnim.SetTrigger ("Land");
 				m_Grounded = true;
+			}
+
 		}
+		Debug.Log ("Grounded: " + m_Grounded);
 	}
 
 
@@ -49,7 +54,7 @@ public class PlayerMovement : MonoBehaviour
 			// Move the character
 			m_Rigidbody2D.velocity = new Vector2(move*_maxSpeed, m_Rigidbody2D.velocity.y);
 		
-			_walkAnim.SetFloat("Speed", Mathf.Abs(move));
+			_playerAnim.SetFloat("Speed", Mathf.Abs(move));
 
 			if (move > 0 && !_facingRight)
 			{
@@ -66,6 +71,7 @@ public class PlayerMovement : MonoBehaviour
 		// If the player should jump...
 		if (m_Grounded && jump)
 		{
+			_playerAnim.SetTrigger ("Jump");
 			// Add a vertical force to the player.
 			m_Grounded = false;
 			m_Rigidbody2D.AddForce(new Vector2(0f, _jumpForce));
