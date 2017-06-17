@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityStandardAssets.CrossPlatformInput;
 
 public class CameraStart : MonoBehaviour 
 {
@@ -24,6 +25,7 @@ public class CameraStart : MonoBehaviour
 	public GameObject _sadStage;
 
 	private StageSwapController _stageSwap;
+	private bool _skip = false;
 
 	// Use this for initialization
 	void Start () 
@@ -46,15 +48,19 @@ public class CameraStart : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
+		if(CrossPlatformInputManager.GetButtonDown("Drop"))
+		{
+			_skip = true;
+		}
 		if(_showingObjects && _curtainsOpen)
 		{	
 			Move ();
-		}
+		}			
 	}
 
 	private void Move()
 	{
-		if(_i < Targets.Length)
+		if(_i < Targets.Length && !_skip)
 		{
 			if(_firstCheck)
 			{
