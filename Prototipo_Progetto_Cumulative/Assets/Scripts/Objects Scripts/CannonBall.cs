@@ -1,15 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class CannonBall : StageObject 
 {
 	public float time;
 	public bool shooted;
+	public AudioClip boxDestroyed;
+	[Range(0.0f, 1.0f)] public float boxDestroyedVolume = 0.8f;
+	public AudioClip gateDestroyed;
+	[Range(0.0f, 1.0f)] public float gateDestroyedVolume = 0.8f;
+	private SFXController _sfxManager;
 
 	void Start()
 	{
 		base.ID = (int)IDList.ID.CannonBall;
+		_sfxManager = GameObject.FindGameObjectWithTag ("SFXManager").GetComponent<SFXController> ();
 	}
 
 	void OnTriggerEnter2D(Collider2D other)
@@ -20,6 +27,11 @@ public class CannonBall : StageObject
 		{
 			if(shooted)
 			{
+				if (other.gameObject.GetComponent<StageObject> ().ID == (int)IDList.ID.Box) {
+					_sfxManager.PlaySFX (boxDestroyed, boxDestroyedVolume);
+				} else if ( other.gameObject.GetComponent<StageObject> ().ID == (int)IDList.ID.Gate) {
+					_sfxManager.PlaySFX (gateDestroyed, gateDestroyedVolume);
+				}
 				GameObject.Destroy (other.gameObject, time);
 				shooted = false;
 			}

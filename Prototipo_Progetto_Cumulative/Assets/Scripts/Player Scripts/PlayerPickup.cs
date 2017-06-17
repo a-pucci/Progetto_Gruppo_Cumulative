@@ -21,9 +21,14 @@ public class PlayerPickup : MonoBehaviour
 
 	[Header("Various Audio")]
 	public AudioClip KeyPickupClip;
+	[Range(0.0f, 1.0f)] public float KeyPickupVolume = 0.8f;
 	public AudioClip PickupClip;
+	[Range(0.0f, 1.0f)] public float PickupVolume = 0.8f;
 	public AudioClip DropClip;
+	[Range(0.0f, 1.0f)] public float DropVolume = 0.8f;
 	public AudioClip InteractClip;
+	[Range(0.0f, 1.0f)] public float InteractVolume = 0.8f;
+
 
 	private GameObject _happyStage;
 	private GameObject _sadStage;
@@ -112,11 +117,11 @@ public class PlayerPickup : MonoBehaviour
 		_storedItem = _triggerObject.GetComponent <StageObject> ().Pickup ();
 		if(_storedItem.GetComponent <StageObject> ().ID == (int)IDList.ID.Key)
 		{
-			_sfxManager.PlaySFX (KeyPickupClip);
+			_sfxManager.PlaySFX (KeyPickupClip, KeyPickupVolume);
 		}
 		else
 		{
-			_sfxManager.PlaySFX (PickupClip);
+			_sfxManager.PlaySFX (PickupClip, PickupVolume);
 		}
 
 		InventoryIcon.enabled = true;
@@ -132,7 +137,7 @@ public class PlayerPickup : MonoBehaviour
 		if(_player.isGrounded ())
 		{
 			_storedItem.SetActive (true);
-			_sfxManager.PlaySFX (DropClip);
+			_sfxManager.PlaySFX (DropClip, DropVolume);
 
 			switch (_storedItem.GetComponent<StageObject> ().ID)
 			{

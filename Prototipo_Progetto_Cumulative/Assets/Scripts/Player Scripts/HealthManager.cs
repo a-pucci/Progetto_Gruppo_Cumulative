@@ -9,6 +9,8 @@ public class HealthManager : MonoBehaviour
 {
 	[Header("Death Audio")]
 	public AudioClip DeathClip;
+	[Range(0.0f, 1.0f)] public float DeathVolume = 0.8f;
+
 
 	public bool PlayerDead = false;
 	public Text GameOverText;
@@ -54,7 +56,7 @@ public class HealthManager : MonoBehaviour
 
 	void Death ()
 	{
-		_sfxManager.PlaySFX (DeathClip);
+		_sfxManager.PlaySFX (DeathClip, DeathVolume);
 		Time.timeScale = 0;
 		_spriteRenderer.enabled = false;
 		GameOverText.enabled = true;

@@ -13,6 +13,7 @@ public class StageSwapController : MonoBehaviour
 
 	[Header("Switch Audio")]
 	public AudioClip SwitchClip;
+	[Range(0.0f, 1.0f)] public float SwitchVolume = 0.5f;
 
 	[Header("UI Masks")]
 	public Sprite HappyMask;
@@ -58,7 +59,7 @@ public class StageSwapController : MonoBehaviour
 	{
 		if (!TimeEnabled && Time.timeScale > 0 && !_locked) 
 		{
-			_swap = CrossPlatformInputManager.GetButtonDown ("Fire1"); 
+			_swap = CrossPlatformInputManager.GetButtonDown ("Fire1");
 			if (_swap && !_playerHealth.PlayerDead) 
 			{
 				StageSwap ();
@@ -69,7 +70,7 @@ public class StageSwapController : MonoBehaviour
 
 	private void StageSwap ()
 	{
-		_sfxManager.PlaySFX (SwitchClip);
+		_sfxManager.PlaySFX (SwitchClip, SwitchVolume);
 		if (toggle) 
 		{
 			_uiMask.sprite = HappyMask;

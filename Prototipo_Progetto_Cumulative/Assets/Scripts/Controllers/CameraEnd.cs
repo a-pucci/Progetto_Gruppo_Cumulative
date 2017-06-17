@@ -20,7 +20,9 @@ public class CameraEnd : MonoBehaviour
 
 	[Header("Level Audio")]
 	public AudioClip EndLevelClip;
+	[Range(0.0f, 1.0f)] public float EndLevelVolume = 1f;
 	public AudioClip StartLevelClip;
+	[Range(0.0f, 1.0f)] public float StartLevelVolume = 1f;
 
 	private float _closureTime = 2f;
 
@@ -43,7 +45,7 @@ public class CameraEnd : MonoBehaviour
 		_center = new Vector3 (0, 0, -10);
 
 		_sfxManager = GameObject.FindGameObjectWithTag ("SFXManager").GetComponent<SFXController> ();
-		_sfxManager.PlaySFX (StartLevelClip);
+		_sfxManager.PlaySFX (StartLevelClip, StartLevelVolume);
 	}
 
 	void Update()
@@ -75,7 +77,7 @@ public class CameraEnd : MonoBehaviour
 
 	public void StartClose ()
 	{
-		_sfxManager.PlaySFX (EndLevelClip);
+		_sfxManager.PlaySFX (EndLevelClip, EndLevelVolume);
 		for(int i = 0; i < Interface.Length; i++)
 		{
 			Interface[i].SetActive (false);

@@ -25,6 +25,7 @@ public class Mechanism : StageObject
 
 	[Header("Audio")]
 	public AudioClip InsertMechanismClip;
+	[Range(0.0f, 1.0f)] public float InsertMechanismVolume = 0.8f;
 
 	private int _gears = 0;
 	private int _maxGears = 3;
@@ -148,7 +149,7 @@ public class Mechanism : StageObject
 				InsertGear ();
 				if(_gears <= _maxGears)
 				{
-					_sfxManager.PlaySFX (InsertMechanismClip);
+					_sfxManager.PlaySFX (InsertMechanismClip, InsertMechanismVolume);
 					_player.RemoveItemFromInventory ();
 				}
 			}
