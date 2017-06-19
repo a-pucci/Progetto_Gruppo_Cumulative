@@ -5,9 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class CameraEnd : MonoBehaviour 
 {
-	[Header("Next Level")]
-	public string NextLevel;
-
 	[Header("Camera Setting")]
 	public float MovingSpeed;
 	public float MaxSize;
@@ -28,12 +25,17 @@ public class CameraEnd : MonoBehaviour
 
 	private Camera _camera;
 	private Transform _cameraTransform;
-	private Vector3 _center;
 
 	private bool _moving = false;
-	private bool _growing = false;
 	private bool _isShowing = false;
 	private bool _closing = false;
+
+	private float _initialSize;
+	private Vector3 _initialPosition;
+	private Vector3 _destination;
+
+	private float _startTime;
+	private float _journeyLenght;
 
 	private SFXController _sfxManager;
 
@@ -42,7 +44,7 @@ public class CameraEnd : MonoBehaviour
 	{
 		_camera = Camera.main;
 		_cameraTransform = this.gameObject.transform;
-		_center = new Vector3 (0, 0, -10);
+		_initialSize = _camera.orthographicSize;
 
 		_sfxManager = GameObject.FindGameObjectWithTag ("SFXManager").GetComponent<SFXController> ();
 		_sfxManager.PlaySFX (StartLevelClip, StartLevelVolume);
@@ -52,22 +54,14 @@ public class CameraEnd : MonoBehaviour
 	{
 		if(_moving)
 		{
-			_cameraTransform.position = Vector3.MoveTowards (_cameraTransform.position, _center, MovingSpeed * Time.deltaTime);
+			float distanceCovered = (Time.time - _startTime) * MovingSpeed;
+			float fractionJourney = distanceCovered / _journeyLenght;
 
-			if(_cameraTransform.position == _center)
+			_cameraTransform.position = Vector3.Lerp (_initialPosition, _destination, fractionJourney);
+			_camera.orthographicSize = Mathf.Lerp (_initialSize, MaxSize, fractionJourney);
+
+			if (this.gameObject.transform.position == _destination && _camera.orthographicSize == MaxSize)
 			{
-				_moving = false;
-				_growing = true;
-			}
-		}
-
-		if(_growing)
-		{
-			CameraAC.SetBool ("Growing", true);
-
-			if(_camera.orthographicSize == MaxSize)
-			{
-				_growing = false;
 				_isShowing = false;
 				LeftCurtainAC.SetTrigger ("Close");
 				RightCurtainAC.SetTrigger ("Close");
@@ -86,6 +80,11 @@ public class CameraEnd : MonoBehaviour
 		_moving = true;
 		_isShowing = true;
 		_closing = true;
+
+		_initialPosition = _cameraTransform.position;
+		_destination = new Vector3 (0, 0, -10);
+		_startTime = Time.time;
+		_journeyLenght = Vector3.Distance (_initialPosition, _destination);
 		StartCoroutine (ChangeScene ());
 	}
 
@@ -102,7 +101,6 @@ public class CameraEnd : MonoBehaviour
 			yield return new WaitForSeconds (0);
 		}
 		yield return new WaitForSeconds (_closureTime);
-		//SceneManager.LoadScene (NextLevel);
 		LevelManager.GoNextLevel();
 	}
 }
