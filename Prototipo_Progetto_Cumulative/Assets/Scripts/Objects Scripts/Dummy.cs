@@ -68,37 +68,30 @@ public class Dummy : StageObject
 
 	private void changeObjectsStage ()
 	{
-		if (_happyStage.activeInHierarchy)
+		for(int i = 0; i < _pickups.Length; i++)
 		{
-			for(int i = 0; i < _pickups.Length; i++)
+			if(_pickups[i].GetComponent<StageObject> ().canSwapStage)
 			{
-				if(_pickups[i].GetComponent<StageObject> ().canSwapStage && _pickups[i].transform.parent == _happyStage.transform)
+				if(_pickups[i].transform.parent == _happyStage.transform)
 				{
-					_pickups[i].transform.parent = _sadStage.transform;
+					_pickups [i].transform.parent = _sadStage.transform;
 				}
-			}
-
-			for(int i = 0; i < _interactive.Length; i++)
-			{
-				if(_interactive[i].GetComponent<StageObject> ().canSwapStage && _interactive[i].transform.parent == _happyStage.transform)
-				{
-					_interactive[i].transform.parent = _sadStage.transform;
-				}
-			}
-		}
-		else if (_sadStage.activeInHierarchy)
-		{
-			for(int i = 0; i < _pickups.Length; i++)
-			{
-				if(_pickups[i].GetComponent<StageObject> ().canSwapStage && _pickups[i].transform.parent == _sadStage.transform)
+				else if(_pickups[i].transform.parent == _sadStage.transform)
 				{
 					_pickups[i].transform.parent = _happyStage.transform;
 				}
 			}
+		}
 
-			for(int i = 0; i < _interactive.Length; i++)
+		for(int i = 0; i < _interactive.Length; i++)
+		{
+			if(_interactive[i].GetComponent<StageObject> ().canSwapStage)
 			{
-				if(_interactive[i].GetComponent<StageObject> ().canSwapStage && _interactive[i].transform.parent == _sadStage.transform)
+				if(_interactive[i].transform.parent == _happyStage.transform)
+				{
+					_interactive [i].transform.parent = _sadStage.transform;
+				}
+				else if (_interactive[i].transform.parent == _sadStage.transform)
 				{
 					_interactive[i].transform.parent = _happyStage.transform;
 				}

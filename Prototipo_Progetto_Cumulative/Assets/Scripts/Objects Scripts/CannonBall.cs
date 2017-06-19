@@ -27,11 +27,16 @@ public class CannonBall : StageObject
 		{
 			if(shooted)
 			{
-				if (other.gameObject.GetComponent<StageObject> ().ID == (int)IDList.ID.Box) {
+				if (other.gameObject.GetComponent<StageObject> ().ID == (int)IDList.ID.Box) 
+				{
 					_sfxManager.PlaySFX (boxDestroyed, boxDestroyedVolume);
-				} else if ( other.gameObject.GetComponent<StageObject> ().ID == (int)IDList.ID.Gate) {
+					other.gameObject.GetComponent<Box> ().DropItems ();
+				} 
+				else if ( other.gameObject.GetComponent<StageObject> ().ID == (int)IDList.ID.Gate) 
+				{
 					_sfxManager.PlaySFX (gateDestroyed, gateDestroyedVolume);
 				}
+
 				GameObject.Destroy (other.gameObject, time);
 				shooted = false;
 			}

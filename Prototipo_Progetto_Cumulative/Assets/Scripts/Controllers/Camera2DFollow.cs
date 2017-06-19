@@ -36,6 +36,7 @@ public class Camera2DFollow : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+		CameraAC.enabled = false;
 		_target = GameObject.FindGameObjectWithTag ("Player").transform;
 		_lastTargetPosition = _target.position;
 		_offsetZ = (transform.position - _target.position).z;
@@ -92,6 +93,7 @@ public class Camera2DFollow : MonoBehaviour
 	{
 		if(value)
 		{
+			CameraAC.enabled = true;
 			this.gameObject.transform.position = new Vector3 (0, 0, -10);
 			CameraAC.SetBool ("Growing", true);
 			_locked = value;
@@ -106,6 +108,7 @@ public class Camera2DFollow : MonoBehaviour
 	{
 		yield return new WaitForSeconds (time);
 		CameraAC.SetBool ("Growing", false);
+		CameraAC.enabled = false;
 		Camera.main.orthographicSize = 6;
 		_locked = value;
 	}
