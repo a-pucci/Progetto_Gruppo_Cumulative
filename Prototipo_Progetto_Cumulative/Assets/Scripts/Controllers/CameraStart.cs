@@ -14,9 +14,8 @@ public class CameraStart : MonoBehaviour
 	private bool _showingObjects;
 	private Vector3 _target;
 
-	private int _i = 0;
+	private int _counter = 0;
 	private bool _waiting = false;
-	private bool _firstCheck = true;
 	private bool _curtainsOpen = false;
 
 	private PlayerUserController _player;
@@ -37,7 +36,7 @@ public class CameraStart : MonoBehaviour
 
 		if(Targets.Length > 0)
 		{
-			_target = GetTargetPosition (Targets [_i].position);
+			_target = GetTargetPosition (Targets [_counter].position);
 		}
 
 		_stageSwap.LockSwap ();
@@ -60,24 +59,19 @@ public class CameraStart : MonoBehaviour
 
 	private void Move()
 	{
-		if(_i < Targets.Length && !_skip)
+		if(_counter < Targets.Length && !_skip)
 		{
-			if(_firstCheck)
-			{
-				CheckStage ();
-				_firstCheck = false;
-			}
-
 			_cameraTrans.position = Vector3.MoveTowards (_cameraTrans.position, _target, Speed * Time.deltaTime);
 
 			if (_cameraTrans.position == _target && !_waiting)
 			{ 	
-				StartCoroutine (Wait ());
+				CheckStage ();
+				StartCoroutine (TargetReached ());
 			}
 		}
 		else
 		{
-			StopCoroutine (Wait ());
+			StopCoroutine (TargetReached ());
 			_showingObjects = false;
 			_player.CanMove = true;
 			_stageSwap.UnlockSwap ();
@@ -86,19 +80,18 @@ public class CameraStart : MonoBehaviour
 		}
 	}
 
-	private IEnumerator Wait()
+	private IEnumerator TargetReached()
 	{
 		_waiting = true;
-
+		CheckStage ();
 		yield return new WaitForSeconds (WaitTime);
 
-		if(_i < Targets.Length)
+		if(_counter < Targets.Length)
 		{
-			_i++;
-			if(_i < Targets.Length)
+			_counter++;
+			if(_counter < Targets.Length)
 			{
-				_target = GetTargetPosition (Targets [_i].position);
-				CheckStage ();
+				_target = GetTargetPosition (Targets [_counter].position);
 			}
 		}
 		_waiting = false;
@@ -117,12 +110,12 @@ public class CameraStart : MonoBehaviour
 
 	private void CheckStage()
 	{
-		if(Targets[_i].IsChildOf(_happyStage.transform))
+		if(Targets[_counter].IsChildOf(_happyStage.transform))
 		{
 			_happyStage.SetActive (true);
 			_sadStage.SetActive (false);
 		}
-		else
+		else if(Targets[_counter].IsChildOf(_sadStage.transform))
 		{
 			_happyStage.SetActive (false);
 			_sadStage.SetActive (true);

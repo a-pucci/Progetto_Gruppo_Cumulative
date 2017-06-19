@@ -8,12 +8,12 @@ public class PlayerMovement : MonoBehaviour
 	[SerializeField] private float _jumpForce = 400f;                  // Amount of force added when the player jumps.
 	[SerializeField] private bool _airControl = false;                 // Whether or not a player can steer while jumping;
 	[SerializeField] private LayerMask _whatIsGround;                  // A mask determining what is ground to the character
-	[SerializeField] private Animator _playerAnim;
 
 	private Transform m_GroundCheck;    // A position marking where to check if the player is grounded.
-	const float k_GroundedRadius = .1f; // Radius of the overlap circle to determine if grounded
+	const float k_GroundedRadius = .3f; // Radius of the overlap circle to determine if grounded
 	private bool m_Grounded;            // Whether or not the player is grounded.
 	private Rigidbody2D m_Rigidbody2D;
+	private Animator _playerAnim;
 
 	private bool _facingRight = true;
 
@@ -21,7 +21,8 @@ public class PlayerMovement : MonoBehaviour
 	{
 		// Setting up references.
 		m_GroundCheck = transform.Find("GroundCheck");
-		m_Rigidbody2D = GetComponent<Rigidbody2D>();
+		m_Rigidbody2D = GetComponent<Rigidbody2D> ();
+		_playerAnim = gameObject.transform.FindChild("Sprite").GetComponent <Animator> ();
 	}
 
 
@@ -36,12 +37,19 @@ public class PlayerMovement : MonoBehaviour
 		{
 			if (colliders [i].gameObject != gameObject)
 			{
-				_playerAnim.SetTrigger ("Land");
+
 				m_Grounded = true;
 			}
 
 		}
-		Debug.Log ("Grounded: " + m_Grounded);
+		if(m_Grounded)
+		{
+			_playerAnim.SetBool ("Ground", true);
+		}
+		else
+		{
+			_playerAnim.SetBool ("Ground", false);
+		}
 	}
 
 

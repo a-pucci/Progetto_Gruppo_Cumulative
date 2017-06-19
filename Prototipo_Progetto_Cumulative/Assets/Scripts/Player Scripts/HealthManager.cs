@@ -23,7 +23,7 @@ public class HealthManager : MonoBehaviour
 	void Start()
 	{
 		_sfxManager = GameObject.FindGameObjectWithTag ("SFXManager").GetComponent<SFXController> ();
-		_spriteRenderer = transform.FindChild ("Sprite").GetComponent <SpriteRenderer> ();
+		_spriteRenderer = gameObject.transform.FindChild("Sprite").GetComponent <SpriteRenderer> ();
 		GameOverText.enabled = false;
 		PlayerDead = false;
 	}

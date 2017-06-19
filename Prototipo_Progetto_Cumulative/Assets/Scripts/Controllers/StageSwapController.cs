@@ -49,10 +49,6 @@ public class StageSwapController : MonoBehaviour
 		_sfxManager = GameObject.FindGameObjectWithTag ("SFXManager").GetComponent<SFXController> ();
 
 		_uiMask = GameObject.FindGameObjectWithTag ("SceneIndicator").GetComponent<Image> ();
-
-		if (TimeEnabled) {
-			StartCoroutine (SwitchCoroutine ());
-		}
 	}
 
 	void Update () 
@@ -106,6 +102,11 @@ public class StageSwapController : MonoBehaviour
 	public void UnlockSwap()
 	{
 		_locked = false;
+
+		if (TimeEnabled) 
+		{
+			StartCoroutine (SwitchCoroutine ());
+		}
 	}
 
 }

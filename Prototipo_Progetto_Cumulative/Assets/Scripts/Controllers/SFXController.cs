@@ -10,7 +10,6 @@ public class SFXController : MonoBehaviour
 
 	public AudioSource PlaySFX(AudioClip sfx, float volume = 1f) 
 	{
-		Debug.Log (sfx.name);
 		AudioSource source = gameObject.AddComponent<AudioSource> ();
 		source.outputAudioMixerGroup = SFXMixer;
 		source.clip = sfx;
@@ -25,7 +24,6 @@ public class SFXController : MonoBehaviour
 		while (source.isPlaying) {
 			yield return new WaitForSeconds (0.1f);
 		}
-		Debug.Log ("Destroying");
 		Destroy (source);
 	}
 }
