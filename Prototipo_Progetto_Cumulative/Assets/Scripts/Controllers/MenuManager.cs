@@ -12,10 +12,13 @@ public class MenuManager : MonoBehaviour
 
 	public void StartGame()
 	{
-		if (firstScene.Length < 0) {
+		if (firstScene.Length < 0) 
+		{
 			Debug.LogError ("Scene to load not selected!");
-		} else {
-			SceneManager.LoadScene (firstScene);
+		} 
+		else 
+		{
+			LevelManager.GoNextLevel ();
 		}
 	}
 
