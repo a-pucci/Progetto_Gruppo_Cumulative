@@ -6,25 +6,90 @@ using UnityEngine.SceneManagement;
 
 public class Gate : StageObject 
 {
-	private GameObject _collider;
+	[SerializeField] private bool _openRight;
+	[SerializeField] private float _rotationSpeed;
+
+	private bool _open = false;
+	private bool _close = false;
 
 	void Start()
 	{
 		base.ID = (int)IDList.ID.Gate;
-		_collider = this.gameObject.transform.FindChild ("Collider").gameObject;
+	}
+
+	void Update()
+	{
+		if(_open)
+		{
+			OpeningGate ();
+		}
+		if(_close)
+		{
+			ClosingGate ();
+		}
 	}
 
 	public void openGate()
 	{
-		SpriteRenderer color = this.gameObject.GetComponent<SpriteRenderer> ();
-		color.color = new Color (255, 255, 255);
-		_collider.SetActive (false);
+		_open = true;
+		_close = false;
 	}
 
 	public void closeGate()
 	{
-		SpriteRenderer color = this.gameObject.GetComponent<SpriteRenderer> ();
-		color.color = new Color (0, 0, 0);
-		_collider.SetActive (true);
+		_close = true;
+		_open = false;
+	}
+
+	private void OpeningGate()
+	{
+		if(_openRight)
+		{
+			if(transform.rotation.z < 0.705)
+			{
+				transform.Rotate (Vector3.forward * _rotationSpeed * Time.deltaTime);
+			}
+			else
+			{
+				_open = false;
+			}
+		}
+		else
+		{
+			if(transform.rotation.z > -0.705)
+			{
+				transform.Rotate (Vector3.back * _rotationSpeed * Time.deltaTime);
+			}
+			else
+			{
+				_open = false;
+			}
+		}
+	}
+
+	private void ClosingGate()
+	{
+		if(_openRight)
+		{
+			if(transform.rotation.z > 0)
+			{
+				transform.Rotate (Vector3.back * _rotationSpeed * Time.deltaTime);
+			}
+			else
+			{
+				_close = false;
+			}
+		}
+		else
+		{
+			if(transform.rotation.z < 0)
+			{
+				transform.Rotate (Vector3.forward * _rotationSpeed * Time.deltaTime);
+			}
+			else
+			{
+				_close = false;
+			}
+		}
 	}
 }

@@ -11,8 +11,10 @@ public class Story : MonoBehaviour
 	[TextArea]	public string[] _stories;
 	public Image[] Avatars;
 	public float WaitTime;
+	public float AutomaticWaitTime;
 	private bool _canGoNext = false;
 	private int _count = 0;
+	private bool _automaticNext = false;
 
 	// Use this for initialization
 	void Start () 
@@ -26,14 +28,17 @@ public class Story : MonoBehaviour
 		_storyText.text = _stories [_count];
 		Avatars [_count].enabled = true;
 			
+		StartCoroutine (AutomaticNext ());
 		StartCoroutine (NextStory());
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
-		if(CrossPlatformInputManager.GetButtonDown("Drop") && _canGoNext)
+		if((CrossPlatformInputManager.GetButtonDown("Drop") && _canGoNext) || _automaticNext)
 		{
+			_automaticNext = false;
+			StartCoroutine (AutomaticNext ());
 			if(_count < _stories.Length-1)
 			{
 				_count++;
@@ -44,6 +49,9 @@ public class Story : MonoBehaviour
 
 				_canGoNext = false;
 				StartCoroutine (NextStory ());
+
+				_automaticNext = false;
+				StartCoroutine (AutomaticNext ());
 			}
 			else
 			{
@@ -56,6 +64,12 @@ public class Story : MonoBehaviour
 	{	
 		yield return new WaitForSeconds (WaitTime);
 		_canGoNext = true;
+	}
+
+	private IEnumerator AutomaticNext()
+	{	
+		yield return new WaitForSeconds (AutomaticWaitTime);
+		_automaticNext = true;
 	}
 
 }

@@ -5,6 +5,11 @@ using UnityEngine;
 public class Button : StageObject
 {
 	[Header("-- BUTTON --")]
+
+	[Header("Sprites")]
+	public Sprite ButtonUpSprite;
+	public Sprite ButtonDownSprite;
+
 	[Header("Objects Connected")]
 	public GameObject[] PlatformToMove;
 	public GameObject[] GateToOpen;
@@ -21,6 +26,9 @@ public class Button : StageObject
 	{
 		if (CanActivate (other))
 		{
+			GetComponentInChildren<SpriteRenderer> ().sprite = ButtonDownSprite;
+			transform.FindChild ("Sprite").transform.localPosition = new Vector3 (0f, -1f, 0f);
+
 			_triggers.Add (other);
 
 			for (int i = 0; i < PlatformToMove.Length; i++)
@@ -41,6 +49,9 @@ public class Button : StageObject
 
 		if(_triggers.Count == 0)
 		{
+			GetComponentInChildren<SpriteRenderer> ().sprite = ButtonUpSprite;
+			transform.FindChild ("Sprite").transform.localPosition = new Vector3 (0f, 0f, 0f);
+
 			for (int i = 0; i < PlatformToMove.Length; i++)
 			{
 				PlatformToMove [i].GetComponent<PlatformMovement> ().StopMove ();
