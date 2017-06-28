@@ -49,6 +49,10 @@ public class PlatformMovement : MonoBehaviour
 		if(other.gameObject.tag == "Player")
 		{
 			other.transform.parent = this.gameObject.transform;
+			if(_canMove)
+			{
+				other.gameObject.GetComponent<PlayerMovement> ().IncreaseMovementSpeed (5);
+			}
 		}
 	}
 
@@ -57,6 +61,10 @@ public class PlatformMovement : MonoBehaviour
 		if(other.gameObject.tag == "Player")
 		{
 			other.transform.parent = null;
+			if(_canMove)
+			{
+				other.gameObject.GetComponent<PlayerMovement> ().IncreaseMovementSpeed (-5);
+			}
 		}
 	}
 

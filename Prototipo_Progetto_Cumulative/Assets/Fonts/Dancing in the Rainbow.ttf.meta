@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 02ff448c266276843867a668028aa3e9
+timeCreated: 1498671097
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Dancing in the Rainbow
+  fontNames:
+  - Dancing in the Rainbow
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

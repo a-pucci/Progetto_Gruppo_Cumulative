@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 8dc7b3ddee4080a45890c7763c869d47
+timeCreated: 1498671097
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: KidFromHell
+  fontNames:
+  - KidFromHell
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

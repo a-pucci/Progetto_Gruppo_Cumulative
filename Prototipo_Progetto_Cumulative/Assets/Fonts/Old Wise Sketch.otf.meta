@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: aaf130ef77603864e8a791b50eab4fac
+timeCreated: 1498671097
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Old Wise Sketch
+  fontNames:
+  - Old Wise Sketch
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

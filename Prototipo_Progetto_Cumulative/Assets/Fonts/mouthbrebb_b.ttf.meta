@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 63223d1be5991224d86bb21166fa7f25
+timeCreated: 1498671097
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Mouth Breather BB
+  fontNames:
+  - Mouth Breather BB
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

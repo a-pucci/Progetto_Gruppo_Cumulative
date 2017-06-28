@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 149e1436fdd82fd45ae0c11fccc33d23
+timeCreated: 1498671097
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: SketchyComic
+  fontNames:
+  - SketchyComic
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

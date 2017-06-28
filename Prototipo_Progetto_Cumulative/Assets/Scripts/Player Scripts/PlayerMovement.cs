@@ -4,7 +4,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
 
-	[SerializeField] private float _maxSpeed = 10f;                    // The fastest the player can travel in the x axis.
+	[SerializeField] private float _maxSpeed = 7f;                    // The fastest the player can travel in the x axis.
 	[SerializeField] private float _jumpForce = 400f;                  // Amount of force added when the player jumps.
 	[SerializeField] private bool _airControl = false;                 // Whether or not a player can steer while jumping;
 	[SerializeField] private LayerMask _whatIsGround;                  // A mask determining what is ground to the character
@@ -101,5 +101,10 @@ public class PlayerMovement : MonoBehaviour
 	public bool isGrounded()
 	{
 		return m_Grounded;
+	}
+
+	public void IncreaseMovementSpeed(float value)
+	{
+		_maxSpeed = _maxSpeed + value;
 	}
 }
