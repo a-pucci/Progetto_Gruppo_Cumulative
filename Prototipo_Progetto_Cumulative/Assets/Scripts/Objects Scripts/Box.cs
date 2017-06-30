@@ -17,7 +17,7 @@ public class Box : StageObject
 	private GameObject _happyStage;
 	private GameObject _sadStage;
 
-	void Start()
+	void Awake()
 	{
 		base.ID = (int)IDList.ID.Box;
 		_happyStage = GameObject.FindGameObjectWithTag ("HappyStage");

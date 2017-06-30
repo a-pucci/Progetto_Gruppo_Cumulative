@@ -35,7 +35,7 @@ public class Story : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
-		if((CrossPlatformInputManager.GetButtonDown("Drop") && _canGoNext) || _automaticNext)
+		if((CrossPlatformInputManager.GetButtonDown("Pickup") && _canGoNext) || _automaticNext)
 		{
 			_automaticNext = false;
 			StartCoroutine (AutomaticNext ());
