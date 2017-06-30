@@ -9,6 +9,8 @@ public class CannonBall : StageObject
 	public bool shooted;
 	public AudioClip boxDestroyed;
 	[Range(0.0f, 1.0f)] public float boxDestroyedVolume = 0.8f;
+	public AudioClip metalBoxDestroyed;
+	[Range(0.0f, 1.0f)] public float metalBoxDestroyedVolume = 0.8f;
 	public AudioClip gateDestroyed;
 	[Range(0.0f, 1.0f)] public float gateDestroyedVolume = 0.8f;
 	private SFXController _sfxManager;
@@ -29,7 +31,11 @@ public class CannonBall : StageObject
 			{
 				if (other.gameObject.GetComponent<StageObject> ().ID == (int)IDList.ID.Box) 
 				{
-					_sfxManager.PlaySFX (boxDestroyed, boxDestroyedVolume);
+					if (other.gameObject.GetComponent<Box> ().isMetallic) {
+						_sfxManager.PlaySFX (metalBoxDestroyed, metalBoxDestroyedVolume);
+					} else {
+						_sfxManager.PlaySFX (boxDestroyed, boxDestroyedVolume);
+					}
 					other.gameObject.GetComponent<Box> ().DropItems ();
 				} 
 				else if ( other.gameObject.GetComponent<StageObject> ().ID == (int)IDList.ID.Gate) 
