@@ -14,6 +14,13 @@ public class EnemyMovement : MonoBehaviour
 
 	private Vector3 _initialPosition;
 	private Vector3 _destination;
+	private SFXController _sfxManager;
+
+	[Header("Enemy Audio")]
+	public AudioClip EnemyEnabledClip;
+	[Range(0.0f, 1.0f)] public float EnemyEnabledVolume = 0.8f;
+	public AudioClip EnemyDisabledClip;
+	[Range(0.0f, 1.0f)] public float EnemyDisabledVolume = 0.8f;
 
 	// Use this for initialization
 	void Start () 
@@ -23,6 +30,8 @@ public class EnemyMovement : MonoBehaviour
 		
 		_initialPosition = _enemyTransform.position;
 		_destination = _endPosition.transform.position;
+
+		_sfxManager = GameObject.FindGameObjectWithTag ("SFXManager").GetComponent<SFXController> ();
 
 		_endPosition.SetActive (false);
 	}
@@ -55,6 +64,11 @@ public class EnemyMovement : MonoBehaviour
 
 	public void EnableMovement(bool value)
 	{
+		if (value) {
+			_sfxManager.PlaySFX (EnemyEnabledClip, EnemyEnabledVolume);
+		} else {
+			_sfxManager.PlaySFX (EnemyDisabledClip, EnemyDisabledVolume);
+		}
 		_canMove = value;
 	}
 }
