@@ -9,11 +9,19 @@ public class PlayerMovement : MonoBehaviour
 	[SerializeField] private bool _airControl = false;                 // Whether or not a player can steer while jumping;
 	[SerializeField] private LayerMask _whatIsGround;                  // A mask determining what is ground to the character
 
+	[Header("Character Audio")]
+	public AudioClip JumpClip;
+	[Range(0.0f, 1.0f)] public float JumpVolume = 0.8f;
+	public AudioClip LandingClip;
+	[Range(0.0f, 1.0f)] public float LandingVolume = 0.8f;
+
 	private Transform m_GroundCheck;    // A position marking where to check if the player is grounded.
 	const float k_GroundedRadius = .3f; // Radius of the overlap circle to determine if grounded
 	private bool m_Grounded;            // Whether or not the player is grounded.
 	private Rigidbody2D m_Rigidbody2D;
 	private Animator _playerAnim;
+	private SFXController _sfxManager;
+	private bool _lastGrounded;
 
 	private bool _facingRight = true;
 
@@ -23,6 +31,7 @@ public class PlayerMovement : MonoBehaviour
 		m_GroundCheck = transform.Find("GroundCheck");
 		m_Rigidbody2D = GetComponent<Rigidbody2D> ();
 		_playerAnim = gameObject.transform.FindChild("Sprite").GetComponent <Animator> ();
+		_sfxManager = GameObject.FindGameObjectWithTag ("SFXManager").GetComponent<SFXController> ();
 	}
 
 
@@ -44,12 +53,19 @@ public class PlayerMovement : MonoBehaviour
 		}
 		if(m_Grounded)
 		{
+			if (_lastGrounded == false)
+			{
+				_sfxManager.PlaySFX (LandingClip, LandingVolume);
+			}
+
 			_playerAnim.SetBool ("Ground", true);
 		}
 		else
 		{
 			_playerAnim.SetBool ("Ground", false);
 		}
+
+		_lastGrounded = m_Grounded;
 	}
 
 
@@ -80,6 +96,7 @@ public class PlayerMovement : MonoBehaviour
 		if (m_Grounded && jump)
 		{
 			_playerAnim.SetTrigger ("Jump");
+			_sfxManager.PlaySFX (JumpClip, JumpVolume);
 			// Add a vertical force to the player.
 			m_Grounded = false;
 			m_Rigidbody2D.AddForce(new Vector2(0f, _jumpForce));

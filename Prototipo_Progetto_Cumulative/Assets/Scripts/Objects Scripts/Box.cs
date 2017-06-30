@@ -14,6 +14,14 @@ public class Box : StageObject
 	public float xOffset = 0f;
 	public float yOffset = 0.8f;
 
+	public AudioClip BurnClip;
+	[Range(0.0f, 1.0f)] public float BurnVolume = 0.8f;
+	public AudioClip LandingClip;
+	[Range(0.0f, 1.0f)] public float LandingVolume = 0.8f;
+	public AudioClip PushingClip;
+	[Range(0.0f, 1.0f)] public float PushingVolume = 0.8f;
+	private SFXController _sfxManager;
+
 	private GameObject _happyStage;
 	private GameObject _sadStage;
 
@@ -22,6 +30,7 @@ public class Box : StageObject
 		base.ID = (int)IDList.ID.Box;
 		_happyStage = GameObject.FindGameObjectWithTag ("HappyStage");
 		_sadStage = GameObject.FindGameObjectWithTag ("SadStage");
+		_sfxManager = GameObject.FindGameObjectWithTag ("SFXManager").GetComponent<SFXController> ();
 	}
 
 	public void DropItems ()
@@ -56,10 +65,17 @@ public class Box : StageObject
 		return canInteract;
 	}
 
+	void OnCollisionEnter2D (Collision2D collider) {
+		if (!collider.gameObject.CompareTag ("Player")) {
+			_sfxManager.PlaySFX (LandingClip, LandingVolume);
+		}
+	}
+
 	public override void Interact (ref GameObject other)
 	{
 		if(CanInteract (other))
 		{
+			_sfxManager.PlaySFX (BurnClip, BurnVolume);
 			DropItems ();
 			GameObject.Destroy (this.gameObject);
 		}
