@@ -9,12 +9,19 @@ public class Gate : StageObject
 	[SerializeField] private bool _openRight;
 	[SerializeField] private float _rotationSpeed;
 
+	[Header("Gate Audio")]
+	public AudioClip GateClip;
+	[Range(0.0f, 1.0f)] public float GateVolume = 0.8f;
+
+	private SFXController _sfxManager;
 	private bool _open = false;
 	private bool _close = false;
+	private bool _isMoving = false;
 
 	void Start()
 	{
 		base.ID = (int)IDList.ID.Gate;
+		_sfxManager = GameObject.FindGameObjectWithTag ("SFXManager").GetComponent<SFXController> ();
 	}
 
 	void Update()
@@ -47,22 +54,33 @@ public class Gate : StageObject
 		{
 			if(transform.rotation.z < 0.705)
 			{
+				if (_isMoving == false) {
+					_sfxManager.PlaySFX (GateClip, GateVolume);
+				}
 				transform.Rotate (Vector3.forward * _rotationSpeed * Time.deltaTime);
+				_isMoving = true;
+
 			}
 			else
 			{
 				_open = false;
+				_isMoving = false;
 			}
 		}
 		else
 		{
 			if(transform.rotation.z > -0.705)
 			{
+				if (_isMoving == false) {
+					_sfxManager.PlaySFX (GateClip, GateVolume);
+				}
 				transform.Rotate (Vector3.back * _rotationSpeed * Time.deltaTime);
+				_isMoving = true;
 			}
 			else
 			{
 				_open = false;
+				_isMoving = false;
 			}
 		}
 	}
