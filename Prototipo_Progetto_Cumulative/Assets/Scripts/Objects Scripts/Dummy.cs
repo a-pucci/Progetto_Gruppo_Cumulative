@@ -14,6 +14,14 @@ public class Dummy : StageObject
 	private GameObject[] _pickups;
 	private GameObject[] _interactive;
 
+	[Header("Dummy Audio")]
+	public AudioClip ItemsChangeClip;
+	[Range(0.0f, 1.0f)] public float ItemsChangeVolume = 0.8f;
+	public AudioClip MaskPlaceClip;
+	[Range(0.0f, 1.0f)] public float MaskPlaceVolume = 0.8f;
+
+	private SFXController _sfxManager;
+
 	private GameObject _currentMask;
 	private PlayerPickup _player;
 
@@ -26,10 +34,12 @@ public class Dummy : StageObject
 		_happyStage = GameObject.FindGameObjectWithTag ("HappyStage");
 		_sadStage = GameObject.FindGameObjectWithTag ("SadStage");
 		_player = GameObject.FindGameObjectWithTag ("Player").GetComponent <PlayerPickup> ();
+		_sfxManager = GameObject.FindGameObjectWithTag ("SFXManager").GetComponent<SFXController> ();
 	}
 
 	public void PutMask (GameObject mask)
 	{
+		_sfxManager.PlaySFX (MaskPlaceClip, MaskPlaceVolume);
 		_currentMask = mask;
 		mask.GetComponent<Collider2D> ().enabled = false;
 		mask.transform.position = new Vector3 (this.transform.position.x + XMaskOffset, this.transform.position.y + YMaskOffset, this.transform.position.z);
@@ -68,6 +78,13 @@ public class Dummy : StageObject
 
 	private void changeObjectsStage ()
 	{
+		for (int i = 0; i < _pickups.Length; i++) {
+			if (_pickups [i].GetComponent<StageObject> ().canSwapStage) {
+				_sfxManager.PlaySFX (ItemsChangeClip, ItemsChangeVolume);
+				break;
+			}
+		}
+
 		for(int i = 0; i < _pickups.Length; i++)
 		{
 			if(_pickups[i].GetComponent<StageObject> ().canSwapStage)
