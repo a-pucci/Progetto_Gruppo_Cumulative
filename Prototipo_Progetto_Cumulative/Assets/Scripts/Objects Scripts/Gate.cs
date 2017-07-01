@@ -54,8 +54,8 @@ public class Gate : StageObject
 		{
 			if(transform.rotation.z < 0.705)
 			{
-				if (_isMoving == false) {
-					_sfxManager.PlaySFX (GateClip, GateVolume);
+				if (_isMoving == false && !_sfxManager.IsPlaying("gate")) {
+					_sfxManager.PlaySFX (GateClip, GateVolume, "gate");
 				}
 				transform.Rotate (Vector3.forward * _rotationSpeed * Time.deltaTime);
 				_isMoving = true;
@@ -63,6 +63,9 @@ public class Gate : StageObject
 			}
 			else
 			{
+				if (_isMoving == true && _sfxManager.IsPlaying("gate")) {
+					_sfxManager.StopSound("gate");
+				}
 				_open = false;
 				_isMoving = false;
 			}
@@ -71,14 +74,17 @@ public class Gate : StageObject
 		{
 			if(transform.rotation.z > -0.705)
 			{
-				if (_isMoving == false) {
-					_sfxManager.PlaySFX (GateClip, GateVolume);
+				if (_isMoving == false && !_sfxManager.IsPlaying("gate")) {
+					_sfxManager.PlaySFX (GateClip, GateVolume, "gate");
 				}
 				transform.Rotate (Vector3.back * _rotationSpeed * Time.deltaTime);
 				_isMoving = true;
 			}
 			else
 			{
+				if (_isMoving == true && _sfxManager.IsPlaying("gate")) {
+					_sfxManager.StopSound("gate");
+				}
 				_open = false;
 				_isMoving = false;
 			}
