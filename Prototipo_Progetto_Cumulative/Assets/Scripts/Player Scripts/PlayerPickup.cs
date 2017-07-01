@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityStandardAssets.CrossPlatformInput;
-using UnityEditor;
 
 public class PlayerPickup : MonoBehaviour 
 {

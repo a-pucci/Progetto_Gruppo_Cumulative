@@ -25,7 +25,7 @@ public class Dummy : StageObject
 	private GameObject _currentMask;
 	private PlayerPickup _player;
 
-	void Start()
+	void Awake()
 	{
 		base.ID = (int)IDList.ID.Dummy;
 
